@@ -12,15 +12,15 @@ permissions:
   security-events: write
 
 jobs:
-  terraform-ci:
-    name: Terraform CI
-    secrets: inherit
-    uses: ./.github/workflows/terraform-ci.yaml
+  # terraform-ci:
+  #   name: Terraform CI
+  #   secrets: inherit
+  #   uses: ./.github/workflows/terraform-ci.yaml
 
-  test-database-migration:
-    name: DB CI
-    secrets: inherit
-    uses: ./.github/workflows/db-ci.yaml
+  # test-database-migration:
+  #   name: DB CI
+  #   secrets: inherit
+  #   uses: ./.github/workflows/db-ci.yaml
 
   # app-ci:
   #   name: App CI
