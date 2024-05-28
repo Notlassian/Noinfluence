@@ -19,8 +19,8 @@ CREATE TABLE "organization_admin" (
 
 CREATE TABLE "organization" (
   "organization_id" serial PRIMARY KEY,
-  "organization_name" varchar(50) UNIQUE NOT NULL
-  "organization_created" timestamptz NOT NULL,
+  "organization_name" varchar(50) UNIQUE NOT NULL,
+  "organization_created" timestamptz NOT NULL
 );
 
 CREATE TABLE "role" (
