@@ -1,6 +1,6 @@
-data "aws_acm_certificate" "api_https_cert" {
-  domain   = "api.${local.domain}"
-  most_recent = true
+resource "aws_acm_certificate" "https_api_cert" {
+  domain_name = "api-${local.domain}"
+  validation_method = "DNS"
 }
 
 data "aws_secretsmanager_secret_version" "noinfleunce-prod-details" {
@@ -47,7 +47,7 @@ resource "aws_elastic_beanstalk_application" "beanstalk_app" {
 resource "aws_elastic_beanstalk_environment" "beanstalk_env" {
   name                = "noinfluence-api-env"
   application         = aws_elastic_beanstalk_application.beanstalk_app.name
-  solution_stack_name = "64bit Amazon Linux 2023 v6.1.4 running Node.js 20"
+  solution_stack_name = "64bit Amazon Linux 2023 v6.1.5 running Node.js 20"
   tier                = "WebServer"
 
   setting {
@@ -143,7 +143,7 @@ resource "aws_elastic_beanstalk_environment" "beanstalk_env" {
   setting {
     namespace = "aws:elbv2:listener:443"
     name      = "SSLCertificateArns"
-    value     = data.aws_acm_certificate.api_https_cert.arn
+    value     = resource.aws_acm_certificate.https_api_cert.arn
     resource  = ""
   }
   setting {
@@ -193,7 +193,7 @@ resource "aws_elastic_beanstalk_environment" "beanstalk_env" {
   }
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
-    name      = "BD_PORT"
+    name      = "DB_PORT"
     value     = module.rds.db_instance_port
   }
   setting {
@@ -203,7 +203,7 @@ resource "aws_elastic_beanstalk_environment" "beanstalk_env" {
   }
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
-    name      = "GOOGLE_CLIENT_ID"
-    value     = "271058509023-c7uprprd3a28gpnldg42nor518g12kpu.apps.googleusercontent.com"
+    name      = "CLIENT_SECRET"
+    value     = aws_cognito_user_pool_client.app_user_pool_client.client_secret
   }
 }

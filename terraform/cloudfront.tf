@@ -1,6 +1,7 @@
-data "aws_acm_certificate" "web_https_cert" {
-  domain   = local.domain
-  most_recent = true
+resource "aws_acm_certificate" "https_frontend_cert" {
+  domain_name = local.domain
+  validation_method = "DNS"
+  provider = aws.global
 }
 
 resource "aws_cloudfront_origin_access_control" "frontend" {
@@ -13,12 +14,12 @@ resource "aws_cloudfront_origin_access_control" "frontend" {
 
 resource "aws_cloudfront_distribution" "frontend" {
   origin {
-    domain_name              = aws_s3_bucket.website.bucket_regional_domain_name
-    origin_id                = "S3-${aws_s3_bucket.website.id}"
+    domain_name              = aws_s3_bucket.frontend.bucket_domain_name
+    origin_id                = "S3-${aws_s3_bucket.frontend.id}"
     origin_access_control_id = aws_cloudfront_origin_access_control.frontend.id
   }
 
-  aliases = ["spyder.phipson.co.za"]
+  aliases = [local.domain]
 
   enabled             = true
   is_ipv6_enabled     = true
@@ -28,12 +29,12 @@ resource "aws_cloudfront_distribution" "frontend" {
     cache_policy_id  = "4135ea2d-6df8-44a3-9df3-4b5a84be39ad"
     allowed_methods  = ["GET", "HEAD", "OPTIONS"]
     cached_methods   = ["GET", "HEAD"]
-    target_origin_id = "S3-${aws_s3_bucket.website.id}"
+    target_origin_id = "S3-${aws_s3_bucket.frontend.id}"
 
     viewer_protocol_policy = "redirect-to-https"
-    min_ttl                = 0
-    default_ttl            = 3600
-    max_ttl                = 86400
+    # min_ttl                = 0
+    # default_ttl            = 3600
+    # max_ttl                = 86400
   }
 
   price_class = "PriceClass_200"
@@ -52,7 +53,7 @@ resource "aws_cloudfront_distribution" "frontend" {
   }
 
   viewer_certificate {
-    acm_certificate_arn      = data.aws_acm_certificate.web_https_cert
+    acm_certificate_arn      = resource.aws_acm_certificate.https_frontend_cert.arn
     ssl_support_method       = "sni-only"
     minimum_protocol_version = "TLSv1.2_2021"
   }

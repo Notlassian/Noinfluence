@@ -16,3 +16,14 @@ provider "aws" {
     }
   }
 }
+
+provider "aws" {
+  alias  = "global"
+  region = "us-east-1"
+  default_tags {
+    tags = {
+      "owner"         = "ryan.trickett@bbd.co.za"
+      "created-using" = "terraform"
+    }
+  }
+}
