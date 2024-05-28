@@ -6,7 +6,19 @@ body {
   margin: 0;
 }
 
+.App {
+  display: flex;
+  flex-direction: column;
+}
+
 .container {
-  margin: 1rem;
-  text-align: center;
+  flex-grow: 1;
+  padding: 1rem;
+  overflow-y: auto;
+}
+
+.main-content {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
 }
