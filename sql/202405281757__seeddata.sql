@@ -10,7 +10,7 @@ VALUES ('Viewer'), ('Editor'), ('Administrator');
 INSERT INTO role_permission (role_id, permission_id)
 SELECT role.role_id, permission.permission_id
 FROM role, permission
-WHERE role.role_name = 'Viewer';
+WHERE role.role_name = 'Viewer'
 AND permission.permission_name IN ('View');
 
 INSERT INTO role_permission (role_id, permission_id)
