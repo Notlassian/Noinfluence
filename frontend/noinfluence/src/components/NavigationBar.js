@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-// import Popup from 'reactjs-popup';
 import './NavigationBar.css';
 
 export const NavigationBar = () => {
@@ -15,6 +14,7 @@ export const NavigationBar = () => {
         </Link>
 
         <ul className="nav-list">
+
           <li><Link to="/space">Space</Link></li>
         </ul>
 
