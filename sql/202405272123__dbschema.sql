@@ -57,6 +57,7 @@ CREATE TABLE "page" (
   "page_id" serial PRIMARY KEY,
   "page_name" varchar(50) NOT NULL,
   "page_created" timestamptz NOT NULL,
+  "file_path" varchar(1024),
   "folder_id" integer NOT NULL
 );
 
