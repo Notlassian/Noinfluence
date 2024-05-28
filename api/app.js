@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
-import {healthCheckRouter} from './Controllers/healthCheckController.js';
-import {testPermissionRouter } from './Controllers/testPermissionController.js';
+import { healthCheckRouter } from './Routes/healthRoute.js';
+import { testPermissionRouter } from './Routes/testPermissionsRoute.js';
 const PORT = 8080;
 export const app = express();
 

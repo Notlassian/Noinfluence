@@ -1,9 +1,5 @@
-import express from 'express';
-
-export const healthCheckRouter = express.Router();
-
-healthCheckRouter.get('', (req, res) => {
+export const getHealth= (req, res) => {
     res.status(200);
     res.send('I\'m alive');
-});
+};
  
