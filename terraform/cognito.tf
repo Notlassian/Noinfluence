@@ -5,7 +5,18 @@ locals {
 resource "aws_cognito_user_pool" "app_user_pool" {
   name = "noinfluence-users"
 
-  alias_attributes = []
+  schema {
+    attribute_data_type = "String"
+    name                = "email"
+    required            = true
+    mutable             = false
+    string_attribute_constraints {
+      max_length = 320
+      min_length = 3
+    }
+  }
+
+  alias_attributes = [ "email" ]
   auto_verified_attributes = [ "email" ]
   
   account_recovery_setting {
@@ -65,4 +76,9 @@ resource "aws_cognito_user_pool_client" "app_user_pool_client" {
   generate_secret = true
 
   prevent_user_existence_errors = "ENABLED"
+}
+
+resource "aws_cognito_user_pool_domain" "app_user_pool_domain" {
+  domain = "noinfluence"
+  user_pool_id = aws_cognito_user_pool.app_user_pool.id
 }
