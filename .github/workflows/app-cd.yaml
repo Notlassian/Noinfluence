@@ -45,7 +45,7 @@ jobs:
           version_label: "noinfluence-api-${{ github.sha }}"
           region: eu-west-1
           deployment_package: deploy.zip
-          existing_bucket_name: noinfluence-deployment-bucket
+          existing_bucket_name: noinfluence-deployments
   web-cd:
     name: Website CD
     runs-on: ubuntu-latest

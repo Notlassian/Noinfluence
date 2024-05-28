@@ -1,22 +1,27 @@
 resource "aws_s3_bucket" "beanstalk_file_bucket" {
-  bucket        = "noinfluence-deployment-bucket"
+  bucket        = "noinfluence-deployments"
   force_destroy = true
 }
 
-resource "aws_s3_bucket" "website" {
+resource "aws_s3_bucket" "frontend_resources" {
+  bucket        = "noinfluence-frontend-resources"
+  force_destroy = true
+}
+
+resource "aws_s3_bucket" "frontend" {
   bucket        = "noinfluence-frontend"
   force_destroy = true
 }
 
-resource "aws_s3_bucket_ownership_controls" "website" {
-  bucket = aws_s3_bucket.website.id
+resource "aws_s3_bucket_ownership_controls" "frontend" {
+  bucket = aws_s3_bucket.frontend.id
   rule {
     object_ownership = "BucketOwnerEnforced"
   }
 }
 
-resource "aws_s3_bucket_policy" "website" {
-  bucket = aws_s3_bucket.website.id
+resource "aws_s3_bucket_policy" "frontend" {
+  bucket = aws_s3_bucket.frontend.id
   policy = jsonencode({
     "Version" : "2008-10-17",
     "Id" : "PolicyForCloudFrontPrivateContent",
@@ -32,8 +37,8 @@ resource "aws_s3_bucket_policy" "website" {
           "s3:ListBucket"
         ],
         "Resource" : [
-          "${aws_s3_bucket.website.arn}/*",
-          "${aws_s3_bucket.website.arn}"
+          "${aws_s3_bucket.frontend.arn}/*",
+          "${aws_s3_bucket.frontend.arn}"
         ],
         "Condition" : {
           "StringEquals" : {
