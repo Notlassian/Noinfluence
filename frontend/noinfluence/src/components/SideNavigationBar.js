@@ -1,19 +1,38 @@
-import React from "react";
+import React, { useState } from "react";
+import './SideNavigationBar.css';
 
-const CustomNav = () => {
+export const SideNavigationBar = ({sideNavBarItem}) => {
+
+  const [ sideNavBarWindow, setSideNavigationBar ] = useState(false);
+
+  const showSideNavigationBar = () => {
+
+    setSideNavigationBar(!sideNavBarWindow);
+  }
+
   return (
-    <nav className="navbar-menu">
-      <ul className="navbar__list">
+    <nav className="sideNavBarWindow" style={{ width: sideNavBarWindow === false ? 60 : 250 }}>
+      <div className="burger" onClick={() => showSideNavigationBar()}>
+        <img src="/menu.png" alt="menu-burger" />
+      </div>
 
-        <li>
-          Organisations:
-        </li>
-        <li>
-          Organisation 1
-        </li>
+      <ul className="navbar-list">
+
+        {sideNavBarItem.map((item, i) => (
+          <div className="navbar-li-box" key={i}>
+            <img
+              src={item[1]}
+              alt={item[1]}
+              style={{ paddingLeft: sideNavBarWindow === false ? 17 : 27 }}/>
+
+            <li
+              className="navbar-li"
+              style={{ display: sideNavBarWindow === false ? "none" : "inline-block" }}>
+              {item[0]}
+            </li>
+          </div>
+        ))}
       </ul>
     </nav>
   );
 };
-
-export default CustomNav;

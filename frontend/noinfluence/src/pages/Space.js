@@ -1,4 +1,4 @@
-export default function Space() {
+export const Space = () => {
 
   return (
 

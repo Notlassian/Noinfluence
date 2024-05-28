@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
-import Popup from 'reactjs-popup';
+// import Popup from 'reactjs-popup';
 import './NavigationBar.css';
 
-export default function NavigationBar() {
+export const NavigationBar = () => {
 
   return (
 

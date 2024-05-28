@@ -1,10 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 
-import NavigationBar from "./components/NavigationBar";
-import SideNavigationBar from "./components/SideNavigationBar";
-import Home from "./pages/Home";
-import Space from "./pages/Space";
-import Profile from "./pages/Profile";
+import { NavigationBar, SideNavigationBar } from "./components";
+import { Home, Space, Profile } from "./pages";
 import './App.css';
 
 
@@ -13,9 +10,14 @@ export default function App() {
     <div className="App">
 
       <NavigationBar />
-      <SideNavigationBar></SideNavigationBar>
 
       <div className="container">
+        <SideNavigationBar
+          sideNavBarItem={[
+            ["Organisation1","/dot.png"],
+            ["Organisation2","/dot.png"],
+          ]}/>
+
 
         <Routes>
 
