@@ -1,0 +1,1 @@
+//Must set req.User here so that the authorization middleware can use the username without trusting the client

@@ -3,7 +3,7 @@ const { Pool, Client } = pkg;
 const config={
   user: process.env.DB_USER,
   host:  process.env.DB_HOST || 'localhost',
-  database:  process.env.DB_NAME ||'Test',
+  database:  process.env.DB_NAME ||'NoInfluence',
   password: process.env.DB_PWD,
   port: 5432,
   max: 20,
