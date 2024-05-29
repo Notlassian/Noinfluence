@@ -4,12 +4,12 @@ export const testPermissionRouter = express.Router();
 import * as testPermissionController from '../Controllers/testPermissionController.js';
 
 testPermissionRouter.get(
-  '/Write',
-  hasPermission('Write'),
-  testPermissionController.writePermissionTest,
+    '/Write',
+    hasPermission('Write'),
+    testPermissionController.writePermissionTest
 );
 testPermissionRouter.get(
-  '/Read',
-  hasPermission('Read'),
-  testPermissionController.readPermissionTest,
+    '/Read',
+    hasPermission('Read'),
+    testPermissionController.readPermissionTest
 );
