@@ -3,8 +3,8 @@ import { sqlPool } from "../Utils/DbUtils.js";
 export function hasSpacePermission(requiredPermission){
 return function (req, res, next) {
     try{ 
-        const query='SELECT * FROM user_space_permissions where username=$1 AND  space=$2 and Permission=$3;'
-        const vals=[req.user||"", req.header("Space")||"", requiredPermission]
+        const query='SELECT * FROM user_space_organization_permissions where username=$1 AND  organization_name=$2 AND space_name=$3 and Permission_name=$4;'
+        const vals=[req.user||"", req.header("Organization")||"", req.header("Space")||"", requiredPermission]
         sqlPool.query(query, vals)
         .then(dbRes => {
           if (dbRes.rowCount > 0) {
