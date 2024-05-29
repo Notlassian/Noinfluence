@@ -1,7 +1,7 @@
 import pkg from 'pg';
 const { Pool, Client } = pkg;
 const config={
-  user: process.env.DB_USER || 'postgres',
+  user: process.env.DB_USER,
   host:  process.env.DB_HOST || 'localhost',
   database:  process.env.DB_NAME ||'Test',
   password: process.env.DB_PWD,
