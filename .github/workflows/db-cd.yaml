@@ -30,7 +30,7 @@ jobs:
         uses: aws-actions/aws-secretsmanager-get-secrets@v2.0.1
         with:
           secret-ids: |
-            DB_DETAILS, rds*
+            DB_DETAILS, rds!db-07c5bb46-f80b-4017-bdab-8f7f7709f0b1
           parse-json-secrets: true
 
       - name: Fetch AWS RDS endpoint
