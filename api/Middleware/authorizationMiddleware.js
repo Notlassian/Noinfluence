@@ -4,7 +4,7 @@ export function hasPermission(requiredPermission){
 return function (req, res, next) {
     try{ 
         const query='SELECT * FROM user_space_permissions where username=$1 AND  space=$2 and Permission=$3;'
-        const vals=[req.user||"", req.header("org")||"", requiredPermission]
+        const vals=[req.user||"", req.header("Space")||"", requiredPermission]
         sqlPool.query(query, vals)
         .then(dbRes => {
           if (dbRes.rowCount > 0) {
