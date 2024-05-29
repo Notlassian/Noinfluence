@@ -1,4 +1,4 @@
 locals {
-  accountId = "574836245203"
+  accountId = "625366111301"
   domain    = "noinfluence.projects.bbdgrad.com"  
 }
