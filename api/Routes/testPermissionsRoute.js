@@ -1,7 +1,7 @@
 import express from 'express';
-import { hasPermission } from '../Middleware/authorizationMiddleware.js';
+import { hasSpacePermission } from '../Middleware/authorizationMiddleware.js';
 export const testPermissionRouter = express.Router();
 import * as testPermissionController from "../Controllers/testPermissionController.js";
 
-testPermissionRouter.get('/Write', hasPermission("Write"), testPermissionController.writePermissionTest);
-testPermissionRouter.get('/Read', hasPermission("View"), testPermissionController.readPermissionTest);
+testPermissionRouter.get('/Write', hasSpacePermission("Write"), testPermissionController.writePermissionTest);
+testPermissionRouter.get('/Read', hasSpacePermission("View"), testPermissionController.readPermissionTest);

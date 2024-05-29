@@ -1,6 +1,6 @@
 import { sqlPool } from "../Utils/DbUtils.js";
 
-export function hasPermission(requiredPermission){
+export function hasSpacePermission(requiredPermission){
 return function (req, res, next) {
     try{ 
         const query='SELECT * FROM user_space_permissions where username=$1 AND  space=$2 and Permission=$3;'
@@ -22,3 +22,4 @@ return function (req, res, next) {
     { return res.status(401).json({ error: 'Access denied' });}
 };
 }
+//TODO HasOrgPermission
