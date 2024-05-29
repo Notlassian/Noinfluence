@@ -4,7 +4,7 @@ resource "aws_s3_bucket" "beanstalk_file_bucket" {
 }
 
 resource "aws_s3_bucket" "frontend_resources" {
-  bucket        = "noinfluence-frontend-resources"
+  bucket        = "noinfluence-page-files"
   force_destroy = true
 }
 

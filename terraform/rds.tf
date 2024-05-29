@@ -13,7 +13,7 @@ module "rds" {
   source                      = "terraform-aws-modules/rds/aws"
   identifier                  = "noinfluence"
   family                      = "postgres16"
-  db_name                     = "noinfleunceprod"
+  db_name                     = "noinfluenceprod"
   engine                      = "postgres"
   instance_class              = "db.t3.micro"
   create_db_instance          = true
