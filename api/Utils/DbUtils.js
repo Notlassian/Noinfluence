@@ -1,16 +1,16 @@
 import pkg from 'pg';
 
 const { Pool, Client } = pkg;
-const config = {
-    user: process.env.DB_USER,
-    host: process.env.DB_HOST || 'localhost',
-    database: process.env.DB_NAME || 'Test',
-    password: process.env.DB_PWD,
-    port: 5432,
-    max: 20,
-    idleTimeoutMillis: 30000,
-    connectionTimeoutMillis: 2000,
-};
+const config={
+  user: process.env.DB_USER,
+  host:  process.env.DB_HOST || 'localhost',
+  database:  process.env.DB_NAME ||'NoInfluence',
+  password: process.env.DB_PWD,
+  port: 5432,
+  max: 20,
+  idleTimeoutMillis: 30000,
+  connectionTimeoutMillis: 2000
+}
 export const sqlPool = new Pool(config);
 
 try {
