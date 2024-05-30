@@ -1,15 +1,22 @@
 CREATE OR REPLACE PROCEDURE insert_folder(
     IN p_folder_name VARCHAR(50),
-    IN p_space_name VARCHAR(50)
+    IN p_space_name VARCHAR(50),
+    IN p_organization_name VARCHAR(50)
 )
 LANGUAGE plpgsql
 AS $$
 DECLARE
     v_space_id INT;
+    v_organization_id INT;
 BEGIN
+    SELECT organization_id INTO v_organization_id
+    FROM organization
+    WHERE organization_name = p_organization_name;
+
     SELECT space_id INTO v_space_id
     FROM space
-    WHERE space_name = p_space_name;
+    WHERE space_name = p_space_name
+    AND organization_id = v_organization_id;
 
     IF EXISTS (
         SELECT 1

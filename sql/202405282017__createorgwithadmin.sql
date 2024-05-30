@@ -1,5 +1,5 @@
 CREATE OR REPLACE PROCEDURE create_organization_and_admin(
-    IN p_sub VARCHAR(2048),
+    IN p_username VARCHAR(2048),
     IN p_organization_name VARCHAR(50)
 )
 LANGUAGE plpgsql
@@ -17,7 +17,7 @@ BEGIN
     ELSE
         SELECT "user_id" INTO v_user_id
         FROM "user"
-        WHERE "sub" = p_sub;
+        WHERE "username" = p_username;
 
         INSERT INTO organization (organization_name, organization_created_at)
         VALUES (p_organization_name, NOW())
