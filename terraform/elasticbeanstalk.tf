@@ -178,6 +178,11 @@ resource "aws_elastic_beanstalk_environment" "beanstalk_env" {
   }
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "APP_ENVIRONMENT"
+    value     = "PROD"
+  }
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
     name      = "DB_USER"
     value     = module.rds.db_instance_username
   }
@@ -203,7 +208,18 @@ resource "aws_elastic_beanstalk_environment" "beanstalk_env" {
   }
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
-    name      = "CLIENT_SECRET"
+    name      = "COGNITO_USERPOOL_ID"
+    value     = aws_cognito_user_pool_client.app_user_pool_client.user_pool_id
+  }
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "COGNITO_CLIENT_ID"
+    value     = aws_cognito_user_pool_client.app_user_pool_client.id
+  }
+  
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "COGNITO_CLIENT_SECRET"
     value     = aws_cognito_user_pool_client.app_user_pool_client.client_secret
   }
 }
