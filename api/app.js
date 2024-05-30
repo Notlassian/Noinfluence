@@ -4,6 +4,7 @@ import { rateLimit } from 'express-rate-limit'
 import { healthCheckRouter } from './Routes/healthRoute.js';
 import { testPermissionRouter } from './Routes/testPermissionsRoute.js';
 import { authenticationMiddleware } from './Middleware/authenticationMiddleware.js';
+import { organizationRouter } from './Routes/organisationsRoute.js';
 
 const port = process.env.PORT || 8080;
 
@@ -31,6 +32,7 @@ app.use(limiter);
 
 app.use('/', healthCheckRouter);
 app.use('/permisssions', testPermissionRouter);
+app.use('/organisations',organizationRouter);
 
 app.listen(port, (error) => {
     if (!error)
