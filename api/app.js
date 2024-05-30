@@ -1,6 +1,6 @@
 import express from 'express';
 import cors from 'cors';
-import { rateLimit } from 'express-rate-limit'
+import { rateLimit } from 'express-rate-limit';
 import { healthCheckRouter } from './Routes/healthRoute.js';
 import { testPermissionRouter } from './Routes/testPermissionsRoute.js';
 import { authenticationMiddleware } from './Middleware/authenticationMiddleware.js';
@@ -32,13 +32,13 @@ app.use(limiter);
 
 app.use('/', healthCheckRouter);
 app.use('/permisssions', testPermissionRouter);
-app.use('/organisations',organizationRouter);
+app.use('/organisations', organizationRouter);
 
 app.listen(port, (error) => {
     if (!error)
         console.log(
             'Server is Successfully Running, and App is listening on port ' +
-            port
+                port
         );
     else console.log("Error occurred, server can't start", error);
 });
