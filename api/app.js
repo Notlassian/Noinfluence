@@ -17,9 +17,9 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-app.use(authenticationMiddleware);
+// app.use(authenticationMiddleware);
 
-app.use('/healthcheck', healthCheckRouter);
+app.use('/', healthCheckRouter);
 app.use('/permisssions', testPermissionRouter);
 
 app.listen(port, (error) => {

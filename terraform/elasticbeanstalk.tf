@@ -83,7 +83,7 @@ resource "aws_elastic_beanstalk_environment" "beanstalk_env" {
   setting {
     namespace = "aws:elasticbeanstalk:application"
     name      = "Application Healthcheck URL"
-    value     = "/healthcheck"
+    value     = "/"
     resource  = ""
   }
   setting {
