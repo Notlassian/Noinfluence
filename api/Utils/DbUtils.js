@@ -1,4 +1,5 @@
 import pkg from 'pg';
+
 const { Pool, Client } = pkg;
 const config={
   user: process.env.DB_USER,
@@ -13,10 +14,10 @@ const config={
 export const sqlPool = new Pool(config);
 
 try {
-  const result = await sqlPool.query(`SELECT 1+1 AS result`);
-  if (result.rows[0].result == 2) console.log("DB connected successfully!")
+    const result = await sqlPool.query(`SELECT 1+1 AS result`);
+    if (result.rows[0].result === 2) console.log('DB connected successfully!');
 } catch (err) {
-  console.error(err);
+    console.error(err);
 }
 
 export const sqlClient = new Client(config); //ONLY IF WE ARE DOING TRANSACTIONS
