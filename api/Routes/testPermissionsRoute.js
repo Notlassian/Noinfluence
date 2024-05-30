@@ -5,11 +5,11 @@ import * as testPermissionController from '../Controllers/testPermissionControll
 
 testPermissionRouter.get(
     '/Write',
-    hasPermission('Write'),
+    hasSpacePermission('Write'),
     testPermissionController.writePermissionTest
 );
 testPermissionRouter.get(
     '/Read',
-    hasPermission('Read'),
+    hasSpacePermission('Read'),
     testPermissionController.readPermissionTest
 );
