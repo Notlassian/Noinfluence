@@ -7,6 +7,24 @@ data "aws_secretsmanager_secret_version" "noinfleunce-prod-details" {
   secret_id = module.rds.db_instance_master_user_secret_arn
 }
 
+resource "aws_iam_policy" "bucket_access_policy" {
+  name = "noinfluence-file-storage-policy"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action   = "s3:*"
+        Effect   = "Allow"
+        Resource = [
+          aws_s3_bucket.page_storage.arn,
+          "${aws_s3_bucket.page_storage.arn}/*"
+        ]
+      },
+    ]
+  })
+}
+
 resource "aws_iam_role" "beanstalk_ec2" {
   assume_role_policy    = jsonencode(
     {
@@ -25,6 +43,7 @@ resource "aws_iam_role" "beanstalk_ec2" {
   description           = "Allows EC2 instances to call AWS services on your behalf."
   force_detach_policies = false
   managed_policy_arns   = [
+    aws_iam_policy.bucket_access_policy.arn,
     "arn:aws:iam::aws:policy/AWSElasticBeanstalkMulticontainerDocker", 
     "arn:aws:iam::aws:policy/AWSElasticBeanstalkWebTier", 
     "arn:aws:iam::aws:policy/AWSElasticBeanstalkWorkerTier"
