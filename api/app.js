@@ -1,11 +1,11 @@
 import express from 'express';
 import cors from 'cors';
 import { rateLimit } from 'express-rate-limit';
-import { healthCheckRouter } from './Routes/healthRoute.js';
 import { testPermissionRouter } from './Routes/testPermissionsRoute.js';
 import { authenticationMiddleware } from './Middleware/authenticationMiddleware.js';
 import { organizationRouter } from './Routes/organisationsRoute.js';
 import { tokenRouter } from './Routes/tokenRoute.js';
+import { getHealth } from './controllers/healthCheckController.js';
 
 const port = process.env.PORT || 8080;
 
@@ -32,10 +32,7 @@ app.use(limiter);
 app.use(express.json());
 // app.use(authenticationMiddleware);
 
-app.use('/', (_, res) => {
-    res.status(200);
-    res.send("I'm alive");
-});
+app.use('/', getHealth);
 
 app.use('/permisssions', testPermissionRouter);
 app.use('/organisations', organizationRouter);
