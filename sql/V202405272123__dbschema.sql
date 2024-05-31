@@ -1,7 +1,7 @@
 CREATE TABLE "user" (
   "user_id" serial PRIMARY KEY,
-  "sub" varchar(2048) UNIQUE NOT NULL,
-  "username" varchar(50) NOT NULL
+  "username" varchar(128) UNIQUE NOT NULL
+
 );
 
 CREATE TABLE "user_space_role" (

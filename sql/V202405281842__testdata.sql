@@ -26,11 +26,11 @@ VALUES ('ISSUE-001', 'First Issue', 'This is the first issue', NOW(), (SELECT pa
        ('ISSUE-002', 'Second Issue', 'This is the second issue', NOW(), (SELECT page_id FROM page WHERE page_name = 'Report 1'), (SELECT issue_progress_id FROM issue_progress WHERE issue_progress_name = 'Branch Testing')),
        ('ISSUE-003', 'Third Issue', 'This is the third issue', NOW(), (SELECT page_id FROM page WHERE page_name = 'Design 1'), (SELECT issue_progress_id FROM issue_progress WHERE issue_progress_name = 'Closed')),
        ('ISSUE-004', 'Fourth Issue', 'This is the fourth issue', NOW(), (SELECT page_id FROM page WHERE page_name = 'Bug 1'), (SELECT issue_progress_id FROM issue_progress WHERE issue_progress_name = 'Ready'));
-       
-INSERT INTO "user" ("sub", "username")
-VALUES ('sub123', 'user1'),
-       ('sub456', 'user2'),
-       ('sub789', 'user3');
+
+INSERT INTO "user" ("username")
+VALUES ('user1'),
+       ('user2'),
+
 
 INSERT INTO user_space_role (user_id, space_id, role_id)
 VALUES ((SELECT "user_id" FROM "user" WHERE "username" = 'user1'), (SELECT space_id FROM space WHERE space_name = 'Sales'), 1),
@@ -40,4 +40,5 @@ VALUES ((SELECT "user_id" FROM "user" WHERE "username" = 'user1'), (SELECT space
 INSERT INTO organization_admin (user_id, organization_id)
 VALUES ((SELECT "user_id" FROM "user" WHERE "username" = 'user1'), (SELECT organization_id FROM organization WHERE organization_name = 'Company A')),
        ((SELECT "user_id" FROM "user" WHERE "username" = 'user2'), (SELECT organization_id FROM organization WHERE organization_name = 'Company B')),
-       ((SELECT "user_id" FROM "user" WHERE "username" = 'user3'), (SELECT organization_id FROM organization WHERE organization_name = 'Company C'))
+       ((SELECT "user_id" FROM "user" WHERE "username" = 'user3'), (SELECT organization_id FROM organization WHERE organization_name = 'Company C'));
+

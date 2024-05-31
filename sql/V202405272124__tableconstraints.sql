@@ -30,3 +30,6 @@ ALTER TABLE "folder" ADD CONSTRAINT "unique_folder_space" UNIQUE ("folder_name",
 ALTER TABLE "space" ADD CONSTRAINT "unique_space_organization" UNIQUE ("space_name", "organization_id");
 
 ALTER TABLE "issue" ADD CONSTRAINT "unique_key_page" UNIQUE ("issue_key", "page_id");
+
+ALTER TABLE "issue" ADD CONSTRAINT "unique_issue_key_within_space" UNIQUE ("issue_key", "page_id");
+

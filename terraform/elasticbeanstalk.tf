@@ -241,4 +241,9 @@ resource "aws_elastic_beanstalk_environment" "beanstalk_env" {
     name      = "COGNITO_CLIENT_SECRET"
     value     = aws_cognito_user_pool_client.app_user_pool_client.client_secret
   }
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "PAGE_BUCKET"
+    value     = aws_s3_bucket.page_storage.bucket
+  }
 }
