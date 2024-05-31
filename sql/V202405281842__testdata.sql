@@ -30,7 +30,7 @@ VALUES ('ISSUE-001', 'First Issue', 'This is the first issue', NOW(), (SELECT pa
 INSERT INTO "user" ("username")
 VALUES ('user1'),
        ('user2'),
-
+       ('user3');
 
 INSERT INTO user_space_role (user_id, space_id, role_id)
 VALUES ((SELECT "user_id" FROM "user" WHERE "username" = 'user1'), (SELECT space_id FROM space WHERE space_name = 'Sales'), 1),
