@@ -32,7 +32,11 @@ app.use(limiter);
 app.use(express.json());
 // app.use(authenticationMiddleware);
 
-app.use('/', healthCheckRouter);
+app.use('/', (_, res) => {
+    res.status(200);
+    res.send("I'm alive");
+});
+
 app.use('/permisssions', testPermissionRouter);
 app.use('/organisations', organizationRouter);
 app.use('/token', tokenRouter);
