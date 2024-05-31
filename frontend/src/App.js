@@ -1,10 +1,8 @@
-import { Route, Routes, useLocation } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 
-import { NavigationBar } from './components';
+import { NavigationBar, Callback } from './components';
 import { Home, Space, Profile } from './pages';
 import './App.css';
-
-import { Callback } from './authentication';
 
 export default function App() {
 

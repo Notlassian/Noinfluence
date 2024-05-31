@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from "react-router-dom";
-import { LoginLink } from '../authentication';
+import { LoginLink } from './authentication';
 import { SpaceDropDown } from './SpaceDropDown';
 import './css/NavigationBar.css';
 
