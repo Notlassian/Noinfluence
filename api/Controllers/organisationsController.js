@@ -25,7 +25,7 @@ export const createOrg = async (req, res) => {
 export const getMyOrgs = async (req, res) => {
     var query =
         'Select DISTINCT (organization_name, space_name) FROM user_space_organization_permissions where username=$1';
-    var params = [req.user || 'user1'];
+    var params = [req.user];
     if (!params[0]) res.status(500).json({ error: 'Internal Server Error' });
     else {
         sqlPool
