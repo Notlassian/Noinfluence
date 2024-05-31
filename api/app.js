@@ -1,9 +1,10 @@
 import express from 'express';
 import cors from 'cors';
-import { rateLimit } from 'express-rate-limit'
+import { rateLimit } from 'express-rate-limit';
 import { healthCheckRouter } from './Routes/healthRoute.js';
 import { testPermissionRouter } from './Routes/testPermissionsRoute.js';
 import { authenticationMiddleware } from './Middleware/authenticationMiddleware.js';
+import { tokenRouter } from './Routes/tokenRoute.js';
 
 const port = process.env.PORT || 8080;
 
@@ -27,16 +28,18 @@ const limiter = rateLimit({
 });
 
 app.use(limiter);
+app.use(express.json());
 // app.use(authenticationMiddleware);
 
 app.use('/', healthCheckRouter);
 app.use('/permisssions', testPermissionRouter);
+app.use('/token', tokenRouter);
 
 app.listen(port, (error) => {
     if (!error)
         console.log(
             'Server is Successfully Running, and App is listening on port ' +
-            port
+                port
         );
     else console.log("Error occurred, server can't start", error);
 });
