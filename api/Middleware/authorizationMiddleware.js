@@ -31,7 +31,7 @@ export function hasSpacePermission(requiredPermission) {
         }
     };
 }
-//TODO HasOrgPermission
+
 export function isOrgAdmin() {
     return function (req, res, next) {
         try {
