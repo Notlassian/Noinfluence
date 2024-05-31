@@ -39,3 +39,7 @@ export const postToken = async (req, res) => {
     const tokens = await response.json();
     res.status(200).send(tokens);
 };
+export const checkAuthed = (req, res) => {
+    res.status(200);
+    res.send('You are logged in');
+};
