@@ -1,9 +1,9 @@
 locals {
-  secure_domain = "https://${local.domain}"
+  secure_domain_dev = "https://localhost:5500"
 }
 
-resource "aws_cognito_user_pool" "app_user_pool" {
-  name = "noinfluence-users"
+resource "aws_cognito_user_pool" "dev_user_pool" {
+  name = "noinfluence-users-dev"
 
   schema {
     attribute_data_type = "String"
@@ -54,12 +54,12 @@ resource "aws_cognito_user_pool" "app_user_pool" {
   }
 }
 
-resource "aws_cognito_user_pool_client" "app_user_pool_client" {
+resource "aws_cognito_user_pool_client" "dev_user_pool_client" {
   name = "noinfluence-website"
-  user_pool_id = resource.aws_cognito_user_pool.app_user_pool.id
+  user_pool_id = resource.aws_cognito_user_pool.dev_user_pool.id
 
-  callback_urls                        = [local.secure_domain]
-  default_redirect_uri                 = local.secure_domain
+  callback_urls                        = [local.secure_domain_dev]
+  default_redirect_uri                 = local.secure_domain_dev
   allowed_oauth_flows_user_pool_client = true
   allowed_oauth_flows                  = ["code"]
   allowed_oauth_scopes                 = ["email", "openid", "profile"]
@@ -78,7 +78,7 @@ resource "aws_cognito_user_pool_client" "app_user_pool_client" {
   prevent_user_existence_errors = "ENABLED"
 }
 
-resource "aws_cognito_user_pool_domain" "app_user_pool_domain" {
-  domain = "noinfluence"
-  user_pool_id = aws_cognito_user_pool.app_user_pool.id
+resource "aws_cognito_user_pool_domain" "dev_user_pool_domain" {
+  domain = "noinfluence-dev"
+  user_pool_id = aws_cognito_user_pool.dev_user_pool.id
 }
