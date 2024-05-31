@@ -32,5 +32,5 @@ jobs:
         run: |
           wget -qO- https://download.red-gate.com/maven/release/com/redgate/flyway/flyway-commandline/10.11.0/flyway-commandline-10.11.0-linux-x64.tar.gz | tar -xvz && sudo ln -s `pwd`/flyway-10.11.0/flyway /usr/local/bin
           export DB_URL="jdbc:postgresql://localhost:5432/test"
-          flyway -user="postgres" -password="pass123" -url=$DB_URL info
-          flyway -user="postgres" -password="pass123" -url=$DB_URL migrate
+          flyway info -user="postgres" -password="pass123" -url="$DB_URL"
+          flyway migrate -user="postgres" -password="pass123" -url="$DB_URL"
