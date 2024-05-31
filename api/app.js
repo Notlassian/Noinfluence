@@ -3,9 +3,9 @@ import cors from 'cors';
 import { rateLimit } from 'express-rate-limit';
 import { testPermissionRouter } from './Routes/testPermissionsRoute.js';
 import { authenticationMiddleware } from './Middleware/authenticationMiddleware.js';
-import { organizationRouter } from './Routes/organisationsRoute.js';
-import { tokenRouter } from './Routes/tokenRoute.js';
+import { orgRouter } from './Routes/orgRouter.js';
 import { healthCheckRouter } from './Routes/healthRoute.js';
+import { authRouter } from './Routes/authRoute.js';
 
 const port = process.env.PORT || 8080;
 
@@ -33,10 +33,10 @@ app.use(express.json());
 // app.use(authenticationMiddleware);
 
 app.use('/', healthCheckRouter);
+app.use('/auth', authRouter);
+app.use('/org', authenticationMiddleware, orgRouter);
 
 app.use('/permisssions', testPermissionRouter);
-app.use('/organisations', organizationRouter);
-app.use('/token', tokenRouter);
 
 app.listen(port, (error) => {
     if (!error)
