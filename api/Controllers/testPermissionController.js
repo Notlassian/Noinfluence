@@ -8,3 +8,7 @@ export const readPermissionTest = (req, res) => {
     res.status(200);
     res.send('Yeah you can indeed Read');
 };
+export const adminPermissionTest = (req, res) => {
+    res.status(200);
+    res.send('Yeah you are indeed Admin');
+};
