@@ -1,12 +1,13 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from 'react-router-dom';
 
-import { NavigationBar, SideNavigationBar } from "./components";
-import { Home, Space, Profile } from "./pages";
+import { NavigationBar } from './components';
+import { Home, Space, Profile } from './pages';
 import './App.css';
-import './components/SideNavigationBar.css';
 
+import { Callback } from './authentication';
 
 export default function App() {
+
   return (
     <div className="App">
 
@@ -14,20 +15,12 @@ export default function App() {
 
       <div className="main-content">
 
-        <SideNavigationBar
-          sideNavBarItem={[
-            ["Organisation1","/dot.png"],
-            ["Organisation2","/dot.png"],
-          ]}/>
-
-        <div className="container">
           <Routes>
-
             <Route path="/" element={<Home />} />
             <Route path="/space" element={<Space />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/callback" element={<Callback />} />
           </Routes>
-        </div>
       </div>
     </div>
   );

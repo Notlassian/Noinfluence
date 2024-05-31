@@ -1,0 +1,59 @@
+.sideNavBarWindow {
+  height: 100vh;
+  background-color: #333;
+  box-shadow: 1px 1px 7px rgba(0,0,0,0.15);
+  transition: all 0.5s ease;
+  overflow: hidden;
+}
+
+.burger {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  border-bottom: 0.2rem solid red;
+  color: white;
+}
+
+.burger img {
+  padding: 25px 8px 0 0;
+  cursor: pointer;
+}
+
+.burger img:hover {
+  cursor: pointer;
+  background-color: #58b5fc;
+}
+
+.navbar-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.navbar-li {
+  display: block;
+  padding: 0 0 0 12px;
+  position: relative;
+  top: 2.5px;
+  font-size: 16px;
+  letter-spacing: 0;
+  line-height: 38px;
+  color: #ffffff;
+  font-family: "Lato", sans-serif;
+  font-weight: 400;
+}
+
+.navbar-li-box {
+  height: 43px;
+  margin-top: 15px;
+}
+
+.navbar-li-box:first-child {
+  margin-top: 53px;
+}
+
+.navbar-li-box:hover {
+  border-left: 7px solid #58b5fc;
+  cursor: pointer;
+  background-color: #58b5fc;
+}

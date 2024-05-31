@@ -19,6 +19,7 @@ body {
   gap: 2rem;
   padding: 0 1rem;
   justify-content: space-between;
+  border-bottom: 0.2rem solid red;
 }
 
 .noinfluence-title {
@@ -26,12 +27,16 @@ body {
   margin: 0 2rem 0 0;
 }
 
-.nav-tabs, .nav-profile {
+.nav-tabs {
   display: flex;
   align-items: center;
-  padding: 0;
-  margin: 0;
-  list-style: none;
+  justify-content: flex-start;
+  gap: 2rem;
+}
+
+.nav-profile {
+  display: flex;
+  align-items: center;
 }
 
 .nav-list {

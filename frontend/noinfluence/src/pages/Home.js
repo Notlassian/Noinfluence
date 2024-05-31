@@ -1,9 +1,22 @@
+import { HomeDashboard, HomeSideNavigationBar } from "../components";
+import './css/Home.css';
+
 export const Home = () => {
 
-  return (
+  const updatedSpaces = ['Space 1', 'Space 2', 'Space 3'];
+  const updatedFolders = ['Folder 1', 'Folder 2', 'Folder 3'];
+  const updatedPages = ['Page 1', 'Page 2', 'Page 3'];
 
-    <h1>
-      Home
-    </h1>
+  const sideNavBarItem = [
+    ['organisation1','./dot.png'],
+    ['organisation2','./dot.png'],
+  ];
+
+  return (
+    <div className="home-container">
+      <HomeSideNavigationBar
+        sideNavBarItem={sideNavBarItem}/>
+      <HomeDashboard updatedSpaces={updatedSpaces} updatedFolders={updatedFolders} updatedPages={updatedPages} />
+    </div>
   );
 };
