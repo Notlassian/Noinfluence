@@ -21,3 +21,19 @@ export const createOrg = async (req, res) => {
             });
     }
 };
+
+export const getMyOrgs = async (req, res) => {
+    var query =
+        'Select DISTINCT (organization_name, space_name) FROM user_space_organization_permissions where username=$1';
+    var params = [req.user || 'user1'];
+    if (!params[0]) res.status(500).json({ error: 'Internal Server Error' });
+    else {
+        sqlPool
+            .query(query, params)
+            .then((sqlRes) => res.status(200).json(sqlRes.rows))
+            .catch((error) => {
+                console.log(error);
+                res.status(500).json({ error: 'Internal Server Error' });
+            });
+    }
+};
