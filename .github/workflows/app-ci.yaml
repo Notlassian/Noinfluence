@@ -1,0 +1,47 @@
+name: Application CI
+
+on:
+  workflow_call:
+
+permissions:
+  checks: write
+  contents: read
+  id-token: write
+  security-events: write
+
+jobs:
+  app-cd:
+    name: App CI
+    runs-on: ubuntu-latest
+
+    env:
+      web_directory: ./frontend
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@main
+        with:
+          role-to-assume: ${{ secrets.AWS_ASSUME_ROLE }}
+          aws-region: eu-west-1
+          role-session-name: API_CD_GitHub_to_AWS_via_FederatedOIDC
+
+      # - name: Get Web Config
+      #   uses: aws-actions/aws-secretsmanager-get-secrets@v2.0.1
+      #   with:
+      #     secret-ids: |
+      #       WEB_CONFIG, web-config
+      #     parse-json-secrets: true
+
+      # - name: Rewrite Config
+      #   working-directory: ${{ env.web_directory }}
+      #   run: |
+      #     echo "${{ env.WEB_CONFIG }}" > .env
+
+      - name: Build App
+        working-directory: ${{ env.web_directory }}
+        run: |
+          npm install
+          npm run build
