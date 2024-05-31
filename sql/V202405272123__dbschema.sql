@@ -1,6 +1,7 @@
 CREATE TABLE "user" (
   "user_id" serial PRIMARY KEY,
   "username" varchar(128) UNIQUE NOT NULL
+
 );
 
 CREATE TABLE "user_space_role" (

@@ -1,0 +1,87 @@
+name: Application CD
+
+on:
+  workflow_call:
+
+permissions:
+  checks: write
+  id-token: write
+  contents: write
+  security-events: write
+
+jobs:
+  api-cd:
+    name: API CD
+    runs-on: ubuntu-latest
+
+    env:
+      api_directory: ./api
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v2
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@main
+        with:
+          role-to-assume: ${{ secrets.AWS_ASSUME_ROLE }}
+          aws-region: eu-west-1
+          role-session-name: API_CD_GitHub_to_AWS_via_FederatedOIDC
+
+      - name: Generate deployment package
+        working-directory: ${{ env.api_directory }}
+        run: |
+          npm i
+          zip -r ../deploy.zip . -x '*.git*'
+
+      - name: Deploy to Elastic Beanstalk
+        uses: einaregilsson/beanstalk-deploy@v22
+        with:
+          aws_access_key: ${{ env.AWS_ACCESS_KEY_ID }}
+          aws_secret_key: ${{ env.AWS_SECRET_ACCESS_KEY }}
+          aws_session_token: ${{ env.AWS_SESSION_TOKEN }}
+          application_name: noinfluence-api
+          environment_name: noinfluence-api-env
+          version_label: "noinfluence-api-${{ github.sha }}"
+          region: eu-west-1
+          deployment_package: deploy.zip
+          existing_bucket_name: noinfluence-deployments
+  app-cd:
+    name: App CD
+    runs-on: ubuntu-latest
+
+    env:
+      web_directory: ./frontend
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v2
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@main
+        with:
+          role-to-assume: ${{ secrets.AWS_ASSUME_ROLE }}
+          aws-region: eu-west-1
+          role-session-name: API_CD_GitHub_to_AWS_via_FederatedOIDC
+
+      # - name: Get Web Config
+      #   uses: aws-actions/aws-secretsmanager-get-secrets@v2.0.1
+      #   with:
+      #     secret-ids: |
+      #       WEB_CONFIG, web-config
+      #     parse-json-secrets: true
+
+      # - name: Rewrite Config
+      #   working-directory: ${{ env.web_directory }}
+      #   run: |
+      #     echo "${{ env.WEB_CONFIG }}" > .env
+
+      - name: Build App
+        working-directory: ${{ env.web_directory }}
+        run: |
+          npm install
+          npm run build
+
+      - name: Deploy Website Files
+        working-directory: ${{ env.web_directory }}/build
+        run: aws s3 cp . s3://noinfluence-frontend/ --recursive

@@ -24,3 +24,4 @@ SELECT role.role_id, permission.permission_id
 FROM role, permission
 WHERE role.role_name = 'Administrator'
 AND permission.permission_name IN ('View', 'Create', 'Edit', 'Delete');
+

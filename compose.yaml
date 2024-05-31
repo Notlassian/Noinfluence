@@ -1,0 +1,47 @@
+name: noinfluence
+
+services:
+  db:
+    image: postgres:16
+    container_name: noinfluence-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: pass123
+      POSTGRES_DB: test
+    healthcheck:
+      test: ["CMD", "pg_isready", "-q", "-U", "postgres"]
+      interval: 5s
+      timeout: 1s
+      retries: 2
+      start_period: 10s
+  flyway:
+    image: flyway/flyway:10
+    container_name: noinfluence-db-migration
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./sql:/flyway/sql
+    command: migrate -locations="filesystem:/flyway/sql" -url="jdbc:postgresql://db/test" -user="postgres" -password="pass123"
+  api:
+    build: ./api
+    container_name: noinfluence-api
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - 8080:8080
+    healthcheck:
+      test: curl --fail http://localhost:8080/ || exit 1
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+  frontend:
+    build: ./frontend
+    container_name: noinfluence-frontend
+    depends_on:
+      api:
+        condition: service_healthy
+    ports:
+      - 5500:80

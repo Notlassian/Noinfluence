@@ -32,3 +32,4 @@ ALTER TABLE "space" ADD CONSTRAINT "unique_space_organization" UNIQUE ("space_na
 ALTER TABLE "issue" ADD CONSTRAINT "unique_key_page" UNIQUE ("issue_key", "page_id");
 
 ALTER TABLE "issue" ADD CONSTRAINT "unique_issue_key_within_space" UNIQUE ("issue_key", "page_id");
+
