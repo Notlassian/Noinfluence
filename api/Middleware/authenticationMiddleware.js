@@ -30,7 +30,7 @@ export async function authenticationMiddleware(req, res, next) {
     //     console.error(`Error validating token: ${error}`);
     //     return res.status(401).send('Unauthorized, Please login again.');
     // }
-
+    req.user ="user3";
     return next();
 }
 
