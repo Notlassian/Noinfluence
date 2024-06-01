@@ -6,7 +6,7 @@ export const postToken = async (req, res) => {
         process.env;
 
     if (!code) {
-        return res.status(HttpStatusCodes.BadRequest).send('"code" is required in request body');
+        return res.status(HttpStatusCodes.BadRequest).json({ error: '"code" is required in request body' });
     }
 
     const authHeader = Buffer.from(`${clientId}:${clientSecret}`).toString(
@@ -35,7 +35,7 @@ export const postToken = async (req, res) => {
         const error = await response.json();
         console.error(error);
 
-        return res.status(HttpStatusCodes.BadRequest).send('Error getting token');
+        return res.status(HttpStatusCodes.BadRequest).json({ error: 'Error occured while retrieving token' });
     }
 
     const tokens = await response.json();
@@ -44,5 +44,5 @@ export const postToken = async (req, res) => {
 
 export const checkAuthed = (req, res) => {
     res.status(HttpStatusCodes.OK);
-    res.send('You are logged in');
+    res.json({ message: 'You are logged in' });
 };
