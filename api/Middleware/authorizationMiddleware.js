@@ -57,3 +57,9 @@ export function isOrgAdmin() {
         }
     };
 }
+
+export const enumPermissions = {
+    READ: 'View',
+    WRITE: 'Edit',
+    ADMIN: 'Create',
+};

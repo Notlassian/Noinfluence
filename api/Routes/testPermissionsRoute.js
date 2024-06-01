@@ -1,22 +1,26 @@
 import express from 'express';
 import {
+    enumPermissions,
     hasSpacePermission,
     isOrgAdmin,
 } from '../Middleware/authorizationMiddleware.js';
 export const testPermissionRouter = express.Router();
 import * as testPermissionController from '../Controllers/testPermissionController.js';
+const testRouter = express.Router({ mergeParams: true });
 
-testPermissionRouter.get(
+testPermissionRouter.use('/:orgName/:spaceName', testRouter);
+
+testRouter.get(
     '/Write',
-    hasSpacePermission('Write'),
+    hasSpacePermission(enumPermissions.WRITE),
     testPermissionController.writePermissionTest
 );
-testPermissionRouter.get(
+testRouter.get(
     '/Read',
-    hasSpacePermission('Read'),
+    hasSpacePermission(enumPermissions.READ),
     testPermissionController.readPermissionTest
 );
-testPermissionRouter.get(
+testRouter.get(
     '/admin',
     isOrgAdmin(),
     testPermissionController.adminPermissionTest
