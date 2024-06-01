@@ -43,7 +43,7 @@ export const getFoldersWithPages = async (req, res) => {
             .catch((error) => {
                 console.log(error);
                 res.status(HttpStatusCodes.InternalServerError).json({
-                    error: `Couldn't access pages for ${params[0]}, ${params[1]}`,
+                    error: 'Internal Server Error',
                 });
             });
     }
