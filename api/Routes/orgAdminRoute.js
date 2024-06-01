@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { getOrgAdmins } from '../Controllers/orgAdminController';
+import { getOrgAdmins } from '../Controllers/orgAdminController.js';
 
 export const orgAdminRouter = Router();
 

@@ -3,7 +3,7 @@ import cors from 'cors';
 import { rateLimit } from 'express-rate-limit';
 import { testPermissionRouter } from './Routes/testPermissionsRoute.js';
 import { authenticationMiddleware } from './Middleware/authenticationMiddleware.js';
-import { orgRouter } from './Routes/orgRouter.js';
+import { orgRouter } from './Routes/orgRoute.js';
 import { healthCheckRouter } from './Routes/healthRoute.js';
 import { authRouter } from './Routes/authRoute.js';
 

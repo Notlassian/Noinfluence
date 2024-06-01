@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { spaceAdminRouter } from './spaceAdminRoute';
+import { spaceAdminRouter } from './spaceAdminRoute.js';
 import {
     hasSpacePermission,
     isOrgAdmin

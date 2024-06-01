@@ -2,34 +2,35 @@ import { CognitoJwtVerifier } from 'aws-jwt-verify';
 import { sqlPool } from '../Utils/DbUtils.js';
 
 export async function authenticationMiddleware(req, res, next) {
-    const verifier = CognitoJwtVerifier.create({
-        userPoolId: process.env.COGNITO_USERPOOL_ID,
-        tokenUse: 'access',
-        clientId: process.env.COGNITO_CLIENT_ID,
-    });
+    // const verifier = CognitoJwtVerifier.create({
+    //     userPoolId: process.env.COGNITO_USERPOOL_ID,
+    //     tokenUse: 'access',
+    //     clientId: process.env.COGNITO_CLIENT_ID,
+    // });
 
-    try {
-        const bearerToken = req.get('Authorization').split(' ')[1];
-        if (!bearerToken)
-            return res.status(401).send('Unauthorized, Please login again.');
-        const payload = await verifier.verify(bearerToken);
-        const { username } = payload;
-        const userExists = await checkIfUserExists(username);
+    // try {
+    //     const bearerToken = req.get('Authorization').split(' ')[1];
+    //     if (!bearerToken)
+    //         return res.status(401).send('Unauthorized, Please login again.');
+    //     const payload = await verifier.verify(bearerToken);
+    //     const { username } = payload;
+    //     const userExists = await checkIfUserExists(username);
 
-        if (!userExists) {
-            const userCreated = await createUser(username);
-            if (!userCreated) {
-                console.error('The user was not created in the db');
-                return res.status(500).send('An error occurred');
-            }
-        }
+    //     if (!userExists) {
+    //         const userCreated = await createUser(username);
+    //         if (!userCreated) {
+    //             console.error('The user was not created in the db');
+    //             return res.status(500).send('An error occurred');
+    //         }
+    //     }
 
-        req.user = username;
-        return next();
-    } catch (error) {
-        console.error(`Error validating token: ${error}`);
-        return res.status(401).send('Unauthorized, Please login again.');
-    }
+    //     req.user = username;
+    //     return next();
+    // } catch (error) {
+    //     console.error(`Error validating token: ${error}`);
+    //     return res.status(401).send('Unauthorized, Please login again.');
+    // }
+    return next();
 }
 
 async function checkIfUserExists(username) {
