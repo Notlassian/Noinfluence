@@ -32,8 +32,13 @@ export const getMyOrgs = async (req, res) => {
         sqlPool
             .query(query, params)
             .then((sqlRes) => {
-                const resMap=buildUniqueMap(sqlRes.rows, 'organization_name', 'space_name');
-                res.status(200).json(resMap)})
+                const resMap = buildUniqueMap(
+                    sqlRes.rows,
+                    'organization_name',
+                    'space_name'
+                );
+                res.status(200).json(resMap);
+            })
             .catch((error) => {
                 console.log(error);
                 res.status(500).json({ error: 'Internal Server Error' });

@@ -11,8 +11,9 @@ export const getSpaceUsers = async (req, res) => {
         sqlPool
             .query(query, params)
             .then((sqlRes) => {
-                var mapRes=buildUniqueMap(sqlRes.rows, "username", "role");
-                res.status(200).json(mapRes)})
+                var mapRes = buildUniqueMap(sqlRes.rows, 'username', 'role');
+                res.status(200).json(mapRes);
+            })
             .catch((error) => {
                 console.log(error);
                 res.status(500).json({ error: 'Internal Server Error' });
