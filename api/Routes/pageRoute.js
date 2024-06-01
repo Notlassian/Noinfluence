@@ -4,7 +4,7 @@ import {
     PermissionsTypes,
 } from '../Middleware/authorizationMiddleware.js';
 import { getHealth } from '../Controllers/healthCheckController.js';
-import { getPage } from '../Controllers/pageController.js';
+import { getPage, updatePage } from '../Controllers/pageController.js';
 
 export const pageRouter = Router({ mergeParams: true });
 
@@ -21,5 +21,5 @@ pageRouter.get(
 pageRouter.post(
     '/:folderName/:pageName/update',
     hasSpacePermission(PermissionsTypes.Write),
-    getHealth
+    updatePage
 );
