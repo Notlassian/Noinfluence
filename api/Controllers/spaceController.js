@@ -42,4 +42,4 @@ export const getFoldersWithPages = async (req, res) => {
                 });
             });
     }
-};
+}
