@@ -3,7 +3,7 @@ import { HttpStatusCodes } from "../Utils/httpStatusCodes";
 
 export const getPage = async (req, res) => {
     var query = 'SELECT * from space_pages_view WHERE organization_name = $1 AND space_name = $2 AND folder_name = $3 AND page_name = $4';
-    var params = [req.params.orgName, req.params.spaceName, req.params.folder, req.params.page];
+    var params = [req.params.orgName, req.params.spaceName, req.params.folderName, req.params.pageName];
     if (!params[0] || !params[1] || !params[2] || !params[3])
         res.status(HttpStatusCodes.InternalServerError).json({ error: 'Internal Server Error' });
     else {
