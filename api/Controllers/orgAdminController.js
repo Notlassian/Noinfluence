@@ -18,3 +18,22 @@ export const getOrgAdmins = async (req, res) => {
             });
     }
 };
+
+export const addOrgAdmin = async (req, res) => {
+    var query =
+        'call org_add_admin($1, $2)';
+    var params = [req.params.orgName, req.body.username];
+    if (!params[0] || !params[1]) {
+        res.status(HttpStatusCodes.BadRequest).json({ error: '"username" required in request body' });
+    } else {
+        sqlPool
+            .query(query, params)
+            .then(() => {
+                res.status(HttpStatusCodes.OK).json({ message: `Successfully added ${params[1]} as admin to ${params[0]}` });
+            })
+            .catch((error) => {
+                console.log(error);
+                res.status(HttpStatusCodes.InternalServerError).json({ error: 'Internal Server Error' });
+            });
+    }
+}
