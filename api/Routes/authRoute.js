@@ -4,5 +4,5 @@ import { authenticationMiddleware } from '../Middleware/authenticationMiddleware
 
 export const authRouter = Router();
 
-authRouter.post('/token', postToken());
-authRouter.get('/check', authenticationMiddleware(), checkAuthed());
+authRouter.post('/token', postToken);
+authRouter.get('/check', authenticationMiddleware, checkAuthed);

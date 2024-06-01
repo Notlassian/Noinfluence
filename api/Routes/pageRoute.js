@@ -8,17 +8,17 @@ import { getHealth } from '../Controllers/healthCheckController.js';
 export const pageRouter = Router({ mergeParams: true });
 
 spaceRouter.post(
-    '/add',
+    '/:folder/:page/add',
     hasSpacePermission(permissionsEnum.WRITE),
-    getHealth()
+    getHealth
 );
 spaceRouter.get(
-    '/retrieve',
+    '/:folder/:page/retrieve',
     hasSpacePermission(permissionsEnum.READ),
-    getHealth()
+    getHealth
 );
 spaceRouter.post(
-    '/update',
+    '/:folder/:page/update',
     hasSpacePermission(permissionsEnum.WRITE),
-    getHealth()
+    getHealth
 );

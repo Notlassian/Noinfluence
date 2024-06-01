@@ -4,5 +4,5 @@ import { getHealth } from '../Controllers/healthCheckController.js';
 
 export const orgAdminRouter = Router({ mergeParams: true });
 
-orgAdminRouter.post('/add', getOrgAdmins());
-orgAdminRouter.get('/list', getHealth());
+orgAdminRouter.post('/add', getOrgAdmins);
+orgAdminRouter.get('/list', getHealth);
