@@ -11,8 +11,7 @@ export const getSpaceUsers = async (req, res) => {
         sqlPool
             .query(query, params)
             .then((sqlRes) => {
-                var mapRes = buildUniqueMap(sqlRes.rows, 'username', 'role');
-                res.status(200).json(mapRes);
+                res.status(200).json(sqlPool.rows);
             })
             .catch((error) => {
                 console.log(error);
