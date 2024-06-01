@@ -1,4 +1,6 @@
+import { HttpStatusCodes } from "../Utils/httpStatusCodes.js";
+
 export const getHealth = (_, res) => {
-    res.status(200);
+    res.status(HttpStatusCodes.OK);
     res.send("I'm alive");
 };

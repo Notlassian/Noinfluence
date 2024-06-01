@@ -1,22 +1,23 @@
 import { sqlPool } from '../Utils/dbUtils.js';
+import { HttpStatusCodes } from '../Utils/httpStatusCodes.js';
 import { buildUniqueMap } from '../Utils/mapUtils.js';
 
 export const createOrg = async (req, res) => {
     var query = 'call create_organization_and_admin($1,$2)';
-    var params = [req.user, req.header('Organization')];
+    var params = [req.user, req.body.org];
     if (!params[0] || !params[1])
-        res.status(500).json({ error: 'Internal Server Error' });
+        res.status(HttpStatusCodes.BadRequest).json({ error: '"org" parameter not found in request body' });
     else {
         sqlPool
             .query(query, params)
-            .then(() =>
-                res.status(200).json({
+            .then(() => {
+                res.status(HttpStatusCodes.OK).json({
                     message: `${params[1]} has been created successfully`,
-                })
-            )
+                });
+            })
             .catch((error) => {
                 console.log(error);
-                res.status(500).json({
+                res.status(HttpStatusCodes.BadRequest).json({
                     error: 'Organization name already exists',
                 });
             });
@@ -27,7 +28,7 @@ export const getMyOrgs = async (req, res) => {
     var query =
         'Select organization_name, space_name FROM user_space_organization_permissions where username=$1';
     var params = [req.user];
-    if (!params[0]) res.status(500).json({ error: 'Internal Server Error' });
+    if (!params[0]) res.status(HttpStatusCodes.InternalServerError).json({ error: 'Internal Server Error' });
     else {
         sqlPool
             .query(query, params)
@@ -37,11 +38,11 @@ export const getMyOrgs = async (req, res) => {
                     'organization_name',
                     'space_name'
                 );
-                res.status(200).json(resMap);
+                res.status(HttpStatusCodes.OK).json(resMap);
             })
             .catch((error) => {
                 console.log(error);
-                res.status(500).json({ error: 'Internal Server Error' });
+                res.status(HttpStatusCodes.InternalServerError).json({ error: 'Internal Server Error' });
             });
     }
 };
