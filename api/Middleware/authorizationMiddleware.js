@@ -59,7 +59,7 @@ export function isOrgAdmin() {
 }
 
 export const permissionsEnum = {
-    READ: 'read',
-    WRITE: 'write',
-    EDIT_SPACE: 'edit space',
+    READ: 'Read',
+    WRITE: 'Write',
+    EDIT_SPACE: 'Edit Space',
 };
