@@ -22,7 +22,7 @@ export const getSpaceUsers = async (req, res) => {
 
 export const updateUserRole = async (req, res) => {
     var query =
-        'call update_user_role($1, $2, $3, $4)';
+        'call space_update_user_role($1, $2, $3, $4)';
     var params = [req.params.orgName, req.params.spaceName, req.body.user, req.body.role];
     if (!params[0] || !params[1] || !params[2] || !params[3]) {
         res.status(HttpStatusCodes.InternalServerError).json({ error: '"user" and "role" required in request body' });
