@@ -7,8 +7,8 @@ export function hasSpacePermission(requiredPermission) {
                 'SELECT * FROM user_space_organization_permissions where username=$1 AND  organization_name=$2 AND space_name=$3 and Permission_name=$4;';
             const vals = [
                 req.user || '',
-                req.header('Organization') || '',
-                req.header('Space') || '',
+                req.params.orgName || '',
+                req.params.spaceName || '',
                 requiredPermission,
             ];
             sqlPool
@@ -36,7 +36,7 @@ export function isOrgAdmin() {
     return function (req, res, next) {
         try {
             const query = 'SELECT is_user_admin($1,$2)';
-            const vals = [req.header('Organization') || '', req.user || ''];
+            const vals = [req.params.orgName || '', req.user || ''];
             sqlPool
                 .query(query, vals)
                 .then((dbRes) => {
