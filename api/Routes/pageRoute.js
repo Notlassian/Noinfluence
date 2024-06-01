@@ -1,8 +1,24 @@
 import { Router } from 'express';
-import { hasSpacePermission } from '../Middleware/authorizationMiddleware.js';
+import {
+    hasSpacePermission,
+    permissionsEnum,
+} from '../Middleware/authorizationMiddleware.js';
+import { getHealth } from '../Controllers/healthCheckController.js';
 
 export const pageRouter = Router({ mergeParams: true });
 
-// spaceRouter.post('/add', hasSpacePermission('write'), postToken);
-// spaceRouter.get('/retrieve', hasSpacePermission('read'), checkAuthed);
-// spaceRouter.post('/update', hasSpacePermission('write'), postToken);
+spaceRouter.post(
+    '/add',
+    hasSpacePermission(permissionsEnum.WRITE),
+    getHealth()
+);
+spaceRouter.get(
+    '/retrieve',
+    hasSpacePermission(permissionsEnum.READ),
+    getHealth()
+);
+spaceRouter.post(
+    '/update',
+    hasSpacePermission(permissionsEnum.WRITE),
+    getHealth()
+);

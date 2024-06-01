@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { spaceAdminRouter } from './spaceAdminRoute.js';
 import {
-    enumPermissions,
+    permissionsEnum,
     hasSpacePermission,
     isOrgAdmin,
 } from '../Middleware/authorizationMiddleware.js';
@@ -11,7 +11,7 @@ export const spaceRouter = Router({ mergeParams: true });
 
 spaceRouter.use(
     '/:spaceName/admin',
-    hasSpacePermission(enumPermissions.ADMIN),
+    hasSpacePermission(permissionsEnum.EDIT_SPACE),
     spaceAdminRouter
 );
 
