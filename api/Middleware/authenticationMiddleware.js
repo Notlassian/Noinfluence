@@ -12,7 +12,7 @@ export async function authenticationMiddleware(req, res, next) {
     try {
         const bearerToken = req.get('Authorization').split(' ')[1];
         if (!bearerToken)
-            return res.status(HttpStatusCodes.Unauthorized).send('Unauthorized, Please login again.');
+            return res.status(HttpStatusCodes.Unauthorized).json({ message: 'Unauthorized, Please login again.' });
         const payload = await verifier.verify(bearerToken);
         const { username } = payload;
         const userExists = await checkIfUserExists(username);
@@ -21,7 +21,7 @@ export async function authenticationMiddleware(req, res, next) {
             const userCreated = await createUser(username);
             if (!userCreated) {
                 console.error('The user was not created in the db');
-                return res.status(HttpStatusCodes.InternalServerError).send('An error occurred');
+                return res.status(HttpStatusCodes.InternalServerError).json({ error: 'Internal Server Error' });
             }
         }
 
@@ -29,7 +29,7 @@ export async function authenticationMiddleware(req, res, next) {
         return next();
     } catch (error) {
         console.error(`Error validating token: ${error}`);
-        return res.status(HttpStatusCodes.Unauthorized).send('Unauthorized, Please login again.');
+        return res.status(HttpStatusCodes.Unauthorized).json({ message: 'Unauthorized, Please login again.' });
     }
 
     return next();
