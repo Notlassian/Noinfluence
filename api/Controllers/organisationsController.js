@@ -1,4 +1,4 @@
-import { sqlPool } from '../Utils/DbUtils.js';
+import { sqlPool } from '../Utils/dbUtils.js';
 
 export const createOrg = async (req, res) => {
     var query = 'call create_organization_and_admin($1,$2)';

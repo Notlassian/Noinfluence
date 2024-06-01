@@ -1,4 +1,4 @@
-import { sqlPool } from '../Utils/DbUtils.js';
+import { sqlPool } from '../Utils/dbUtils.js';
 
 export function hasSpacePermission(requiredPermission) {
     return function (req, res, next) {
@@ -32,28 +32,32 @@ export function hasSpacePermission(requiredPermission) {
     };
 }
 
-export function isOrgAdmin() {
-    return function (req, res, next) {
-        try {
-            const query = 'SELECT is_user_admin($1,$2)';
-            const vals = [req.params.orgName || '', req.user || ''];
-            sqlPool
-                .query(query, vals)
-                .then((dbRes) => {
-                    if (dbRes.rows[0].is_user_admin) {
-                        next();
-                    } else {
-                        res.status(403).json({
-                            error: 'Forbidden: User does not have the required permission',
-                        });
-                    }
-                })
-                .catch((err) => {
-                    console.error(err);
-                    res.status(500).json({ error: 'Internal Server Error' });
-                });
-        } catch {
-            return res.status(401).json({ error: 'Access denied' });
-        }
-    };
+export function isOrgAdmin(req, res, next) {
+    try {
+        const query = 'SELECT is_user_admin($1,$2)';
+        const vals = [req.params.orgName || '', req.user || ''];
+        sqlPool
+            .query(query, vals)
+            .then((dbRes) => {
+                if (dbRes.rows[0].is_user_admin) {
+                    next();
+                } else {
+                    res.status(403).json({
+                        error: 'Forbidden: User does not have the required permission',
+                    });
+                }
+            })
+            .catch((err) => {
+                console.error(err);
+                res.status(500).json({ error: 'Internal Server Error' });
+            });
+    } catch {
+        return res.status(401).json({ error: 'Access denied' });
+    }
 }
+
+export const permissionsEnum = {
+    READ: 'Read',
+    WRITE: 'Write',
+    EDIT_SPACE: 'Edit Space',
+};

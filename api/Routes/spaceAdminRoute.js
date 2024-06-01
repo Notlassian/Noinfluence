@@ -1,6 +1,9 @@
 import { Router } from 'express';
+import { getHealth } from '../Controllers/healthCheckController.js';
 
 export const spaceAdminRouter = Router({ mergeParams: true });
-// spaceAdminRouter.post('/add', postToken);
-// spaceAdminRouter.get('/list', checkAuthed);
-// spaceAdminRouter.post('/update', postToken);
+
+spaceAdminRouter.post('/add', getHealth);
+spaceAdminRouter.get('/list', getHealth);
+spaceAdminRouter.post('/update', getHealth);
+spaceAdminRouter.get('/check', getHealth);
