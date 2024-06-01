@@ -20,4 +20,4 @@ spaceRouter.use('/:spaceName/pages', pageRouter);
 
 spaceRouter.post('/add', isOrgAdmin, createSpace);
 spaceRouter.get('/list', getHealth);
-spaceRouter.get('/:spaceName/list', )
+spaceRouter.get('/:spaceName/list', getHealth);
