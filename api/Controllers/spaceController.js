@@ -1,4 +1,4 @@
-import { sqlPool } from '../Utils/DbUtils.js';
+import { sqlPool } from '../Utils/dbUtils.js';
 
 export const createSpace = async (req, res) => {
     var query = 'call insert_space($1,$2)';

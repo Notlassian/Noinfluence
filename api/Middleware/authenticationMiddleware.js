@@ -1,5 +1,5 @@
 import { CognitoJwtVerifier } from 'aws-jwt-verify';
-import { sqlPool } from '../Utils/DbUtils.js';
+import { sqlPool } from '../Utils/dbUtils.js';
 
 export async function authenticationMiddleware(req, res, next) {
     // const verifier = CognitoJwtVerifier.create({

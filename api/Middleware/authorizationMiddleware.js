@@ -1,4 +1,4 @@
-import { sqlPool } from '../Utils/DbUtils.js';
+import { sqlPool } from '../Utils/dbUtils.js';
 
 export function hasSpacePermission(requiredPermission) {
     return function (req, res, next) {
@@ -58,8 +58,8 @@ export function isOrgAdmin() {
     };
 }
 
-export const enumPermissions = {
-    READ: 'View',
-    WRITE: 'Edit',
-    ADMIN: 'Create',
+export const permissionsEnum = {
+    READ: 'read',
+    WRITE: 'write',
+    EDIT_SPACE: 'edit space',
 };
