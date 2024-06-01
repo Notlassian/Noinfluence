@@ -1,7 +1,41 @@
+import React, { useState } from 'react';
 import { Link } from "react-router-dom";
-import './NavigationBar.css';
+import { LoginLink } from './authentication';
+import { SpaceDropDown } from './SpaceDropDown';
+import './css/NavigationBar.css';
+
+const SearchBar = ({ onSearch }) => {
+  const [query, setQuery] = useState('');
+
+  const handleInputChange = (e) => {
+    setQuery(e.target.value);
+  };
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    onSearch(query);
+  };
+
+  return (
+    <form onSubmit={handleFormSubmit}>
+      <input
+        type="text"
+        value={query}
+        onChange={handleInputChange}
+        placeholder="Search..."
+      />
+      <button type="submit">Search</button>
+    </form>
+  );
+};
 
 export const NavigationBar = () => {
+
+  const spaceDropDownItems = [
+    { label: 'Space1', path: '/space' },
+    { label: 'Space2', path: '/space' },
+    { label: 'Space3', path: '/space' },
+  ];
 
   return (
 
@@ -10,26 +44,28 @@ export const NavigationBar = () => {
       <div className="nav-tabs">
 
         <Link to="/" className="noinfluence-title">
-          Dashboard
+          Noinfluence
         </Link>
 
         <ul className="nav-list">
 
-          <li><Link to="/space">Space</Link></li>
+          <li><SpaceDropDown title="Space" items={spaceDropDownItems} /></li>
         </ul>
 
         <button>
           Create Page
         </button>
+
+        <SearchBar onSearch={(query) => console.log(query)} />
       </div>
 
       <div className="nav-profile">
 
         <ul className="nav-list">
 
-          <button>
-            Log In
-          </button>
+          <LoginLink>
+            <Link to="/login">Log In</Link>
+          </LoginLink>
 
           <li><Link to="/profile">Profile</Link></li>
         </ul>
