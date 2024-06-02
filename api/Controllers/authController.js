@@ -1,4 +1,4 @@
-import { HttpStatusCodes } from "../Utils/httpStatusCodes.js";
+import { HttpStatusCodes } from '../Utils/httpStatusCodes.js';
 
 export const postToken = async (req, res) => {
     const { code } = req.body;
@@ -6,7 +6,9 @@ export const postToken = async (req, res) => {
         process.env;
 
     if (!code) {
-        return res.status(HttpStatusCodes.BadRequest).json({ error: '"code" is required in request body' });
+        return res
+            .status(HttpStatusCodes.BadRequest)
+            .json({ error: '"code" is required in request body' });
     }
 
     const authHeader = Buffer.from(`${clientId}:${clientSecret}`).toString(
@@ -35,7 +37,9 @@ export const postToken = async (req, res) => {
         const error = await response.json();
         console.error(error);
 
-        return res.status(HttpStatusCodes.BadRequest).json({ error: 'Error occured while retrieving token' });
+        return res
+            .status(HttpStatusCodes.BadRequest)
+            .json({ error: 'Error occured while retrieving token' });
     }
 
     const tokens = await response.json();

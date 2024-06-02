@@ -1,18 +1,26 @@
-import { retrievePage, storePage } from "../Utils/fileUtils.js";
-import { HttpStatusCodes } from "../Utils/httpStatusCodes.js";
+import { retrievePage, storePage } from '../Utils/fileUtils.js';
+import { HttpStatusCodes } from '../Utils/httpStatusCodes.js';
 
 export const getPage = async (req, res) => {
-    const query = 'SELECT * from space_pages_view WHERE organization_name = $1 AND space_name = $2 AND folder_name = $3 AND page_name = $4';
-    const params = [req.params.orgName, req.params.spaceName, req.params.folderName, req.params.pageName];
+    const query =
+        'SELECT * from space_pages_view WHERE organization_name = $1 AND space_name = $2 AND folder_name = $3 AND page_name = $4';
+    const params = [
+        req.params.orgName,
+        req.params.spaceName,
+        req.params.folderName,
+        req.params.pageName,
+    ];
     if (!params[0] || !params[1] || !params[2] || !params[3])
-        res.status(HttpStatusCodes.InternalServerError).json({ error: 'Internal Server Error' });
+        res.status(HttpStatusCodes.InternalServerError).json({
+            error: 'Internal Server Error',
+        });
     else {
         sqlPool
             .query(query, params)
             .then((sqlRes) => {
                 if (sqlRes.rowCount > 0) {
                     res.status(HttpStatusCodes.OK).json({
-                        pageContent: retrievePage()
+                        pageContent: retrievePage(),
                     });
                 } else {
                     res.status(HttpStatusCodes.BadRequest).json({
@@ -27,13 +35,21 @@ export const getPage = async (req, res) => {
                 });
             });
     }
-}
+};
 
 export const updatePage = async (req, res) => {
-    const query = 'SELECT * from space_pages_view WHERE organization_name = $1 AND space_name = $2 AND folder_name = $3 AND page_name = $4';
-    const params = [req.params.orgName, req.params.spaceName, req.params.folderName, req.params.pageName];
+    const query =
+        'SELECT * from space_pages_view WHERE organization_name = $1 AND space_name = $2 AND folder_name = $3 AND page_name = $4';
+    const params = [
+        req.params.orgName,
+        req.params.spaceName,
+        req.params.folderName,
+        req.params.pageName,
+    ];
     if (!params[0] || !params[1] || !params[2] || !params[3])
-        res.status(HttpStatusCodes.InternalServerError).json({ error: 'Internal Server Error' });
+        res.status(HttpStatusCodes.InternalServerError).json({
+            error: 'Internal Server Error',
+        });
     else {
         sqlPool
             .query(query, params)
@@ -41,9 +57,15 @@ export const updatePage = async (req, res) => {
                 if (sqlRes.rowCount > 0) {
                     if (params.body.fileContents) {
                         try {
-                            await storePage(params.body.fileContents, params[0], params[1], params[2], params[3]);
+                            await storePage(
+                                params.body.fileContents,
+                                params[0],
+                                params[1],
+                                params[2],
+                                params[3]
+                            );
                             res.status(HttpStatusCodes.OK).json({
-                                message: `Page ${params[2]}/${params[3]} updated successfully`
+                                message: `Page ${params[2]}/${params[3]} updated successfully`,
                             });
                         } catch (err) {
                             console.log(err);
@@ -69,4 +91,4 @@ export const updatePage = async (req, res) => {
                 });
             });
     }
-}
+};

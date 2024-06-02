@@ -5,5 +5,5 @@ export const HttpStatusCodes = Object.freeze({
     Conflict: 409,
     Unauthorized: 401,
     BadRequest: 400,
-    Forbidden: 403
+    Forbidden: 403,
 });

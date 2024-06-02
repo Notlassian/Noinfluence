@@ -6,7 +6,9 @@ export const createOrg = async (req, res) => {
     var query = 'call create_organization_and_admin($1,$2)';
     var params = [req.user, req.body.org];
     if (!params[0] || !params[1])
-        res.status(HttpStatusCodes.BadRequest).json({ error: '"org" parameter not found in request body' });
+        res.status(HttpStatusCodes.BadRequest).json({
+            error: '"org" parameter not found in request body',
+        });
     else {
         sqlPool
             .query(query, params)
@@ -28,7 +30,10 @@ export const getMyOrgs = async (req, res) => {
     const query =
         'Select organization_name, space_name FROM user_space_organization_permissions where username=$1';
     const params = [req.user];
-    if (!params[0]) res.status(HttpStatusCodes.InternalServerError).json({ error: 'Internal Server Error' });
+    if (!params[0])
+        res.status(HttpStatusCodes.InternalServerError).json({
+            error: 'Internal Server Error',
+        });
     else {
         sqlPool
             .query(query, params)
@@ -42,7 +47,9 @@ export const getMyOrgs = async (req, res) => {
             })
             .catch((error) => {
                 console.log(error);
-                res.status(HttpStatusCodes.InternalServerError).json({ error: 'Internal Server Error' });
+                res.status(HttpStatusCodes.InternalServerError).json({
+                    error: 'Internal Server Error',
+                });
             });
     }
 };
