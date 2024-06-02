@@ -18,6 +18,7 @@
 .burger img {
   padding: 25px 8px 0 0;
   cursor: pointer;
+  filter: invert(1);
 }
 
 .burger img:hover {
@@ -107,4 +108,9 @@
 
 .space-setting:hover {
   background-color: #58b5fc;
+}
+
+.navbar-li-box img {
+  filter: invert(1);
+  vertical-align: middle;
 }

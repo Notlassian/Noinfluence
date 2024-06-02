@@ -3,7 +3,7 @@ import { HttpStatusCodes } from '../Utils/httpStatusCodes.js';
 
 export const getSpaceUsers = async (req, res) => {
     const query =
-        'Select username,role FROM user_space_organization_permissions where organization_name=$1 AND space_name=$2';
+        'Select Distinct(username), role FROM user_space_organization_permissions where organization_name=$1 AND space_name=$2';
     const params = [req.params.orgName, req.params.spaceName];
     if (!params[0] || !params[1]) {
         res.status(HttpStatusCodes.InternalServerError).json({
@@ -13,7 +13,7 @@ export const getSpaceUsers = async (req, res) => {
         sqlPool
             .query(query, params)
             .then((sqlRes) => {
-                res.status(HttpStatusCodes.OK).json(sqlPool.rows);
+                res.status(HttpStatusCodes.OK).json(sqlRes.rows);
             })
             .catch((error) => {
                 console.log(error);

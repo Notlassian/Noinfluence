@@ -1,21 +1,24 @@
 import * as fs from 'node:fs';
 import * as path from 'path';
 import {
+    DeleteObjectCommand,
+    GetObjectCommand,
+    HeadObjectCommand,
     PutObjectCommand,
     S3Client,
-    GetObjectCommand,
 } from '@aws-sdk/client-s3';
+import { sqlPool } from './dbUtils.js';
 
 const environments = {
     PROD: 'PROD',
 };
 
+const { PAGE_BUCKET: bucket } = process.env;
+const localDir = 'savedFiles';
 const s3Client = new S3Client([{ region: 'eu-west-1' }]);
-const localDir = './savedFiles';
 
 async function uploadToS3(file, fileId, folder) {
-    const { PAGE_BUCKET: bucket } = process.env;
-    const key = path.join(folder, fileId);
+    const key = [folder, fileId].join('/');
 
     const command = new PutObjectCommand({
         Bucket: bucket,
@@ -28,52 +31,42 @@ async function uploadToS3(file, fileId, folder) {
     return key;
 }
 
+function checkSafeFilePath(...paths) {
+    const normalizedPath = path.normalize(path.join(...paths));
+
+    if (!normalizedPath.startsWith(localDir)) {
+        throw new Error('Path error');
+    }
+}
+
 function storeLocally(file, fileId, folder) {
-    const folderDir = fs.realpathSync(path.resolve(localDir, folder));
+    checkSafeFilePath(localDir, folder, fileId);
 
-    const filePath = fs.realpathSync(path.resolve(resolvedFolderDir, fileId));
-
-    if (!filePath.startsWith(localDir) || !folderDir.startsWith(localDir))
-        return null;
+    const folderDir = path.join(localDir, folder);
+    const filePath = path.join(folderDir, fileId);
 
     if (!fs.existsSync(folderDir)) {
         fs.mkdirSync(folderDir, { recursive: true });
     }
 
-    fs.writeFileSync(filePath, file, { flag: 'w+' });
+    fs.writeFileSync(filePath, file, { flag: 'w' });
 
     return filePath;
 }
 
-async function retrieveFromS3(file, fileId, folder) {
-    const { PAGE_BUCKET: bucket } = process.env;
-    const key = path.join(folder, fileId);
-
+async function retrieveFromS3(key) {
     const command = new GetObjectCommand({
         Bucket: bucket,
         Key: key,
     });
 
     const response = await s3Client.send(command);
-
-    const stream = response.Body;
-    let data = '';
-
-    if (stream instanceof Readable) {
-        for await (const chunk of stream) {
-            data += chunk;
-        }
-    }
-
-    return data;
+    return await response.Body.transformToString();
 }
 
-function retrieveLocally(file, fileId, folder) {
-    const folderDir = path.join(localDir, folder);
-    const filePath = path.join(folderDir, fileId);
-
-    const data = fs.readFileSync(filePath, 'utf8');
-    return data;
+function retrieveLocally(filePath) {
+    checkSafeFilePath(filePath);
+    return fs.readFileSync(filePath, 'utf8');
 }
 
 export async function storePage(
@@ -81,7 +74,8 @@ export async function storePage(
     orgName,
     spaceName,
     folderName,
-    pageName
+    pageName,
+    update = false
 ) {
     const environment = process.env.APP_ENVIRONMENT;
     const folder = `${orgName}/${spaceName}/${folderName}`;
@@ -98,30 +92,105 @@ export async function storePage(
         }
     }
 
+    if (!update) {
+        const query = 'call insert_page($1,$2,$3,$4,$5)';
+        const params = [pageName, fileLocation, folderName, spaceName, orgName];
+
+        try {
+            await sqlPool.query(query, params);
+        } catch (error) {
+            deleteFile(fileLocation);
+            throw error;
+        }
+    }
+
     return fileLocation;
 }
 
-export async function retrievePage(
+export async function retrievePage(filePath) {
+    const environment = process.env.APP_ENVIRONMENT;
+
+    switch (environment) {
+        case environments.PROD: {
+            return await retrieveFromS3(filePath);
+        }
+        default: {
+            return retrieveLocally(filePath);
+        }
+    }
+}
+
+async function checkIfFileExistsS3(folder, fileId) {
+    const key = [folder, fileId].join('/');
+    const command = new HeadObjectCommand({ Bucket: bucket, Key: key });
+    try {
+        await s3Client.send(command);
+    } catch (error) {
+        if (error['$metadata'].httpStatusCode === 404) {
+            return false;
+        } else {
+            throw error;
+        }
+    }
+
+    return true;
+}
+
+function checkIfFileExistsLocal(folder, fileId) {
+    const filePath = path.join(localDir, folder, fileId);
+    return fs.existsSync(filePath);
+}
+
+export async function checkIfFileExists(
     file,
     orgName,
     spaceName,
     folderName,
     pageName
 ) {
-    const environment = process.env.APP_ENVIRONMENT;
     const folder = `${orgName}/${spaceName}/${folderName}`;
     const fileId = `${pageName}.md`;
-    let fileContents;
+
+    const environment = process.env.APP_ENVIRONMENT;
 
     switch (environment) {
         case environments.PROD: {
-            fileContents = await retrieveFromS3(file, fileId, folder);
-            break;
+            return checkIfFileExistsS3(folder, fileId);
         }
         default: {
-            fileContents = retrieveLocally(file, fileId, folder);
+            return checkIfFileExistsLocal(folder, fileId);
         }
     }
+}
 
-    return fileContents;
+async function deleteFileS3(path) {
+    const command = new DeleteObjectCommand({ Bucket: bucket, Key: path });
+    try {
+        await s3Client.send(command);
+    } catch (error) {
+        console.error(`File not deleted. Key: ${path}`);
+        throw error;
+    }
+}
+
+function deleteFileLocal(path) {
+    try {
+        fs.rmSync(path);
+    } catch (error) {
+        console.error(`File not deleted. Path: ${path}`);
+        throw error;
+    }
+}
+
+function deleteFile(path) {
+    const environment = process.env.APP_ENVIRONMENT;
+
+    switch (environment) {
+        case environments.PROD: {
+            return deleteFileS3(path);
+        }
+        default: {
+            return deleteFileLocal(path);
+        }
+    }
 }
