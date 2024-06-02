@@ -51,7 +51,7 @@ export const getSpaces = async (req, res) => {
 
 export const getFoldersWithPages = async (req, res) => {
     const query =
-        'SELECT folder_name, page_name from space_pages_view WHERE organization_name = $1 AND space_name = $2';
+        'SELECT folder_name, page_name from page_details WHERE organization_name = $1 AND space_name = $2';
     const params = [req.params.orgName, req.params.spaceName];
     if (!params[0] || !params[1])
         res.status(HttpStatusCodes.InternalServerError).json({
@@ -60,7 +60,7 @@ export const getFoldersWithPages = async (req, res) => {
     else {
         sqlPool
             .query(query, params)
-            .then(() => {
+            .then((sqlRes) => {
                 const resMap = buildUniqueMap(
                     sqlRes.rows,
                     'folder_name',
