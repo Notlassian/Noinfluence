@@ -4,5 +4,4 @@ export * from "./NavigationBar";
 export * from './SpaceDropDown';
 export * from './sideNavigationBar';
 export * from './SettingTable';
-export * from './AuthCheckWrapper';
 export * from './PageCreator';
