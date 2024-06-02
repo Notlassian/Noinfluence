@@ -4,7 +4,6 @@ import {
     checkOrgAdmin,
     getOrgAdmins,
 } from '../Controllers/orgAdminController.js';
-import { getHealth } from '../Controllers/healthCheckController.js';
 
 export const orgAdminRouter = Router({ mergeParams: true });
 
