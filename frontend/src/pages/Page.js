@@ -74,6 +74,7 @@ export const Page = () => {
       return <div> 
         readOnly
         <p>{savedMarkdown}</p>
+        <p>{currentMarkdown}</p>
         <MDXEditor
           contentEditableClassName="editable-document-page"
           class="document"
@@ -104,6 +105,7 @@ export const Page = () => {
       return <div> 
       readWrite
       <p>{savedMarkdown}</p>
+      <p>{currentMarkdown}</p>
       <MDXEditor
         contentEditableClassName="editable-document-page"
         class="document"
