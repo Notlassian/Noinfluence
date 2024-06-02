@@ -52,10 +52,9 @@ export const NavigationBar = () => {
           <li><SpaceDropDown title="Space" items={spaceDropDownItems} /></li>
         </ul>
 
-        <button>
+        <button class="rainbowifiable">
           Create Page
         </button>
-
         <SearchBar onSearch={(query) => console.log(query)} />
       </div>
 
@@ -68,7 +67,18 @@ export const NavigationBar = () => {
           </LoginLink>
 
           <li><Link to="/profile">Profile</Link></li>
+          <li><Link to="/page">Page</Link></li>
+
         </ul>
+
+      </div>
+
+      <div className="nav-profile">
+        <button>
+          Log In
+        </button>
+
+        <li><Link to="/profile">Profile</Link></li>
       </div>
     </nav>
   );
