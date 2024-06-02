@@ -1,4 +1,4 @@
-import { retrievePage, storePage } from '../Utils/fileUtils.js';
+import { retrievePage, storePage, checkIfFileExists } from '../Utils/fileUtils.js';
 import { HttpStatusCodes } from '../Utils/httpStatusCodes.js';
 
 export const getPage = async (req, res) => {
@@ -91,4 +91,31 @@ export const updatePage = async (req, res) => {
                 });
             });
     }
+};
+
+export const createPage = async (req, res) => {
+    const { spaceName, orgName, folder, page } = req.params;
+    const { file } = req.body;
+    try {
+        const fileExists = await checkIfFileExists(
+            file,
+            orgName,
+            spaceName,
+            folder,
+            page
+        );
+
+        if (fileExists) {
+            return res.status(400).json({
+                error: `A page with the name '${page}' already exists`,
+            });
+        }
+
+        await storePage(file, orgName, spaceName, folder, page);
+    } catch (error) {
+        console.error(`Error creating page: ${error}`);
+        return res.status(500).json({ error: 'An error occurred' });
+    }
+
+    return res.sendStatus(204);
 };
