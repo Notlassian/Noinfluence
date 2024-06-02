@@ -66,7 +66,7 @@ export const HomeSideNavigationBar = () => {
   }
 
   const onOrganisationClick = (organisationName, spaceName) => {
-    console.log('organisationName:',organisationName);
+    // console.log('organisationName:',organisationName);
     localStorage.setItem('organisationName', organisationName);
     localStorage.setItem('spaceName', spaceName);
     navigate(`/${organisationName}/${spaceName}`);
@@ -78,6 +78,10 @@ export const HomeSideNavigationBar = () => {
 
   return (
     <nav className="sideNavBarWindow" style={{ width: sideNavBarWindow ? 250 : 60 }}>
+      <div className="burger" onClick={showSideNavigationBar}>
+        <img src="/menu.png" alt="menu-burger" />
+      </div>
+
       <div className="burger" onClick={showSideNavigationBar}>
         <img src="/menu.png" alt="menu-burger" />
       </div>

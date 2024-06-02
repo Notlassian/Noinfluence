@@ -1,4 +1,6 @@
+import { Route, Routes } from 'react-router-dom';
 import { HomeDashboard, HomeSideNavigationBar } from "../components";
+import { OrganisationSetting } from "./OrganisationSetting";
 import './css/Home.css';
 
 export const Home = () => {
@@ -20,10 +22,9 @@ export const Home = () => {
 
       <HomeDashboard updatedSpaces={updatedSpaces} updatedFolders={updatedFolders} updatedPages={updatedPages} />
 
-      {/* <Routes>
-        <Route path="/:folderName/:pageName" element={<Page />} />
-        <Route path="spaceSettings" element={<SpaceSetting />} />
-      </Routes> */}
+      <Routes>
+        <Route path="spaceSettings" element={<OrganisationSetting />} />
+      </Routes>
     </div>
   );
 };

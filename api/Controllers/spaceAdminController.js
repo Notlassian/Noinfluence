@@ -13,7 +13,7 @@ export const getSpaceUsers = async (req, res) => {
         sqlPool
             .query(query, params)
             .then((sqlRes) => {
-                res.status(HttpStatusCodes.OK).json(sqlPool.rows);
+                res.status(HttpStatusCodes.OK).json(sqlRes.rows);
             })
             .catch((error) => {
                 console.log(error);

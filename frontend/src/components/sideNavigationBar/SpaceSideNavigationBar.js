@@ -20,11 +20,14 @@ export const SpaceSideNavigationBar = () => {
     try {
       const response = await fetch(`${process.env.REACT_APP_API_URL}/org/${organisationName}/spaces/${spaceName}/list`, fetchFoldersOptions);
       const data = await response.json();
+      console.log(data);
 
       const formattedData = Object.entries(data).map(([key, value]) => ({
         name: key,
         items: value.map(folder => folder)
       }));
+
+      console.log(formattedData);
 
       setFolders(formattedData);
     } catch (error) {
@@ -84,11 +87,11 @@ export const SpaceSideNavigationBar = () => {
 
                   {expandedFolderIndex === folderIndex && (
                     <ul className="sub-sub-list">
-                      {folders.items.map((page, pageIndex) => (
+                      {folder.items.map((page, pageIndex) => (
                         <li
                           key={`page-${pageIndex}`}
                           className="sub-sub-item"
-                          onClick={() => navigate(`/${organisationName}/${spaceName}/${folder.name}/${page}`)}>
+                          onClick={() => navigate(`/org/${organisationName}/spaces/${spaceName}/pages/${folder.name}/${page}/retrieve`)}>
 
                           <span
                             className="navbar-li"
