@@ -53,7 +53,7 @@ export const NavigationBar = () => {
           <li><SpaceDropDown title="Space" items={spaceDropDownItems} /></li>
         </ul>
         
-        <PageCreator/>
+        <PageCreator orgName="my org" spaceName="my space"/>
 
         <SearchBar onSearch={(query) => console.log(query)} />
       </div>

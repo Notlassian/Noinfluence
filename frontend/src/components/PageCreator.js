@@ -1,14 +1,18 @@
 import React from 'react';
 import {Popup, } from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
-import "./PageCreator.css"
 
-export const PageCreator = () => {
-  const navigateTo = (args) => {
-    alert(args)
+export const PageCreator = (props) => {
+  const createPage = () => {
+    const org = props.orgName
+    const space = props.spaceName
+    
+    const folder = document.getElementsByClassName("folder-name")[0].value
+    const page = document.getElementsByClassName("page-name")[0].value
+    alert(`/createpage/${org}/${space}/${folder}/${page}`)
   }
-  var orgName = "my org"
-  var spaceName = "my space"
+  var orgName = props.orgName
+  var spaceName = props.spaceName
   return (
     <Popup
       trigger={<button className="button"> Create Page </button>}
@@ -20,9 +24,13 @@ export const PageCreator = () => {
         <text> {orgName} </text>
         <h4> Space Name: </h4>
         <text> {spaceName} </text>
+        <h4> Folder Name: </h4>
+        <input class="folder-name"></input>
         <h4> Page Name: </h4>
-        <input></input>
-        <button class="buttom" onClick={() => navigateTo('/createpage')}>Create</button>
+        <input class="page-name"></input>
+        <button class="create-page-button" onClick={() => createPage()}>
+            Create
+        </button>
       </div>
     </Popup>
   );
