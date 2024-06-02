@@ -17,6 +17,7 @@ export default function App() {
             <Route path="/" element={<Home />} />
             <Route path="/:organisationName/:spaceName/*" element={<Space />} />
             <Route path="/callback" element={<Callback />} />
+            <Route path="/page" element={<Page />} />
           </Routes>
       </div>
     </div>

@@ -19,9 +19,9 @@ export const SpaceDropDown = ({ title, items }) => {
         onMouseLeave={() => setIsHovered(false)}>
         <button onClick={toggleDropdown} className="dropdown-toggle">
           {title}
+          <img onClick={toggleDropdown} src="/down-arrow.png" alt="menu-burger" />
         </button>
 
-        <img onClick={toggleDropdown} src="/down-arrow.png" alt="menu-burger" />
       </div>
 
       {isOpen &&

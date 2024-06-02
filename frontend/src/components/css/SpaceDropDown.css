@@ -26,6 +26,9 @@
   padding: 10px;
   cursor: pointer;
 }
+.dropdown-toggle img {
+  filter: invert(1);
+}
 
 .dropdown-menu {
   display: block;
