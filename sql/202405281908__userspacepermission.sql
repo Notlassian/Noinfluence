@@ -21,4 +21,32 @@ JOIN
 JOIN 
     role_permission ON role.role_id = role_permission.role_id
 JOIN 
-    permission ON role_permission.permission_id = permission.permission_id;
+    permission ON role_permission.permission_id = permission.permission_id
+WHERE 
+    "user".user_id NOT IN (
+        SELECT user_id 
+        FROM organization_admin 
+        WHERE organization_id = organization.organization_id
+    )
+
+UNION
+
+SELECT 
+    "user".user_id AS user_id,
+    "user".username AS username,
+    space.space_id AS space_id,
+    space.space_name AS space_name,
+    organization.organization_id AS organization_id,
+    organization.organization_name AS organization_name,
+    'Admin' AS role,
+    permission.permission_name AS permission_name
+FROM 
+    "user"
+JOIN 
+    organization_admin ON "user".user_id = organization_admin.user_id
+JOIN 
+    space ON organization_admin.organization_id = space.organization_id
+JOIN 
+    organization ON space.organization_id = organization.organization_id
+JOIN 
+    permission ON true;
