@@ -1,7 +1,3 @@
-ALTER TABLE "issue" ADD CONSTRAINT "fk_issue_issue_progress" FOREIGN KEY ("issue_progress_id") REFERENCES "issue_progress" ("issue_progress_id");
-
-ALTER TABLE "issue" ADD CONSTRAINT "fk_issue_page" FOREIGN KEY ("page_id") REFERENCES "page" ("page_id");
-
 ALTER TABLE "organization_admin" ADD CONSTRAINT "fk_organization_admin_user" FOREIGN KEY ("user_id") REFERENCES "user" ("user_id");
 
 ALTER TABLE "user_space_role" ADD CONSTRAINT "fk_user_space_role_user" FOREIGN KEY ("user_id") REFERENCES "user" ("user_id");
@@ -28,8 +24,4 @@ ALTER TABLE "page" ADD CONSTRAINT "unique_page_folder" UNIQUE ("page_name", "fol
 ALTER TABLE "folder" ADD CONSTRAINT "unique_folder_space" UNIQUE ("folder_name", "space_id");
 
 ALTER TABLE "space" ADD CONSTRAINT "unique_space_organization" UNIQUE ("space_name", "organization_id");
-
-ALTER TABLE "issue" ADD CONSTRAINT "unique_key_page" UNIQUE ("issue_key", "page_id");
-
-ALTER TABLE "issue" ADD CONSTRAINT "unique_issue_key_within_space" UNIQUE ("issue_key", "page_id");
 

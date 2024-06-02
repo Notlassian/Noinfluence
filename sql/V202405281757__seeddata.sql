@@ -1,6 +1,3 @@
-INSERT INTO issue_progress (issue_progress_name)
-VALUES ('In Progress'), ('Branch Testing'), ('Closed'), ('Ready');
-
 INSERT INTO permission (permission_name)
 VALUES ('Read'), ('Write'), ('Edit Space');
 
