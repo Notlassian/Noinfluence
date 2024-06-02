@@ -1,11 +1,13 @@
-import { React, useState } from "react";
+import { React, useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import '../css/HomeSideNavigationBar.css';
 
-export const HomeSideNavigationBar = ({ sideNavBarItem }) => {
+export const HomeSideNavigationBar = () => {
 
   const [sideNavBarWindow, setSideNavigationBar] = useState(false);
   const [expandedIndex, setExpandedIndex] = useState(null);
+  const [organisations, setOrganisations] = useState([]);
+  const [newOrganisationName, setNewOrganisationName] = useState('');
 
   const navigate = useNavigate();
 
@@ -17,44 +19,62 @@ export const HomeSideNavigationBar = ({ sideNavBarItem }) => {
     setExpandedIndex(expandedIndex === index ? null : index);
   };
 
-  const createOrganisation = () => {
-  //     method: 'POST',
-  //     headers: { 'Content-Type': 'application/json' },
-  //     body: JSON.stringify({ title: 'React POST Request Example' })
-  //   };
+  const fetchOrganisations = async () => {
+    const fetchOrganisationsOptions = {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' }
+    };
 
-  //   fetch('https://reqres.in/api/posts', requestOptions)
-  //       .then(response => response.json())
-  //       .then(data => this.setState({ postId: data.id }));
-  }
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/org/list`, fetchOrganisationsOptions);
+      const data = await response.json();
+
+      const formattedData = Object.entries(data).map(([key, value]) => ({
+        name: key,
+        items: value.map(space => [space])
+      }));
+
+      setOrganisations(formattedData);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
+  const createOrganisation = async () => {
+    // const createOrganisationOptions = {
+    //   method: 'POST',
+    //   headers: { 'Content-Type': 'application/json' },
+    //   body: JSON.stringify({ org: newOrganisationName })
+    // };
+
+    // try {
+    //   const response = await fetch(`${process.env.REACT_APP_API_URL}/org/create`, createOrganisationOptions);
+    //   const result = await response.json();
+
+    //   if (response.ok) {
+    //     setNewOrganisationName('');
+    //     fetchOrganisations();
+    //   } else {
+    //     alert(result.error);
+    //   }
+    // } catch (error) {
+    //   console.error('Error:', error);
+    // }
+  };
 
   const createSpace = () => {
-  //     method: 'POST',
-  //     headers: { 'Content-Type': 'application/json' },
-  //     body: JSON.stringify({ title: 'React POST Request Example' })
-  //   };
-
-  //   fetch('https://reqres.in/api/posts', requestOptions)
-  //       .then(response => response.json())
-  //       .then(data => this.setState({ postId: data.id }));
-  // navigate('/space');
   }
 
-  const Organisations = [
-    {
-      name: 'Organisation 1',
-      items: [
-        ['Space1', '/dot.png'],
-      ]
-    },
-    {
-      name: 'Organisation 2',
-      items: [
-        ['Space4', '/dot.png'],
-        ['Space5', '/dot.png']
-      ]
-    }
-  ];
+  const onOrganisationClick = (organisationName, spaceName) => {
+    console.log('organisationName:',organisationName);
+    localStorage.setItem('organisationName', organisationName);
+    localStorage.setItem('spaceName', spaceName);
+    navigate(`/${organisationName}/${spaceName}`);
+  }
+
+  useEffect(() => {
+    fetchOrganisations();
+  }, []);
 
   return (
     <nav className="sideNavBarWindow" style={{ width: sideNavBarWindow ? 250 : 60 }}>
@@ -64,7 +84,7 @@ export const HomeSideNavigationBar = ({ sideNavBarItem }) => {
 
       { sideNavBarWindow &&
         <ul className="navbar-list">
-          {Organisations.map((organisation, orgIndex) => (
+          {organisations.map((organisation, orgIndex) => (
             <li key={`organisation-${orgIndex}`} className="navbar-li-box">
               <div className="navbar-li" onClick={() => toggleExpanded(orgIndex)}>
                 {organisation.name}
@@ -73,7 +93,7 @@ export const HomeSideNavigationBar = ({ sideNavBarItem }) => {
                 <ul className="sub-list">
                   {organisation.items.map((item, itemIndex) => (
                     <li key={`item-${itemIndex}`} className="sub-item">
-                      <div className="navbar-li" onClick={() => navigate(`/${item[0]}`)}>
+                      <div className="navbar-li" onClick={() => onOrganisationClick(organisation.name,item[0])}>
                         {item[0]}
                       </div>
                     </li>

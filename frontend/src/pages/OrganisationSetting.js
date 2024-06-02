@@ -1,8 +1,8 @@
 import React from "react";
-import { SettingTable, SpaceSideNavigationBar } from "../components";
+import { SettingTable } from "../components";
 import './css/SpaceSetting.css';
 
-export const SpaceSetting = () => {
+export const OrganisationSetting = () => {
 
   return (
     <div className="space-setting-container">

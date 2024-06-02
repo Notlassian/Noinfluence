@@ -19,6 +19,11 @@ export const Home = () => {
         sideNavBarItem={sideNavBarItem}/>
 
       <HomeDashboard updatedSpaces={updatedSpaces} updatedFolders={updatedFolders} updatedPages={updatedPages} />
+
+      {/* <Routes>
+        <Route path="/:folderName/:pageName" element={<Page />} />
+        <Route path="spaceSettings" element={<SpaceSetting />} />
+      </Routes> */}
     </div>
   );
 };

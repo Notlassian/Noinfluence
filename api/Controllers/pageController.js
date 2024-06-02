@@ -3,7 +3,7 @@ import { HttpStatusCodes } from '../Utils/httpStatusCodes.js';
 
 export const getPage = async (req, res) => {
     const query =
-        'SELECT * from space_pages_view WHERE organization_name = $1 AND space_name = $2 AND folder_name = $3 AND page_name = $4';
+        'SELECT * from page_details WHERE organization_name = $1 AND space_name = $2 AND folder_name = $3 AND page_name = $4';
     const params = [
         req.params.orgName,
         req.params.spaceName,

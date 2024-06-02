@@ -1,7 +1,7 @@
 import { Route, Routes } from 'react-router-dom';
 
 import { NavigationBar, Callback } from './components';
-import { Home, Space, Page, SpaceSetting } from './pages';
+import { Home, Space } from './pages';
 import './App.css';
 
 export default function App() {
@@ -15,10 +15,8 @@ export default function App() {
 
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/:spaceName/*" element={<Space />} />
+            <Route path="/:organisationName/:spaceName/*" element={<Space />} />
             <Route path="/callback" element={<Callback />} />
-            <Route path="/page" element={<Page />} />
-            <Route path="/spaceSetting" element={<SpaceSetting />} />
           </Routes>
       </div>
     </div>

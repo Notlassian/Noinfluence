@@ -31,7 +31,7 @@ export async function authenticationMiddleware(req, res, next) {
     //     console.error(`Error validating token: ${error}`);
     //     return res.status(HttpStatusCodes.Unauthorized).json({ message: 'Unauthorized, Please login again.' });
     // }
-
+    req.user = 'user1';
     return next();
 }
 
