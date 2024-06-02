@@ -9,6 +9,7 @@ import {
     createSpace,
     getFoldersWithPages,
     getSpaces,
+    getMyPermissions,
 } from '../Controllers/spaceController.js';
 import { getHealth } from '../Controllers/healthCheckController.js';
 import { pageRouter } from './pageRoute.js';
@@ -25,3 +26,4 @@ spaceRouter.use('/:spaceName/pages', pageRouter);
 spaceRouter.post('/add', isOrgAdmin, createSpace);
 spaceRouter.get('/list', getSpaces);
 spaceRouter.get('/:spaceName/list', getFoldersWithPages);
+spaceRouter.get('/:spaceName/permissions', getMyPermissions);
