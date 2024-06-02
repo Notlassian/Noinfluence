@@ -25,8 +25,11 @@ async function uploadToS3(file, fileId, folder) {
 }
 
 function storeLocally(file, fileId, folder) {
-    const folderDir = path.join(localDir, folder);
-    const filePath = path.join(folderDir, fileId);
+    const folderDir = fs.realpathSync(path.resolve(localDir, folder));
+    
+    const filePath = fs.realpathSync(path.resolve(resolvedFolderDir, fileId));
+
+   if(!filePath.startsWith(localDir)|| !folderDir.startsWith(localDir)) return null;
 
     if (!fs.existsSync(folderDir)) {
         fs.mkdirSync(folderDir, { recursive: true });
