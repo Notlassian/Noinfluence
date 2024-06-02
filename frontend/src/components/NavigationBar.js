@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from "react-router-dom";
 import { LoginLink } from './authentication';
 import { SpaceDropDown } from './SpaceDropDown';
+import {PageCreator} from './PageCreator'
 import './css/NavigationBar.css';
 
 const SearchBar = ({ onSearch }) => {
@@ -51,10 +52,9 @@ export const NavigationBar = () => {
 
           <li><SpaceDropDown title="Space" items={spaceDropDownItems} /></li>
         </ul>
+        
+        <PageCreator/>
 
-        <button class="rainbowifiable">
-          <Link to="/createpage">Create Page</Link>
-        </button>
         <SearchBar onSearch={(query) => console.log(query)} />
       </div>
 
@@ -67,18 +67,8 @@ export const NavigationBar = () => {
           </LoginLink>
 
           <li><Link to="/profile">Profile</Link></li>
-          <li><Link to="/page">Page</Link></li>
 
         </ul>
-
-      </div>
-
-      <div className="nav-profile">
-        <button>
-          Log In
-        </button>
-
-        <li><Link to="/profile">Profile</Link></li>
       </div>
     </nav>
   );
