@@ -1,0 +1,49 @@
+.space-setting-table {
+  margin: 20px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.space-setting-table h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.space-setting-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.space-setting-table table th,
+.space-setting-table table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.space-setting-table table th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+  text-align: left;
+}
+
+.space-setting-table table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.space-setting-table select {
+  width: 100%;
+  padding: 5px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  outline: none;
+}
+
+.space-setting-table select:hover {
+  border-color: #aaa;
+}
+
+.space-setting-table select:focus {
+  border-color: #555;
+}

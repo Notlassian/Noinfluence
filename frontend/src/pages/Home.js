@@ -8,14 +8,16 @@ export const Home = () => {
   const updatedPages = ['Page 1', 'Page 2', 'Page 3'];
 
   const sideNavBarItem = [
-    ['organisation1','./dot.png'],
-    ['organisation2','./dot.png'],
+    ['space1','./dot.png'],
+    ['space2','./dot.png'],
   ];
 
   return (
     <div className="home-container">
+
       <HomeSideNavigationBar
         sideNavBarItem={sideNavBarItem}/>
+
       <HomeDashboard updatedSpaces={updatedSpaces} updatedFolders={updatedFolders} updatedPages={updatedPages} />
     </div>
   );

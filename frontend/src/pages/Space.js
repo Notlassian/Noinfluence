@@ -13,16 +13,25 @@ export const Space = () => {
     ['page2','./dot.png'],
   ];
 
+  // const pageExist =
+
   return (
     <div className="space-container">
+
       <SpaceSideNavigationBar
-        sideNavBarItem={sideNavBarItem}
-        />
-      <SpaceDashboard
+        sideNavBarItem={sideNavBarItem}/>
+
+      {/* {pageExist &&
+
+        <Page page={pageContent}/>
+      } */}
+      <h2>You do not have any page in this space</h2>
+
+      {/* <SpaceDashboard
         description={description}
         openIssues={openIssues}
         openIssuesNum={openIssuesNum}
-        completedIssuesNum={completedIssuesNum} />
+        completedIssuesNum={completedIssuesNum} /> */}
     </div>
 
   );

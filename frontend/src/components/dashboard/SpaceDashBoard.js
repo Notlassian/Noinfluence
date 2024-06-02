@@ -1,7 +1,7 @@
 import React from 'react';
 import { Pie } from 'react-chartjs-2';
 import 'chart.js/auto';
-import './css/SpaceDashBoard.css';
+import '../css/SpaceDashBoard.css';
 
 export const SpaceDashboard = ({ description, openIssues, openIssuesNum, completedIssuesNum }) => {
 
@@ -18,6 +18,8 @@ export const SpaceDashboard = ({ description, openIssues, openIssuesNum, complet
 
   return (
     <div className="dashboard">
+
+      <h2>Space</h2>
 
       <div className='LeftComponent'>
 
