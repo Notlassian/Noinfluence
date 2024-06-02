@@ -29,7 +29,6 @@ const limiter = rateLimit({
 
 app.use(limiter);
 app.use(express.json());
-// app.use(authenticationMiddleware);
 
 app.use('/', healthCheckRouter);
 app.use('/auth', authRouter);

@@ -1,24 +1,25 @@
 import { Router } from 'express';
 import {
     hasSpacePermission,
-    permissionsEnum,
+    PermissionsTypes,
 } from '../Middleware/authorizationMiddleware.js';
 import { getHealth } from '../Controllers/healthCheckController.js';
+import { getPage, updatePage } from '../Controllers/pageController.js';
 
 export const pageRouter = Router({ mergeParams: true });
 
 pageRouter.post(
-    '/:folder/:page/add',
-    hasSpacePermission(permissionsEnum.WRITE),
+    '/:folderName/:pageName/add',
+    hasSpacePermission(PermissionsTypes.Write),
     getHealth
 );
 pageRouter.get(
-    '/:folder/:page/retrieve',
-    hasSpacePermission(permissionsEnum.READ),
-    getHealth
+    '/:folderName/:pageName/retrieve',
+    hasSpacePermission(PermissionsTypes.Read),
+    getPage
 );
 pageRouter.post(
-    '/:folder/:page/update',
-    hasSpacePermission(permissionsEnum.WRITE),
-    getHealth
+    '/:folderName/:pageName/update',
+    hasSpacePermission(PermissionsTypes.Write),
+    updatePage
 );
