@@ -1,9 +1,9 @@
 import { HttpStatusCodes } from "../Utils/httpStatusCodes.js";
 
 export const getOrgAdmins = async (req, res) => {
-    var query =
+    const query =
         'Select username FROM organization_admins_view where org_name=$1';
-    var params = [req.params.orgName];
+    const params = [req.params.orgName];
     if (!params[0]) {
         res.status(HttpStatusCodes.InternalServerError).json({ error: 'Internal Server Error' });
     } else {
@@ -20,9 +20,9 @@ export const getOrgAdmins = async (req, res) => {
 };
 
 export const addOrgAdmin = async (req, res) => {
-    var query =
+    const query =
         'call org_add_admin($1, $2)';
-    var params = [req.params.orgName, req.body.username];
+    const params = [req.params.orgName, req.body.username];
     if (!params[0] || !params[1]) {
         res.status(HttpStatusCodes.BadRequest).json({ error: '"username" required in request body' });
     } else {

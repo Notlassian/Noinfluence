@@ -25,9 +25,9 @@ export const createOrg = async (req, res) => {
 };
 
 export const getMyOrgs = async (req, res) => {
-    var query =
+    const query =
         'Select organization_name, space_name FROM user_space_organization_permissions where username=$1';
-    var params = [req.user];
+    const params = [req.user];
     if (!params[0]) res.status(HttpStatusCodes.InternalServerError).json({ error: 'Internal Server Error' });
     else {
         sqlPool

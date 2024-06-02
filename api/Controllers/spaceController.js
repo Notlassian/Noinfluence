@@ -3,8 +3,8 @@ import { HttpStatusCodes } from '../Utils/httpStatusCodes.js';
 import { buildUniqueMap } from '../Utils/mapUtils.js';
 
 export const createSpace = async (req, res) => {
-    var query = 'call insert_space($1,$2)';
-    var params = [req.body.space, req.params.orgName];
+    const query = 'call insert_space($1,$2)';
+    const params = [req.body.space, req.params.orgName];
     if (!params[0] || !params[1])
         res.status(HttpStatusCodes.BadRequest).json({ error: '"space" parameter required in request body' });
     else {
