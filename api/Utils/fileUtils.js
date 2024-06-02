@@ -2,10 +2,10 @@ import * as fs from 'node:fs';
 import * as path from 'path';
 import {
     DeleteObjectCommand,
+    GetObjectCommand,
     HeadObjectCommand,
     PutObjectCommand,
     S3Client,
-    GetObjectCommand,
 } from '@aws-sdk/client-s3';
 import { sqlPool } from './dbUtils.js';
 
@@ -31,52 +31,42 @@ async function uploadToS3(file, fileId, folder) {
     return key;
 }
 
+function checkSafeFilePath(...paths) {
+    const normalizedPath = path.normalize(path.join(...paths));
+
+    if (!normalizedPath.startsWith(localDir)) {
+        throw new Error('Path error');
+    }
+}
+
 function storeLocally(file, fileId, folder) {
-    const folderDir = fs.realpathSync(path.resolve(localDir, folder));
+    checkSafeFilePath(localDir, folder, fileId);
 
-    const filePath = fs.realpathSync(path.resolve(resolvedFolderDir, fileId));
-
-    if (!filePath.startsWith(localDir) || !folderDir.startsWith(localDir))
-        return null;
+    const folderDir = path.join(localDir, folder);
+    const filePath = path.join(folderDir, fileId);
 
     if (!fs.existsSync(folderDir)) {
         fs.mkdirSync(folderDir, { recursive: true });
     }
 
-    fs.writeFileSync(filePath, file, { flag: 'w+' });
+    fs.writeFileSync(filePath, file, { flag: 'w' });
 
     return filePath;
 }
 
-async function retrieveFromS3(file, fileId, folder) {
-    const { PAGE_BUCKET: bucket } = process.env;
-    const key = path.join(folder, fileId);
-
+async function retrieveFromS3(key) {
     const command = new GetObjectCommand({
         Bucket: bucket,
         Key: key,
     });
 
     const response = await s3Client.send(command);
-
-    const stream = response.Body;
-    let data = '';
-
-    if (stream instanceof Readable) {
-        for await (const chunk of stream) {
-            data += chunk;
-        }
-    }
-
-    return data;
+    return await response.Body.transformToString();
 }
 
-function retrieveLocally(file, fileId, folder) {
-    const folderDir = path.join(localDir, folder);
-    const filePath = path.join(folderDir, fileId);
-
-    const data = fs.readFileSync(filePath, 'utf8');
-    return data;
+function retrieveLocally(filePath) {
+    checkSafeFilePath(filePath);
+    return fs.readFileSync(filePath, 'utf8');
 }
 
 export async function storePage(
@@ -84,7 +74,8 @@ export async function storePage(
     orgName,
     spaceName,
     folderName,
-    pageName
+    pageName,
+    update = false
 ) {
     const environment = process.env.APP_ENVIRONMENT;
     const folder = `${orgName}/${spaceName}/${folderName}`;
@@ -101,42 +92,32 @@ export async function storePage(
         }
     }
 
-    const query = 'call insert_page($1,$2,$3,$4,$5)';
-    const params = [fileId, fileLocation, folderName, spaceName, orgName];
+    if (!update) {
+        const query = 'call insert_page($1,$2,$3,$4,$5)';
+        const params = [pageName, fileLocation, folderName, spaceName, orgName];
 
-    try {
-        await sqlPool.query(query, params);
-    } catch (error) {
-        deleteFile(fileLocation);
-        throw error;
+        try {
+            await sqlPool.query(query, params);
+        } catch (error) {
+            deleteFile(fileLocation);
+            throw error;
+        }
     }
 
     return fileLocation;
 }
 
-export async function retrievePage(
-    file,
-    orgName,
-    spaceName,
-    folderName,
-    pageName
-) {
+export async function retrievePage(filePath) {
     const environment = process.env.APP_ENVIRONMENT;
-    const folder = `${orgName}/${spaceName}/${folderName}`;
-    const fileId = `${pageName}.md`;
-    let fileContents;
 
     switch (environment) {
         case environments.PROD: {
-            fileContents = await retrieveFromS3(file, fileId, folder);
-            break;
+            return await retrieveFromS3(filePath);
         }
         default: {
-            fileContents = retrieveLocally(file, fileId, folder);
+            return retrieveLocally(filePath);
         }
     }
-
-    return fileContents;
 }
 
 async function checkIfFileExistsS3(folder, fileId) {
