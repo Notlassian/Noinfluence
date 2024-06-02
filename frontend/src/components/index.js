@@ -4,3 +4,4 @@ export * from "./NavigationBar";
 export * from './SpaceDashBoard';
 export * from './SpaceDropDown';
 export * from './sideNavigationBar';
+export * from './PageCreator';

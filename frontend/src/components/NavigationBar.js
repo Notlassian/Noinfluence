@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from "react-router-dom";
 import { LoginLink } from './authentication';
 import { SpaceDropDown } from './SpaceDropDown';
+import {PageCreator} from './PageCreator'
 import './css/NavigationBar.css';
 
 const SearchBar = ({ onSearch }) => {
@@ -51,10 +52,8 @@ export const NavigationBar = () => {
 
           <li><SpaceDropDown title="Space" items={spaceDropDownItems} /></li>
         </ul>
-
-        <button>
-          Create Page
-        </button>
+        
+        <PageCreator orgName="myOrg" spaceName="mySpace"/>
 
         <SearchBar onSearch={(query) => console.log(query)} />
       </div>
@@ -68,6 +67,7 @@ export const NavigationBar = () => {
           </LoginLink>
 
           <li><Link to="/profile">Profile</Link></li>
+
         </ul>
       </div>
     </nav>

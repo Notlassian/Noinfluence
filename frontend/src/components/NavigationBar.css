@@ -1,5 +1,6 @@
 * {
   box-sizing: border-box;
+  font-family: system-ui,-apple-system,system-ui,"Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 
 body {
@@ -37,6 +38,10 @@ body {
 .nav-profile {
   display: flex;
   align-items: center;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  text-align: center;
 }
 
 .nav-list {
@@ -52,6 +57,7 @@ body {
   text-decoration: none;
   display: flex;
   align-items: center;
+  
   padding: .25rem;
 }
 
