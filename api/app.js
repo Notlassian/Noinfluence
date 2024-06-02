@@ -1,7 +1,6 @@
 import express from 'express';
 import cors from 'cors';
 import { rateLimit } from 'express-rate-limit';
-import { testPermissionRouter } from './Routes/testPermissionsRoute.js';
 import { authenticationMiddleware } from './Middleware/authenticationMiddleware.js';
 import { orgRouter } from './Routes/orgRoute.js';
 import { healthCheckRouter } from './Routes/healthRoute.js';
@@ -30,13 +29,10 @@ const limiter = rateLimit({
 
 app.use(limiter);
 app.use(express.json());
-// app.use(authenticationMiddleware);
 
 app.use('/', healthCheckRouter);
 app.use('/auth', authRouter);
 app.use('/org', authenticationMiddleware, orgRouter);
-
-app.use('/permisssions', testPermissionRouter);
 
 app.listen(port, (error) => {
     if (!error)
