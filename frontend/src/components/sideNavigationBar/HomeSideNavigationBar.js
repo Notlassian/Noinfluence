@@ -44,14 +44,14 @@ export const HomeSideNavigationBar = ({ sideNavBarItem }) => {
     {
       name: 'Organisation 1',
       items: [
-        ['Space 1', '/dot.png'],
+        ['Space1', '/dot.png'],
       ]
     },
     {
       name: 'Organisation 2',
       items: [
-        ['Space 4', '/dot.png'],
-        ['Space 5', '/dot.png']
+        ['Space4', '/dot.png'],
+        ['Space5', '/dot.png']
       ]
     }
   ];
@@ -73,7 +73,7 @@ export const HomeSideNavigationBar = ({ sideNavBarItem }) => {
                 <ul className="sub-list">
                   {organisation.items.map((item, itemIndex) => (
                     <li key={`item-${itemIndex}`} className="sub-item">
-                      <div className="navbar-li" onClick={() => navigate('/space')}>
+                      <div className="navbar-li" onClick={() => navigate(`/${item[0]}`)}>
                         {item[0]}
                       </div>
                     </li>

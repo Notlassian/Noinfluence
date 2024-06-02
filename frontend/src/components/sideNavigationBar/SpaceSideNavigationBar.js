@@ -1,25 +1,24 @@
 // import React, { useState } from "react";
+// import { Route, Routes, useNavigate, useParams } from 'react-router-dom';
+// import { Page, SpaceSetting } from "../../pages";
 // import '../css/SpaceSideNavigationBar.css';
 
 // export const SpaceSideNavigationBar = ({ sideNavBarItem }) => {
 //   const [sideNavBarWindow, setSideNavigationBar] = useState(false);
-//   const [expandedSpaceIndex, setExpandedSpaceIndex] = useState(null);
 //   const [expandedFolderIndex, setExpandedFolderIndex] = useState(null);
+
+//   const navigate = useNavigate();
+//   const { spaceName } = useParams();
 
 //   const showSideNavigationBar = () => {
 //     setSideNavigationBar(!sideNavBarWindow);
 //   };
 
-//   const toggleSpaceExpanded = (index) => {
-//     setExpandedSpaceIndex(expandedSpaceIndex === index ? null : index);
-//     setExpandedFolderIndex(null);
+//   const toggleFolderExpanded = (folderIndex) => {
+//     setExpandedFolderIndex(expandedFolderIndex === folderIndex ? null : folderIndex);
 //   };
 
-//   const toggleFolderExpanded = (index) => {
-//     setExpandedFolderIndex(expandedFolderIndex === index ? null : index);
-//   };
-
-//       // const createPage = () => {
+//   // const createPage = () => {
 
 //   //   const requestOptions = {
 //   //     method: 'POST',
@@ -38,20 +37,11 @@
 //       folders: [
 //         {
 //           name: 'Folder 1',
-//           pages: ['Page 1.1', 'Page 1.2']
+//           pages: ['Page1', 'Page2']
 //         },
 //         {
 //           name: 'Folder 2',
-//           pages: ['Page 2.1', 'Page 2.2']
-//         }
-//       ]
-//     },
-//     {
-//       name: 'Space 2',
-//       folders: [
-//         {
-//           name: 'Folder 3',
-//           pages: ['Page 3.1', 'Page 3.2']
+//           pages: ['Page1', 'Page2']
 //         }
 //       ]
 //     }
@@ -63,68 +53,75 @@
 //         <img src="/menu.png" alt="menu-burger" />
 //       </div>
 
+//       <span
+//         className="space-setting"
+//         style={{ display: sideNavBarWindow === false ? "none" : "inline-block" }}
+//         onClick={() => navigate(`/${spaceName}/spaceSettings`)}
+//       >
+//         {'Space Setting'}
+//       </span>
+
 //       <ul className="navbar-list">
 //         {spaces.map((space, spaceIndex) => (
-//           <div key={`space-${spaceIndex}`}>
-//             <div className="navbar-li-box" onClick={() => toggleSpaceExpanded(spaceIndex)}>
-//               <img
-//                 src={'/dot.png'}
-//                 alt={space.name}
-//                 style={{ paddingLeft: sideNavBarWindow === false ? 17 : 27 }}
-//               />
-//               <li
-//                 className="navbar-li"
-//                 style={{ display: sideNavBarWindow === false ? "none" : "inline-block" }}
-//               >
-//                 {space.name}
-//               </li>
-//             </div>
+//           <li key={`space-${spaceIndex}`}>
+//             <span
+//               className="navbar-li"
+//               style={{ display: sideNavBarWindow === false ? "none" : "inline-block" }}
+//             >
+//               {space.name}
+//             </span>
 
-//             {expandedSpaceIndex === spaceIndex && space.folders.map((folder, folderIndex) => (
-//               <div key={`folder-${folderIndex}`} className="navbar-li-box sub-item">
-//                 <div onClick={() => toggleFolderExpanded(folderIndex)}>
-//                   <img
-//                     src={'/dot.png'}
-//                     alt={folder.name}
-//                     style={{ paddingLeft: sideNavBarWindow === false ? 34 : 44 }}
-//                   />
-//                   <li
+//             {space.folders.map((folder, folderIndex) => (
+//               <ul key={`folder-${folderIndex}`} className="sub-list">
+//                 <li
+//                   className={`sub-item ${expandedFolderIndex === folderIndex ? "expanded" : ""}`}
+//                   onClick={() => toggleFolderExpanded(folderIndex)}
+//                 >
+//                   <span
 //                     className="navbar-li"
 //                     style={{ display: sideNavBarWindow === false ? "none" : "inline-block" }}
 //                   >
 //                     {folder.name}
-//                   </li>
-//                 </div>
+//                   </span>
 
-//                 {expandedFolderIndex === folderIndex && folder.pages.map((page, pageIndex) => (
-//                   <div key={`page-${pageIndex}`} className="navbar-li-box sub-sub-item">
-//                     <img
-//                       src={'/dot.png'}
-//                       alt={page}
-//                       style={{ paddingLeft: sideNavBarWindow === false ? 51 : 61 }}
-//                     />
-//                     <li
-//                       className="navbar-li"
-//                       style={{ display: sideNavBarWindow === false ? "none" : "inline-block" }}
-//                     >
-//                       {page}
-//                     </li>
-//                   </div>
-//                 ))}
-//               </div>
+//                   {expandedFolderIndex === folderIndex && (
+//                     <ul className="sub-sub-list">
+//                       {folder.pages.map((page, pageIndex) => (
+//                         <li
+//                           key={`page-${pageIndex}`}
+//                           className="sub-sub-item"
+//                           onClick={() => () => navigate(`/${spaceName}/page/${page}`)}>
+//                           <span
+//                             className="navbar-li"
+//                             style={{ display: sideNavBarWindow === false ? "none" : "inline-block" }}
+//                           >
+//                             {page}
+//                           </span>
+//                         </li>
+//                       ))}
+//                     </ul>
+//                   )}
+//                 </li>
+//               </ul>
 //             ))}
-//           </div>
+//           </li>
 //         ))}
 //       </ul>
 
-//       {/* <button onClick={createPage()}>Create Page</button> */}
+//       {sideNavBarWindow &&
+
+//         <div className="create-button-container">
+//           <button className="create-button">Create Page</button>
+//         </div>
+//       }
 //     </nav>
 //   );
 // };
 
 
+
 import React, { useState } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import '../css/SpaceSideNavigationBar.css';
 
 export const SpaceSideNavigationBar = ({ sideNavBarItem }) => {
@@ -132,6 +129,7 @@ export const SpaceSideNavigationBar = ({ sideNavBarItem }) => {
   const [expandedFolderIndex, setExpandedFolderIndex] = useState(null);
 
   const navigate = useNavigate();
+  const { spaceName } = useParams();
 
   const showSideNavigationBar = () => {
     setSideNavigationBar(!sideNavBarWindow);
@@ -143,15 +141,15 @@ export const SpaceSideNavigationBar = ({ sideNavBarItem }) => {
 
   const spaces = [
     {
-      name: 'Space 1',
+      name: 'Space1',
       folders: [
         {
-          name: 'Folder 1',
-          pages: ['Page 1.1', 'Page 1.2']
+          name: 'Folder1',
+          pages: ['Page1', 'Page2']
         },
         {
-          name: 'Folder 2',
-          pages: ['Page 2.1', 'Page 2.2']
+          name: 'Folder2',
+          pages: ['Page1', 'Page2']
         }
       ]
     }
@@ -166,7 +164,7 @@ export const SpaceSideNavigationBar = ({ sideNavBarItem }) => {
       <span
         className="space-setting"
         style={{ display: sideNavBarWindow === false ? "none" : "inline-block" }}
-        onClick={() => navigate('/spaceSetting')}
+        onClick={() => navigate(`/${spaceName}/settings`)}
       >
         {'Space Setting'}
       </span>
@@ -200,7 +198,8 @@ export const SpaceSideNavigationBar = ({ sideNavBarItem }) => {
                         <li
                           key={`page-${pageIndex}`}
                           className="sub-sub-item"
-                          onClick={() => navigate('/page')}>
+                          onClick={() => navigate(`/${spaceName}/page/${page}`)}
+                        >
                           <span
                             className="navbar-li"
                             style={{ display: sideNavBarWindow === false ? "none" : "inline-block" }}
@@ -227,3 +226,4 @@ export const SpaceSideNavigationBar = ({ sideNavBarItem }) => {
     </nav>
   );
 };
+
