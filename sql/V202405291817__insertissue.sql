@@ -2,9 +2,9 @@ CREATE OR REPLACE PROCEDURE insert_issue(
     IN p_issue_name VARCHAR(50),
     IN p_issue_key VARCHAR(10),
     IN p_page_name VARCHAR(50),
-    IN p_issue_description VARCHAR(500) DEFAULT '',
     IN p_space_name VARCHAR(50),
-    IN p_organization_name VARCHAR(50)
+    IN p_organization_name VARCHAR(50),
+    IN p_issue_description VARCHAR(500) DEFAULT ''
 )
 LANGUAGE plpgsql
 AS $$
