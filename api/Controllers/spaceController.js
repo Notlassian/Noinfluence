@@ -25,11 +25,34 @@ export const createSpace = async (req, res) => {
             });
     }
 };
+export const getSpaces = async (req, res) => {
+    const query =
+        'Select DISTINCT (space_name) FROM user_space_organization_permissions where username=$1 and organization_name=$2';
+    const params = [req.user, req.params.orgName];
+    if (!params[0] || !params[1])
+        res.status(HttpStatusCodes.InternalServerError).json({
+            error: 'Internal Server Error',
+        });
+    else {
+        sqlPool
+            .query(query, params)
+            .then((sqlRes) => {
+                const spaceNames = sqlRes.rows.map((space) => space.space_name);
+                res.status(HttpStatusCodes.OK).json(spaceNames);
+            })
+            .catch((error) => {
+                console.log(error);
+                res.status(HttpStatusCodes.InternalServerError).json({
+                    error: 'Internal Server Error',
+                });
+            });
+    }
+};
 
 export const getFoldersWithPages = async (req, res) => {
-    var query =
+    const query =
         'SELECT folder_name, page_name from space_pages_view WHERE organization_name = $1 AND space_name = $2';
-    var params = [req.params.orgName, req.params.spaceName];
+    const params = [req.params.orgName, req.params.spaceName];
     if (!params[0] || !params[1])
         res.status(HttpStatusCodes.InternalServerError).json({
             error: 'Internal Server Error',

@@ -3,8 +3,8 @@ import { HttpStatusCodes } from '../Utils/httpStatusCodes.js';
 import { buildUniqueMap } from '../Utils/mapUtils.js';
 
 export const createOrg = async (req, res) => {
-    var query = 'call create_organization_and_admin($1,$2)';
-    var params = [req.user, req.body.org];
+    const query = 'call create_organization_and_admin($1,$2)';
+    const params = [req.user, req.body.org];
     if (!params[0] || !params[1])
         res.status(HttpStatusCodes.BadRequest).json({
             error: '"org" parameter not found in request body',
