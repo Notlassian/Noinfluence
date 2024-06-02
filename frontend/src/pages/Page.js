@@ -27,13 +27,8 @@ import {
   AdmonitionDirectiveDescriptor
 } from '@mdxeditor/editor';
 
+
 export const Page = () => {
-  const [markdown, setMarkdown] = useState('');
-
-  const handleMarkdownChange = (newMarkdown) => {
-    setMarkdown(newMarkdown);
-  };
-
   const simpleSandpackConfig = {
     defaultPreset: 'txt',
     presets: [
@@ -50,16 +45,22 @@ export const Page = () => {
     ]
   }
 
-  const [data, setData] = useState(null);
+  const [currentMarkdown, setCurrentMarkdown] = useState(null);
+  const [savedMarkdown, setSavedMarkdown] = useState(null);
+  const [readOnly, setReadOnly] = useState(true);
   const [loading, setLoading] = useState(true);
+
+  const handleMarkdownChange = (newMarkdown) => {
+    setCurrentMarkdown(newMarkdown);
+  };
+
   useEffect(() => {
     fetch('readme.md')  // Replace with API endpoint
       .then(response => response.text())
       .then(response => {
-        setData({
-          md: response
-        })
-        console.log(data)
+        setSavedMarkdown(response)
+        setCurrentMarkdown(response)
+
         setLoading(false)
       }) 
       .catch(error => {
@@ -67,38 +68,69 @@ export const Page = () => {
         setLoading(false);
       }); 
   }, []);
-  if (loading) {
-    return <div>Loading...</div>;
+
+  function editor(readOnly) {
+    if (readOnly) {
+      return <div> 
+        readOnly
+        <p>{savedMarkdown}</p>
+        <MDXEditor
+          contentEditableClassName="editable-document-page"
+          class="document"
+          markdown={savedMarkdown}
+          plugins={[
+            toolbarPlugin({ toolbarContents: () => <KitchenSinkToolbar/> }),
+            listsPlugin(),
+            quotePlugin(),
+            headingsPlugin(),
+            linkPlugin(),
+            linkDialogPlugin(),
+            imagePlugin(),
+            tablePlugin(),
+            thematicBreakPlugin(),
+            frontmatterPlugin(),
+            codeBlockPlugin({ defaultCodeBlockLanguage: 'txt' }),
+            sandpackPlugin({ sandpackConfig: simpleSandpackConfig }),
+            codeMirrorPlugin({ codeBlockLanguages: { js: 'JavaScript', css: 'CSS', txt: 'text', tsx: 'TypeScript' } }),
+            directivesPlugin({ directiveDescriptors: [AdmonitionDirectiveDescriptor] }),
+            diffSourcePlugin({ viewMode: 'rich-text', diffMarkdown: savedMarkdown }),
+            markdownShortcutPlugin()
+          ]}
+          readOnly
+        />      
+      </div>
+    } 
+    else {
+      return <div> 
+      readWrite
+      <p>{savedMarkdown}</p>
+      <MDXEditor
+        contentEditableClassName="editable-document-page"
+        class="document"
+        markdown={savedMarkdown}
+        plugins={[
+          toolbarPlugin({ toolbarContents: () => <KitchenSinkToolbar/> }),
+          listsPlugin(),
+          quotePlugin(),
+          headingsPlugin(),
+          linkPlugin(),
+          linkDialogPlugin(),
+          imagePlugin(),
+          tablePlugin(),
+          thematicBreakPlugin(),
+          frontmatterPlugin(),
+          codeBlockPlugin({ defaultCodeBlockLanguage: 'txt' }),
+          sandpackPlugin({ sandpackConfig: simpleSandpackConfig }),
+          codeMirrorPlugin({ codeBlockLanguages: { js: 'JavaScript', css: 'CSS', txt: 'text', tsx: 'TypeScript' } }),
+          directivesPlugin({ directiveDescriptors: [AdmonitionDirectiveDescriptor] }),
+          diffSourcePlugin({ viewMode: 'rich-text', diffMarkdown: savedMarkdown }),
+          markdownShortcutPlugin()
+        ]}
+        onChange={(e) => handleMarkdownChange(e)} 
+      />      
+    </div>
+    }
   }
-  if (!data) {
-    return <div>No data available</div>;
-  } 
-
-
-  const editor = <MDXEditor
-      contentEditableClassName="editable-document-page"
-      class="document"
-      markdown={data.md}
-      plugins={[
-        toolbarPlugin({ toolbarContents: () => <KitchenSinkToolbar/> }),
-        listsPlugin(),
-        quotePlugin(),
-        headingsPlugin(),
-        linkPlugin(),
-        linkDialogPlugin(),
-        imagePlugin(),
-        tablePlugin(),
-        thematicBreakPlugin(),
-        frontmatterPlugin(),
-        codeBlockPlugin({ defaultCodeBlockLanguage: 'txt' }),
-        sandpackPlugin({ sandpackConfig: simpleSandpackConfig }),
-        codeMirrorPlugin({ codeBlockLanguages: { js: 'JavaScript', css: 'CSS', txt: 'text', tsx: 'TypeScript' } }),
-        directivesPlugin({ directiveDescriptors: [AdmonitionDirectiveDescriptor] }),
-        diffSourcePlugin({ viewMode: 'rich-text', diffMarkdown: 'boo' }),
-        markdownShortcutPlugin()
-      ]}
-      onChange={(e) => console.log(e)} 
-  />;
 
 
   const clickEdit = () => {
@@ -107,18 +139,7 @@ export const Page = () => {
 
     editButton.style.visibility = 'hidden';
     saveCancel.style.visibility = 'visible';
-
-    const docPage = document.getElementsByClassName("editable-document-page")[0]
-    docPage.setAttribute("contenteditable", "true");
-
-    const toolbar = document.getElementsByClassName("mdxeditor-toolbar")[0]
-    toolbar.style.display = 'flex';
-
-    /*
-    TODO:
-    convert html back to markdown
-    */
-    //markdownValue = "value of markdown in editor before edits are made"
+    setReadOnly(false)
   };
 
   const clickSave = () => {
@@ -127,19 +148,14 @@ export const Page = () => {
 
     editButton.style.visibility = 'visible';
     saveCancel.style.visibility = 'hidden';
-    
-    const docPage = document.getElementsByClassName("editable-document-page")[0]
-    docPage.setAttribute("contenteditable", "false")
 
-    const toolbar = document.getElementsByClassName("mdxeditor-toolbar")[0]
-    toolbar.style.display = 'none';
-
-    // console.log(docPage.getMarkdown())
-    // /*
-    // TODO:
-    // convert html back to markdown
-    // Post the markdown to the api endpoint that accepts file changes
-    // */
+    setReadOnly(true)
+    setCurrentMarkdown(currentMarkdown)
+    setSavedMarkdown(currentMarkdown)
+    /*
+    TODO:
+    Post the markdown to the api endpoint that accepts file changes
+    */
   };
 
   const clickCancel = () => {
@@ -148,34 +164,56 @@ export const Page = () => {
 
     editButton.style.visibility = 'visible';
     saveCancel.style.visibility = 'hidden';    
-    
-    const docPage = document.getElementsByClassName("editable-document-page")[0]
-    docPage.setAttribute("contenteditable", "false")
 
-    const toolbar = document.getElementsByClassName("mdxeditor-toolbar")[0]
-    toolbar.style.display = 'none';
-
-    // /*
-    // TODO:
-    // restore markdown to the state it was in before changes were made
-    // */
+    setReadOnly(true)
+    setCurrentMarkdown(savedMarkdown)
+    setSavedMarkdown(savedMarkdown)
   };
 
-  return (
-    <div class="page">
-      <nav class="document-manager">
-        <button id='edit-button' onClick={clickEdit}> edit </button>
-        <div id="save-cancel">
-          <button id='save-button' onClick={clickSave}> save </button>
-          <button id='cancel-button' onClick={clickCancel}> cancel </button>
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+  if (!savedMarkdown) {
+    return <div>No data available</div>;
+  }
+  else {
+    if (readOnly) {
+      return (
+        <div class="page">
+          <nav class="document-manager">
+            <button id='edit-button' onClick={clickEdit}> edit </button>
+            <div id="save-cancel">
+              <button id='save-button' onClick={clickSave}> save </button>
+              <button id='cancel-button' onClick={clickCancel}> cancel </button>
+            </div>
+          </nav>
+          <div class="background">
+            <div class="document-container">
+              {editor(true)}
+            </div>
+          </div>
         </div>
-      </nav>
-      <div class="background">
-        <div class="document-container">
-          {editor}
+    
+      );
+    }
+    else {
+      return (
+        <div class="page">
+          <nav class="document-manager">
+            <button id='edit-button' onClick={clickEdit}> edit </button>
+            <div id="save-cancel">
+              <button id='save-button' onClick={clickSave}> save </button>
+              <button id='cancel-button' onClick={clickCancel}> cancel </button>
+            </div>
+          </nav>
+          <div class="background">
+            <div class="document-container">
+            {editor(false)}
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
-
-  );
+    
+      );
+    }
+  }
 };

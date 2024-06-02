@@ -53,7 +53,7 @@ export const NavigationBar = () => {
         </ul>
 
         <button class="rainbowifiable">
-          Create Page
+          <Link to="/createpage">Create Page</Link>
         </button>
         <SearchBar onSearch={(query) => console.log(query)} />
       </div>
