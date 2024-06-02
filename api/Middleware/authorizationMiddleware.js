@@ -24,7 +24,9 @@ export function hasSpacePermission(requiredPermission) {
             })
             .catch((err) => {
                 console.error(err);
-                res.status(HttpStatusCodes.InternalServerError).json({ error: 'Internal Server Error' });
+                res.status(HttpStatusCodes.InternalServerError).json({
+                    error: 'Internal Server Error',
+                });
             });
     };
 }

@@ -6,14 +6,16 @@ export const createSpace = async (req, res) => {
     const query = 'call insert_space($1,$2)';
     const params = [req.body.space, req.params.orgName];
     if (!params[0] || !params[1])
-        res.status(HttpStatusCodes.BadRequest).json({ error: '"space" parameter required in request body' });
+        res.status(HttpStatusCodes.BadRequest).json({
+            error: '"space" parameter required in request body',
+        });
     else {
         sqlPool
             .query(query, params)
             .then(() => {
                 res.status(HttpStatusCodes.OK).json({
                     message: `${params[0]} in ${params[1]} has been created successfully`,
-                })
+                });
             })
             .catch((error) => {
                 console.log(error);
@@ -25,10 +27,13 @@ export const createSpace = async (req, res) => {
 };
 
 export const getFoldersWithPages = async (req, res) => {
-    var query = 'SELECT folder_name, page_name from space_pages_view WHERE organization_name = $1 AND space_name = $2';
+    var query =
+        'SELECT folder_name, page_name from space_pages_view WHERE organization_name = $1 AND space_name = $2';
     var params = [req.params.orgName, req.params.spaceName];
     if (!params[0] || !params[1])
-        res.status(HttpStatusCodes.InternalServerError).json({ error: 'Internal Server Error' });
+        res.status(HttpStatusCodes.InternalServerError).json({
+            error: 'Internal Server Error',
+        });
     else {
         sqlPool
             .query(query, params)

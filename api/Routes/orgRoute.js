@@ -1,8 +1,5 @@
 import { Router } from 'express';
-import {
-    createOrg,
-    getMyOrgs,
-} from '../Controllers/orgController.js';
+import { createOrg, getMyOrgs } from '../Controllers/orgController.js';
 import { spaceRouter } from './spaceRoute.js';
 import { orgAdminRouter } from './orgAdminRoute.js';
 import { isOrgAdmin } from '../Middleware/authorizationMiddleware.js';
