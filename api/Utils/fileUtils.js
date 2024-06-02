@@ -174,10 +174,12 @@ async function deleteFileS3(path) {
 }
 
 function deleteFileLocal(path) {
-    fs.unlink(path, (error) => {
+    try {
+        fs.rmSync(path);
+    } catch (error) {
         console.error(`File not deleted. Path: ${path}`);
         throw error;
-    });
+    }
 }
 
 function deleteFile(path) {
