@@ -69,7 +69,7 @@ export const Page = () => {
       }); 
   }, []);
 
-  const page = React.useCallback((readOnly) => {
+  const page = () => {
     if (readOnly) {
       return <div class="page">
       <nav class="document-manager">
@@ -147,7 +147,7 @@ export const Page = () => {
     </div>
    
     }
-  });
+  };
 
   const clickEdit = () => {
     setReadOnly(false)
