@@ -49,6 +49,7 @@ export const Page = () => {
   const [savedMarkdown, setSavedMarkdown] = useState(null);
   const [readOnly, setReadOnly] = useState(true);
   const [loading, setLoading] = useState(true);
+  const [ editState, setEditState] = useState(false);
 
   const handleMarkdownChange = (newMarkdown) => {
     setCurrentMarkdown(newMarkdown);
@@ -69,16 +70,17 @@ export const Page = () => {
       }); 
   }, []);
 
-  function editor(readOnly) {
+  const editor = React.useCallback((readOnly) => {
     if (readOnly) {
-      return <div> 
+      return <div>
         readOnly
         <p>{savedMarkdown}</p>
         <p>{currentMarkdown}</p>
         <MDXEditor
+          key={`${editState}`}
           contentEditableClassName="editable-document-page"
           class="document"
-          markdown={savedMarkdown}
+          markdown={currentMarkdown}
           plugins={[
             toolbarPlugin({ toolbarContents: () => <KitchenSinkToolbar/> }),
             listsPlugin(),
@@ -98,18 +100,19 @@ export const Page = () => {
             markdownShortcutPlugin()
           ]}
           readOnly
-        />      
+        />
       </div>
-    } 
+    }
     else {
-      return <div> 
+      return <div>
       readWrite
       <p>{savedMarkdown}</p>
       <p>{currentMarkdown}</p>
       <MDXEditor
+        key={`${editState}`}
         contentEditableClassName="editable-document-page"
         class="document"
-        markdown={savedMarkdown}
+        markdown={currentMarkdown}
         plugins={[
           toolbarPlugin({ toolbarContents: () => <KitchenSinkToolbar/> }),
           listsPlugin(),
@@ -128,12 +131,15 @@ export const Page = () => {
           diffSourcePlugin({ viewMode: 'rich-text', diffMarkdown: savedMarkdown }),
           markdownShortcutPlugin()
         ]}
-        onChange={(e) => handleMarkdownChange(e)} 
-      />      
-    </div>
+        onChange={(e) => handleMarkdownChange(e)}
+      />
+      </div>
     }
-  }
-
+  }, [
+    currentMarkdown,
+    savedMarkdown,
+    // simpleSandpackConfig,
+  ]);
 
   const clickEdit = () => {
     const editButton = document.getElementById("edit-button");
@@ -142,6 +148,8 @@ export const Page = () => {
     editButton.style.visibility = 'hidden';
     saveCancel.style.visibility = 'visible';
     setReadOnly(false)
+    setEditState(false)
+
   };
 
   const clickSave = () => {
@@ -152,7 +160,8 @@ export const Page = () => {
     saveCancel.style.visibility = 'hidden';
 
     setReadOnly(true)
-    setCurrentMarkdown(currentMarkdown)
+    setEditState(true)
+    //setCurrentMarkdown(currentMarkdown)
     setSavedMarkdown(currentMarkdown)
     /*
     TODO:
@@ -168,8 +177,9 @@ export const Page = () => {
     saveCancel.style.visibility = 'hidden';    
 
     setReadOnly(true)
+    setEditState(true)
     setCurrentMarkdown(savedMarkdown)
-    setSavedMarkdown(savedMarkdown)
+    //setSavedMarkdown(savedMarkdown)
   };
 
   if (loading) {
