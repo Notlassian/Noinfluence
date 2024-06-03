@@ -94,11 +94,24 @@ export async function storePage(
     }
 
     if (!update) {
-        const query = 'call insert_page($1,$2,$3,$4,$5)';
-        const params = [pageName, fileLocation, folderName, spaceName, orgName];
-
+        const queryFolder = 'call insert_folder($1, $2, $3)';
+        const paramsFolder = [
+            folderName,
+            spaceName,
+            orgName
+        ];
         try {
-            await sqlPool.query(query, params);
+            await sqlPool.query(queryFolder, paramsFolder);
+            const query = 'call insert_page($1, $2, $3, $4)';
+                const params = [
+                    pageName,
+                    folderName,
+                    spaceName,
+                    orgName
+                ];
+               await sqlPool
+                    .query(query,params);
+
         } catch (error) {
             deleteFile(fileLocation);
             throw error;
