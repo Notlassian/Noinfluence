@@ -1,6 +1,6 @@
 import { Route, Routes } from 'react-router-dom';
 import { HomeDashboard, HomeSideNavigationBar } from "../components";
-import { OrganisationSetting } from "./OrganisationSetting";
+import { OrganisationSetting } from "./";
 import './css/Home.css';
 
 export const Home = () => {
@@ -9,21 +9,15 @@ export const Home = () => {
   const updatedFolders = ['Folder 1', 'Folder 2', 'Folder 3'];
   const updatedPages = ['Page 1', 'Page 2', 'Page 3'];
 
-  const sideNavBarItem = [
-    ['space1','./dot.png'],
-    ['space2','./dot.png'],
-  ];
-
   return (
     <div className="home-container">
 
-      <HomeSideNavigationBar
-        sideNavBarItem={sideNavBarItem}/>
+      <HomeSideNavigationBar/>
 
       <HomeDashboard updatedSpaces={updatedSpaces} updatedFolders={updatedFolders} updatedPages={updatedPages} />
 
       <Routes>
-        <Route path="spaceSettings" element={<OrganisationSetting />} />
+        <Route path="/organisationSettings" element={<OrganisationSetting />} />
       </Routes>
     </div>
   );

@@ -1,7 +1,7 @@
 import { Route, Routes } from 'react-router-dom';
 
 import { NavigationBar, Callback } from './components';
-import { Home, Space } from './pages';
+import { Home, Space, Page } from './pages';
 import './App.css';
 
 export default function App() {

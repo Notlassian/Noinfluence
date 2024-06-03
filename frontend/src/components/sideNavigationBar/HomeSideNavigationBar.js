@@ -9,6 +9,8 @@ export const HomeSideNavigationBar = () => {
   const [organisations, setOrganisations] = useState([]);
   const [newOrganisationName, setNewOrganisationName] = useState('');
 
+  const organisationName = localStorage.getItem('organisationName');
+
   const navigate = useNavigate();
 
   const showSideNavigationBar = () => {
@@ -82,9 +84,13 @@ export const HomeSideNavigationBar = () => {
         <img src="/menu.png" alt="menu-burger" />
       </div>
 
-      <div className="burger" onClick={showSideNavigationBar}>
-        <img src="/menu.png" alt="menu-burger" />
-      </div>
+      <span
+        className="organisation-setting"
+        style={{ display: sideNavBarWindow === false ? "none" : "inline-block" }}
+        onClick={() => navigate(`/${organisationName}/organisationSettings`)}>
+
+        {'Organisation Setting'}
+      </span>
 
       { sideNavBarWindow &&
         <ul className="navbar-list">

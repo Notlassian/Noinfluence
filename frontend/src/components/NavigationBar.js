@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from "react-router-dom";
 import { LoginLink } from './authentication';
-import { SpaceDropDown } from './SpaceDropDown';
 import {PageCreator} from './PageCreator'
 import './css/NavigationBar.css';
 
@@ -17,14 +16,7 @@ export const NavigationBar = () => {
           Noinfluence
         </Link>
 
-        <ul className="nav-list">
-
-          <li><SpaceDropDown title="Space" items={spaceDropDownItems} /></li>
-        </ul>
-
         <PageCreator orgName="myOrg" spaceName="mySpace"/>
-
-        <SearchBar onSearch={(query) => console.log(query)} />
       </div>
 
       <div className="nav-profile">
