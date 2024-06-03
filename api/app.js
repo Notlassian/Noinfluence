@@ -10,6 +10,8 @@ const port = process.env.PORT || 8080;
 
 export const app = express();
 
+app.set('trust proxy', 1);
+
 const frontendUrl = process.env.FRONT_END_URL || 'http://localhost:5500';
 const corsOptions = {
     origin: frontendUrl,
