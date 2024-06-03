@@ -25,7 +25,7 @@ VALUES ('Documents', NOW(), (SELECT space_id FROM space WHERE space_name = 'Sale
        ('Designs', NOW(), (SELECT space_id FROM space WHERE space_name = 'Development')),
        ('Bugs', NOW(), (SELECT space_id FROM space WHERE space_name = 'Support'));
 
-INSERT INTO page (page_name, page_created_at, file_path, folder_id)
+INSERT INTO page (page_name, page_created_at, folder_id)
 VALUES ('Document 1', NOW(), (SELECT folder_id FROM folder WHERE folder_name = 'Documents')),
        ('Report 1', NOW(), (SELECT folder_id FROM folder WHERE folder_name = 'Reports')),
        ('Design 1', NOW(), (SELECT folder_id FROM folder WHERE folder_name = 'Designs')),
