@@ -99,9 +99,9 @@ export const Page = () => {
         
       <SpaceSideNavigationBar/>
       
-      { editEnabled ? <nav class="document-manager">
-        <button id='edit-button' onClick={clickEdit}> edit </button>
-      </nav> : null}
+      <nav class="document-manager">
+        { editEnabled ? <button id='edit-button' onClick={clickEdit}> edit </button> : null}
+      </nav>
       <div class="background">
         <div class="document-container">
           <MDXEditor
