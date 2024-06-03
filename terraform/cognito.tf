@@ -1,5 +1,5 @@
 locals {
-  secure_domain = "https://${local.domain}"
+  secure_domain = "https://${local.domain}/callback"
 }
 
 resource "aws_cognito_user_pool" "app_user_pool" {

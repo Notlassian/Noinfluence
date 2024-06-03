@@ -1,5 +1,5 @@
 locals {
-  secure_domain_dev = "https://localhost:5500"
+  secure_domain_dev = "http://localhost:5500/callback"
 }
 
 resource "aws_cognito_user_pool" "dev_user_pool" {
@@ -43,7 +43,7 @@ resource "aws_cognito_user_pool" "dev_user_pool" {
     email_message_by_link = "Thank you for signing up to Noinfluence.\n\nPlease follow the verification link below to verify you email.\n\nVerification Link: {##Click Here##}"
   }
 
-  mfa_configuration = "ON"
+  mfa_configuration = "OPTIONAL"
 
   software_token_mfa_configuration {
     enabled = true
