@@ -5,18 +5,15 @@ import { getData, postData } from "../../utils";
 import 'reactjs-popup/dist/index.css';
 import '../css/PageCreator.css';
 
-export const AddSpaceUserPopUp = (props) => {
-
-  const [userRole, setUserRole] = useState('Admin');
+export const AddOrgUserPopUp = (props) => {
 
   const orgName = props.organisationName;
-  const spaceName = props.spaceName;
 
-  const addSpaceUser = async () => {
+  const addOrgUser = async () => {
     const inputUserName = document.getElementsByClassName("user-name")[0].value;
 
     try {
-      const response = await postData(`org/${orgName}/spaces/${spaceName}/admin/add`, { user: inputUserName, role: userRole }, localStorage.getItem("accessToken"));
+      const response = await postData(`org/${orgName}/admin/add`, { user: inputUserName }, localStorage.getItem("accessToken"));
       const data = await response.json();
       console.log('Add response:', data);
 
@@ -25,10 +22,6 @@ export const AddSpaceUserPopUp = (props) => {
       alert(`Error: ${error.message}`);
     }
   }
-
-  const handleRoleChange = (role) => {
-    setUserRole(role);
-  };
 
   return (
     <Popup
@@ -45,30 +38,13 @@ export const AddSpaceUserPopUp = (props) => {
           <span> {orgName} </span>
         </div>
 
-        <div className="space-input">
-          <h4> Space Name: </h4>
-          <span> {spaceName} </span>
-        </div>
-
         <div className="user-input">
           <h4> User Name: </h4>
           <input class="user-name" />
         </div>
-
-        <div className="page-input">
-          <select
-            defaultValue={'Admin'}
-            value={userRole}
-            onChange={(e) => handleRoleChange(e.target.value)}>
-
-            <option value="Admin">Admin</option>
-            <option value="Editor">Editor</option>
-            <option value="Viewer">Viewer</option>
-          </select>
-        </div>
       </div>
 
-      <button class="add-user-button" onClick={() => addSpaceUser()}>
+      <button class="add-user-button" onClick={() => addOrgUser()}>
         Add
       </button>
     </Popup>

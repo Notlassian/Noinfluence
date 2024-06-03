@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useParams } from 'react-router-dom';
 import { AddSpaceUserPopUp } from './popup';
 
 import './css/SettingTable.css';
@@ -6,6 +7,8 @@ import './css/SettingTable.css';
 export const SettingTable = ({ users, onUpdateRoles  }) => {
 
   const [userRoles, setUserRoles] = useState(users);
+
+  const { organisationName, spaceName } = useParams();
 
   const handleRoleChange = (username, newRole) => {
     console.log("New Role:", newRole);
