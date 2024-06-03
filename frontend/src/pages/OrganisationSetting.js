@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { OrgSettingsTable } from "../components";
 import './css/SpaceSetting.css';
-import { HomeSideNavigationBar } from "../components/sideNavigationBar/HomeSideNavigationBar";
+import { HomeSideNavigationBar } from "../components";
 import { useParams } from "react-router-dom";
 import { getData } from "../utils";
 

@@ -8,6 +8,8 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: pass123
       POSTGRES_DB: test
+    ports:
+      - 4000:5432
     healthcheck:
       test: ["CMD", "pg_isready", "-q", "-U", "postgres"]
       interval: 5s

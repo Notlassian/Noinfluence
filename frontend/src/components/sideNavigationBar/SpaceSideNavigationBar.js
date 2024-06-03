@@ -6,6 +6,7 @@ import { getData } from "../../utils";
 export const SpaceSideNavigationBar = () => {
   const [sideNavBarWindow, setSideNavigationBar] = useState(false);
   const [expandedFolderIndex, setExpandedFolderIndex] = useState(null);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [folders, setFolders] = useState([]);
 
   const navigate = useNavigate();
@@ -13,6 +14,15 @@ export const SpaceSideNavigationBar = () => {
   const { orgName, spaceName } = useParams();
 
   console.log(orgName + "/" + spaceName);
+
+  const fetchIsAdmin = React.useCallback(async () => {
+    try {
+      const response = await getData(`org/${orgName}/spaces/${spaceName}/admin/check`, localStorage.getItem("accessToken"));
+      setIsAdmin(response.ok);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }, [orgName, spaceName]);
 
   const fetchFolders = React.useCallback(async () => {
 
@@ -43,8 +53,9 @@ export const SpaceSideNavigationBar = () => {
   };
 
   useEffect(() => {
+    fetchIsAdmin();
     fetchFolders();
-  }, [fetchFolders]);
+  }, [fetchFolders, fetchIsAdmin]);
 
   return (
     <nav className="sideNavBarWindow" style={{ width: sideNavBarWindow === false ? 60 : 250 }}>
@@ -52,13 +63,13 @@ export const SpaceSideNavigationBar = () => {
         <img src="/menu.png" alt="menu-burger" />
       </div>
 
-      <span
+      {isAdmin ? <span
         className="space-setting"
         style={{ display: sideNavBarWindow === false ? "none" : "inline-block" }}
         onClick={() => navigate(`/${orgName}/${spaceName}/settings`)}>
 
         {'Space Setting'}
-      </span>
+      </span> : null }
 
       <ul className="navbar-list">
 

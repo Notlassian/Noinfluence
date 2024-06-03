@@ -4,13 +4,10 @@ import './css/SettingTable.css';
 export const SettingTable = ({ users, onUpdateRoles  }) => {
 
   const [userRoles, setUserRoles] = useState(users);
-  const [selectedValue, setSelectedValue] = useState('');
 
   const handleRoleChange = (username, newRole) => {
     console.log("New Role:", newRole);
     console.log("Previous userRoles:", userRoles);
-    setSelectedValue(newRole);
-
 
     setUserRoles(prevUserRoles =>
       prevUserRoles.map(user =>
@@ -44,17 +41,15 @@ export const SettingTable = ({ users, onUpdateRoles  }) => {
         </thead>
         <tbody>
 
-          {users.map((user, index) => (
+          {userRoles.map((user, index) => (
             <tr key={index}>
               <td>{user.username}</td>
               <td>
                 <select
-                  // key={user.role}
-                  defaultValue={user.role}
-                  value={selectedValue}
+                  value={user.role}
                   onChange={(e) => handleRoleChange(user.username, e.target.value)}>
 
-                  <option value="Admin">Admin</option>
+                  <option value="Administrator">Administrator</option>
                   <option value="Editor">Editor</option>
                   <option value="Viewer">Viewer</option>
                 </select>
