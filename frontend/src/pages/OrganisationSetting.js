@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { SettingTable } from "../components";
+import { OrgSettingsTable } from "../components";
 import './css/SpaceSetting.css';
 import { HomeSideNavigationBar } from "../components/sideNavigationBar/HomeSideNavigationBar";
 import { useParams } from "react-router-dom";
@@ -13,12 +13,12 @@ export const OrganisationSetting = () => {
 
   console.log(orgName);
 
-  const fetchUsers = async () => {
+  const fetchUsers = React.useCallback(async () => {
     console.log("in org fetchUsers");
 
     try {
       console.log(`fetch org users url: ${process.env.REACT_APP_API_URL}/org/${orgName}/admin/list`);
-      const response = await getData(`org/${orgName}/admin/list?orgname=${orgName}`, localStorage.getItem("accessToken"));
+      const response = await getData(`org/${orgName}/admin/list`, localStorage.getItem("accessToken"));
       const data = await response.json();
       console.log('organisation user data: ', data);
 
@@ -26,7 +26,7 @@ export const OrganisationSetting = () => {
     } catch (error) {
       console.error('Error:', error);
     }
-  };
+  }, [orgName]);
 
   // const updateRoles = async (updatedUsers) => {
   //   try {
@@ -43,14 +43,14 @@ export const OrganisationSetting = () => {
 
   useEffect(() => {
     fetchUsers();
-  });
+  }, [fetchUsers]);
 
   return (
     <div className="space-setting-container">
 
       <HomeSideNavigationBar/>
 
-      <SettingTable users={users}/>
+      <OrgSettingsTable users={users}/>
     </div>
   );
 };

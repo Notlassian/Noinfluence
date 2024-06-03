@@ -207,7 +207,7 @@ resource "aws_elastic_beanstalk_environment" "beanstalk_env" {
   }
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
-    name      = "DB_PASSWORD"
+    name      = "DB_PWD"
     value     = jsondecode(data.aws_secretsmanager_secret_version.noinfleunce-prod-details.secret_string)["password"]
   }
   setting {

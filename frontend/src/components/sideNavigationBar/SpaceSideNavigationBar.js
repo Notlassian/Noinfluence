@@ -14,7 +14,7 @@ export const SpaceSideNavigationBar = () => {
 
   console.log(orgName + "/" + spaceName);
 
-  const fetchFolders = async () => {
+  const fetchFolders = React.useCallback(async () => {
 
     try {
       const response = await getData(`org/${orgName}/spaces/${spaceName}/list`, localStorage.getItem("accessToken"));
@@ -32,7 +32,7 @@ export const SpaceSideNavigationBar = () => {
     } catch (error) {
       console.error('Error:', error);
     }
-  };
+  }, [orgName, spaceName]);
 
   const showSideNavigationBar = () => {
     setSideNavigationBar(!sideNavBarWindow);
@@ -44,7 +44,7 @@ export const SpaceSideNavigationBar = () => {
 
   useEffect(() => {
     fetchFolders();
-  });
+  }, [fetchFolders]);
 
   return (
     <nav className="sideNavBarWindow" style={{ width: sideNavBarWindow === false ? 60 : 250 }}>

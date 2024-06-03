@@ -25,7 +25,7 @@ export const getSpaceUsers = async (req, res) => {
 };
 
 export const updateUserRole = async (req, res) => {
-    const query = 'call space_update_user_role($1, $2, $3, $4)';
+    const query = 'call update_user_roles_in_space($1, $2, $3, $4)';
     const params = [
         req.params.orgName,
         req.params.spaceName,
