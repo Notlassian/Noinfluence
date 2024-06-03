@@ -1,9 +1,11 @@
 .sideNavBarWindow {
   height: 100vh;
   background-color: #333;
-  box-shadow: 1px 1px 7px rgba(0,0,0,0.15);
+  box-shadow: 1px 1px 7px rgba(0, 0, 0, 0.15);
   transition: all 0.5s ease;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .burger {
@@ -30,6 +32,14 @@
   margin: 0;
 }
 
+.navbar-li-box {
+  margin-top: 15px;
+}
+
+.navbar-li-box:first-child {
+  margin-top: 53px;
+}
+
 .navbar-li {
   display: block;
   padding: 0 0 0 12px;
@@ -43,17 +53,29 @@
   font-weight: 400;
 }
 
-.navbar-li-box {
-  height: 43px;
-  margin-top: 15px;
-}
-
-.navbar-li-box:first-child {
-  margin-top: 53px;
-}
-
-.navbar-li-box:hover {
-  border-left: 7px solid #58b5fc;
+.navbar-li:hover {
   cursor: pointer;
   background-color: #58b5fc;
+}
+
+.sub-list {
+  margin-left: 20px;
+}
+
+.sub-item {
+  margin-top: 10px;
+}
+
+.create-button-container {
+  margin-top: auto;
+  padding: 10px;
+}
+
+.create-button {
+  width: 100%;
+  padding: 10px;
+  background-color: #58b5fc;
+  color: white;
+  border: none;
+  border-radius: 5px;
 }

@@ -18,11 +18,11 @@ export const postToken = async (req, res) => {
     const body = {
         code,
         grant_type: 'authorization_code',
-        redirect_uri: 'https://noinfluence.projects.bbdgrad.com',
+        redirect_uri: process.env.COGNITO_REDIRECT,
     };
 
     const response = await fetch(
-        'https://noinfluence.auth.eu-west-1.amazoncognito.com/oauth2/token',
+        `${process.env.COGNITO_DOMAIN}/oauth2/token`,
         {
             method: 'post',
             headers: {

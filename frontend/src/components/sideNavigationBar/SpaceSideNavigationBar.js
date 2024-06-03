@@ -1,88 +1,120 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useParams } from 'react-router-dom';
 import '../css/SpaceSideNavigationBar.css';
+import { getData } from "../../utils";
 
-export const SpaceSideNavigationBar = ({sideNavBarItem}) => {
+export const SpaceSideNavigationBar = () => {
+  const [sideNavBarWindow, setSideNavigationBar] = useState(false);
+  const [expandedFolderIndex, setExpandedFolderIndex] = useState(null);
+  const [folders, setFolders] = useState([]);
 
-  const [ sideNavBarWindow, setSideNavigationBar ] = useState(false);
-  const [isExpanded, setIsExpanded] = useState(false);
+  const navigate = useNavigate();
+
+  const { orgName, spaceName } = useParams();
+
+  console.log(orgName + "/" + spaceName);
+
+  const fetchFolders = async () => {
+
+    try {
+      const response = await getData(`org/${orgName}/spaces/${spaceName}/list`, localStorage.getItem("accessToken"));
+      const data = await response.json();
+      console.log(data);
+
+      const formattedData = Object.entries(data).map(([key, value]) => ({
+        name: key,
+        items: value.map(folder => folder)
+      }));
+
+      console.log(formattedData);
+
+      setFolders(formattedData);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
 
   const showSideNavigationBar = () => {
     setSideNavigationBar(!sideNavBarWindow);
-  }
-
-  const toggleExpanded = () => {
-    setIsExpanded(!isExpanded);
   };
+
+  const toggleFolderExpanded = (folderIndex) => {
+    setExpandedFolderIndex(expandedFolderIndex === folderIndex ? null : folderIndex);
+  };
+
+  useEffect(() => {
+    fetchFolders();
+  });
 
   return (
     <nav className="sideNavBarWindow" style={{ width: sideNavBarWindow === false ? 60 : 250 }}>
-      <div className="burger" onClick={() => showSideNavigationBar()}>
-
+      <div className="burger" onClick={showSideNavigationBar}>
         <img src="/menu.png" alt="menu-burger" />
       </div>
 
+      <span
+        className="space-setting"
+        style={{ display: sideNavBarWindow === false ? "none" : "inline-block" }}
+        onClick={() => navigate(`/${orgName}/${spaceName}/settings`)}>
+
+        {'Space Setting'}
+      </span>
+
       <ul className="navbar-list">
 
-        <div className="navbar-li-box" key={0}>
-          <img
-            src={'/dot.png'}
-            alt={'Space Name'}
-            style={{ paddingLeft: sideNavBarWindow === false ? 17 : 27 }}/>
+          <li key={`${spaceName}`}>
+            <span
+              className="navbar-li"
+              style={{ display: sideNavBarWindow === false ? "none" : "inline-block" }}>
 
-          <li
-            className="navbar-li"
-            style={{ display: sideNavBarWindow === false ? "none" : "inline-block" }}>
-            {'Space Name'}
-          </li>
-        </div>
+              {spaceName}
+            </span>
 
-        <div className="navbar-li-box" key={1}>
-          <img
-            src={'/dot.png'}
-            alt={'Space Setting'}
-            style={{ paddingLeft: sideNavBarWindow === false ? 17 : 27 }}/>
+            {folders.map((folder, folderIndex) => (
 
-          <li
-            className="navbar-li"
-            style={{ display: sideNavBarWindow === false ? "none" : "inline-block" }}>
-            {'Space Setting'}
-          </li>
-        </div>
-
-        <div
-          className="navbar-li-box"
-          key={2}
-          onClick={toggleExpanded}>
-
-          <img
-            src={'/dot.png'}
-            alt={'Folders/Pages'}
-            style={{ paddingLeft: sideNavBarWindow === false ? 17 : 27 }}/>
-
-          <li
-            className="navbar-li"
-            style={{ display: sideNavBarWindow === false ? "none" : "inline-block" }}>
-            {'Folders/Pages'}
-          </li>
-
-          {isExpanded && sideNavBarItem.map((item, i) => (
-              <div className="navbar-li-box" key={(2+i)}>
-                <img
-                  src={item[1]}
-                  alt={item[1]}
-                  style={{ paddingLeft: sideNavBarWindow === false ? 17 : 27 }}/>
-
+              <ul key={`folder-${folderIndex}`} className="sub-list">
                 <li
-                  className="navbar-li"
-                  style={{ display: sideNavBarWindow === false ? "none" : "inline-block" }}>
-                  {item[0]}
+                  className={`sub-item ${expandedFolderIndex === folderIndex ? "expanded" : ""}`}
+                  onClick={() => toggleFolderExpanded(folderIndex)}>
+
+                  <span
+                    className="navbar-li"
+                    style={{ display: sideNavBarWindow === false ? "none" : "inline-block" }}>
+
+                    {folder.name}
+                  </span>
+
+                  {expandedFolderIndex === folderIndex && (
+                    <ul className="sub-sub-list">
+                      {folder.items.map((page, pageIndex) => (
+                        <li
+                          key={`page-${pageIndex}`}
+                          className="sub-sub-item"
+                          onClick={() => navigate(`/${orgName}/${spaceName}/${folder.name}/${page}`)}>
+
+                          <span
+                            className="navbar-li"
+                            style={{ display: sideNavBarWindow === false ? "none" : "inline-block" }}>
+
+                            {page}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </li>
-              </div>
+              </ul>
             ))}
-        </div>
-
-
+          </li>
       </ul>
+
+      {sideNavBarWindow &&
+
+        <div className="create-button-container">
+          <button className="create-button">Create Page</button>
+        </div>
+      }
     </nav>
   );
 };
+

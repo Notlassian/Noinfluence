@@ -246,4 +246,14 @@ resource "aws_elastic_beanstalk_environment" "beanstalk_env" {
     name      = "PAGE_BUCKET"
     value     = aws_s3_bucket.page_storage.bucket
   }
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "COGNITO_DOMAIN"
+    value     = "https://${aws_cognito_user_pool_domain.app_user_pool_domain.domain}.auth.eu-west-1.amazoncognito.com"
+  }
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "COGNITO_REDIRECT"
+    value     = aws_cognito_user_pool_client.app_user_pool_client.default_redirect_uri
+  }
 }

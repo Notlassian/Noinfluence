@@ -1,29 +1,21 @@
-import { SpaceDashboard, SpaceSideNavigationBar } from "../components";
+import React from 'react';
+import { useParams } from 'react-router-dom';
+import { SpaceSideNavigationBar } from "../components";
 import './css/Space.css';
 
 export const Space = () => {
 
-  const description = 'This space is to demostrate';
-  const openIssues = ['Issue 1', 'Issue 2', 'Issue 3'];
-  const openIssuesNum = 4;
-  const completedIssuesNum = 7;
+  const { orgName, spaceName } = useParams();
 
-  const sideNavBarItem = [
-    ['page1','./dot.png'],
-    ['page2','./dot.png'],
-  ];
+  console.log(orgName + "/" + spaceName);
 
   return (
     <div className="space-container">
-      <SpaceSideNavigationBar
-        sideNavBarItem={sideNavBarItem}
-        />
-      <SpaceDashboard
-        description={description}
-        openIssues={openIssues}
-        openIssuesNum={openIssuesNum}
-        completedIssuesNum={completedIssuesNum} />
-    </div>
 
+      <SpaceSideNavigationBar/>
+
+      <h1>Welcome to {spaceName}</h1>
+
+    </div>
   );
 };

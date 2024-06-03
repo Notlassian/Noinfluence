@@ -1,4 +1,5 @@
 import { HttpStatusCodes } from '../Utils/httpStatusCodes.js';
+import { sqlPool } from '../Utils/dbUtils.js';
 
 export const getOrgAdmins = async (req, res) => {
     const query =

@@ -1,2 +1,2 @@
-export * from './SpaceSideNavigationBar';
 export * from './HomeSideNavigationBar';
+export * from './SpaceSideNavigationBar';

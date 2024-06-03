@@ -1,13 +1,15 @@
 .sideNavBarWindow {
   height: 100vh;
   background-color: #333;
-  box-shadow: 1px 1px 7px rgba(0,0,0,0.15);
+  box-shadow: 1px 1px 7px rgba(0, 0, 0, 0.15);
   transition: all 0.5s ease;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .burger {
   display: flex;
-  flex-direction: row;
   justify-content: flex-end;
   border-bottom: 0.2rem solid red;
   color: white;
@@ -31,30 +33,80 @@
 }
 
 .navbar-li {
-  display: block;
-  padding: 0 0 0 12px;
-  position: relative;
-  top: 2.5px;
+  padding: 12px 0 12px 27px;
   font-size: 16px;
-  letter-spacing: 0;
   line-height: 38px;
   color: #ffffff;
   font-family: "Lato", sans-serif;
   font-weight: 400;
-}
-
-.navbar-li-box {
-  height: 43px;
-  margin-top: 15px;
-}
-
-.navbar-li-box:first-child {
-  margin-top: 53px;
-}
-
-.navbar-li-box:hover {
-  border-left: 7px solid #58b5fc;
   cursor: pointer;
+  display: inline-block;
+}
+
+.navbar-li:hover {
+  background-color: #58b5fc;
+}
+
+.sub-list {
+  list-style-type: none;
+  padding-left: 20px;
+  margin: 0;
+}
+
+.sub-item {
+  margin-bottom: 5px;
+}
+
+.sub-item.expanded .sub-sub-list {
+  display: block;
+}
+
+.sub-sub-list {
+  display: none;
+  list-style-type: none;
+  padding-left: 20px;
+}
+
+.sub-sub-item {
+  margin-bottom: 5px;
+}
+
+.sub-sub-item .navbar-li {
+  padding-left: 51px;
+}
+
+.create-button-container {
+  margin-top: auto;
+  padding: 10px;
+}
+
+.create-button {
+  width: 100%;
+  padding: 10px;
+  background-color: #58b5fc;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.create-button:hover {
+  background-color: #4ca6e0;
+}
+
+.space-setting {
+  margin: 0;
+  padding: 12px 0 12px 12px;
+  font-size: 16px;
+  line-height: 38px;
+  color: #ffffff;
+  font-family: "Lato", sans-serif;
+  font-weight: 400;
+  cursor: pointer;
+  display: inline-block;
+}
+
+.space-setting:hover {
   background-color: #58b5fc;
 }
 
