@@ -256,4 +256,9 @@ resource "aws_elastic_beanstalk_environment" "beanstalk_env" {
     name      = "COGNITO_REDIRECT"
     value     = aws_cognito_user_pool_client.app_user_pool_client.default_redirect_uri
   }
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "FRONT_END_URL"
+    value     = "https://${local.domain}"
+  }
 }
