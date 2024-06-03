@@ -20,13 +20,13 @@ BEGIN
     FROM role
     WHERE role_name = p_role_name;
     
-    SELECT space_id INTO v_space_id
-    FROM space
-    WHERE space_name = p_space_name;
-    
     SELECT organization_id INTO v_organization_id
     FROM organization
     WHERE organization_name = p_organization_name;
+    
+    SELECT space_id INTO v_space_id
+    FROM space
+    WHERE space_name = p_space_name AND organization_id = v_organization_id;
     
     IF v_user_id IS NULL THEN
         RAISE EXCEPTION 'User not found';
