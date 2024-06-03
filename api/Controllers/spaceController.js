@@ -90,7 +90,7 @@ export const getMyPermissions  = async (req, res) => {
             .query(query, params)
             .then((sqlRes) => {
                 const permissions = sqlRes.rows.map((perm) => perm.permission_name);
-                res.status(HttpStatusCodes.OK).json(permissions);
+                res.status(HttpStatusCodes.OK).json({ perms: permissions});
             })
             .catch((error) => {
                 console.log(error);
