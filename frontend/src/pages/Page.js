@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { SpaceSideNavigationBar } from "../components";
+// import { SpaceSideNavigationBar } from "../components";
 
 import {MDXEditor} from '@mdxeditor/editor';
 import '../components/css/Document.css'
@@ -76,7 +76,7 @@ export const Page = () => {
         console.error('Error fetching data:', error);
         setLoading(false);
       });
-  }, []);
+  }, [folderName, orgName, pageName, spaceName]);
 
   const page = () => {
     if (readOnly) {
