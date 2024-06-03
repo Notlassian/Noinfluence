@@ -1,0 +1,21 @@
+.popup-content {
+  padding: 2em;
+  max-width: 70em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.menu {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+
+.create-page-button {
+  margin-top: 5%;
+  margin: 5% 35% auto 35%;
+  min-width: 20%;
+}
