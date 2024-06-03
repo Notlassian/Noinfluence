@@ -44,7 +44,7 @@ export const SpaceSideNavigationBar = () => {
 
   useEffect(() => {
     fetchFolders();
-  }, []);
+  });
 
   return (
     <nav className="sideNavBarWindow" style={{ width: sideNavBarWindow === false ? 60 : 250 }}>

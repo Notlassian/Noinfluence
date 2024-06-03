@@ -3,7 +3,7 @@ import { SettingTable } from "../components";
 import './css/SpaceSetting.css';
 import { HomeSideNavigationBar } from "../components/sideNavigationBar/HomeSideNavigationBar";
 import { useParams } from "react-router-dom";
-import { getData, postData } from "../utils";
+import { getData } from "../utils";
 
 export const OrganisationSetting = () => {
 
@@ -28,22 +28,22 @@ export const OrganisationSetting = () => {
     }
   };
 
-  const updateRoles = async (updatedUsers) => {
-    // try {
-    //   await Promise.all(updatedUsers.map(async (user) => {
-        // const response = await postData(`org/${orgName}/admin/add`, { user: user.username }, localStorage.getItem("accessToken"));
-    //     const data = await response.json();
-    //     console.log('Update response:', data);
-    //   }));
-    //   fetchUsers();
-    // } catch (error) {
-    //   console.error('Error:', error);
-    // }
-  };
+  // const updateRoles = async (updatedUsers) => {
+  //   try {
+  //     await Promise.all(updatedUsers.map(async (user) => {
+  //       const response = await postData(`org/${orgName}/admin/add`, { user: user.username }, localStorage.getItem("accessToken"));
+  //       const data = await response.json();
+  //       console.log('Update response:', data);
+  //     }));
+  //     fetchUsers();
+  //   } catch (error) {
+  //     console.error('Error:', error);
+  //   }
+  // };
 
   useEffect(() => {
     fetchUsers();
-  }, []);
+  });
 
   return (
     <div className="space-setting-container">

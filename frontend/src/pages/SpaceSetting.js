@@ -13,10 +13,6 @@ export const SpaceSetting = () => {
   console.log(orgName + "/" + spaceName);
 
   const fetchUsers = async () => {
-    const fetchUsersOptions = {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' }
-    };
 
     try {
       const response = await getData(`org/${orgName}/spaces/${spaceName}/admin/list`, localStorage.getItem("accessToken"));
@@ -44,7 +40,7 @@ export const SpaceSetting = () => {
 
   useEffect(() => {
     fetchUsers();
-  }, []);
+  });
 
   return (
     <div className="space-setting-container">
