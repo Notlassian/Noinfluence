@@ -1,10 +1,15 @@
 import React, { useState, useEffect } from "react";
+import { AddSpaceUserPopUp } from './popup';
+
 import './css/SettingTable.css';
 
 export const SettingTable = ({ users, onUpdateRoles  }) => {
 
   const [userRoles, setUserRoles] = useState(users);
   const [selectedValue, setSelectedValue] = useState('');
+
+  const organisationName = localStorage.getItem('organisationName');
+  const spaceName = localStorage.getItem('spaceName');
 
   const handleRoleChange = (username, newRole) => {
     console.log("New Role:", newRole);
@@ -49,7 +54,6 @@ export const SettingTable = ({ users, onUpdateRoles  }) => {
               <td>{user.username}</td>
               <td>
                 <select
-                  // key={user.role}
                   defaultValue={user.role}
                   value={selectedValue}
                   onChange={(e) => handleRoleChange(user.username, e.target.value)}>
@@ -65,6 +69,8 @@ export const SettingTable = ({ users, onUpdateRoles  }) => {
       </table>
 
       <button className="confirm-button" onClick={handleConfirmClick}>Confirm</button>
+
+      <AddSpaceUserPopUp orgName={`${organisationName}`} spaceName={`${spaceName}`} />
     </div>
   );
 };
