@@ -1,33 +1,31 @@
 import React from 'react';
 import { Popup } from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
-import { useNavigate } from 'react-router-dom';
-import './css/PageCreator.css'
+import { useNavigate, useParams } from 'react-router-dom';
+import '../css/PageCreator.css'
+
 export const PageCreator = (props) => {
+
   const navigate = useNavigate();
 
+  const { orgName, spaceName } = useParams();
+
   const createPage = () => {
-    const org = props.orgName;
-    const space = props.spaceName;
 
     const folder = document.getElementsByClassName("folder-name")[0].value;
     const page = document.getElementsByClassName("page-name")[0].value;
 
-
-    console.log(`org/${org}/spaces/${space}/pages/${folder}/${page}/retreive`); // TODO: replace with call to API
+    console.log(`org/${orgName}/spaces/${spaceName}/pages/${folder}/${page}/retreive`); // TODO: replace with call to API
     // Redirect to the new page
-    navigate(`/pages/${org}/${space}/${folder}/${page}`);
+    navigate(`/pages/${orgName}/${spaceName}/${folder}/${page}`);
   };
-
-  var orgName = props.orgName;
-  var spaceName = props.spaceName;
 
   return (
     <Popup
       trigger={<button className="button"> Create Page </button>}
       position="bottom center"
       closeOnDocumentClick
-      modal 
+      modal
       nested
     >
       <div className="menu">
