@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
+import { SpaceSideNavigationBar } from "../components";
 
 import {MDXEditor} from '@mdxeditor/editor';
 import '../components/Document.css'
@@ -25,9 +26,15 @@ import {
   KitchenSinkToolbar,
   AdmonitionDirectiveDescriptor
 } from '@mdxeditor/editor';
+import { useParams } from 'react-router-dom';
 
 
 export const Page = () => {
+
+  const { orgName, spaceName, folderName, pageName } = useParams();
+
+  console.log(orgName + "/" + spaceName + "/" + folderName + "/" + pageName);
+
   const simpleSandpackConfig = {
     defaultPreset: 'txt',
     presets: [
@@ -72,6 +79,9 @@ export const Page = () => {
   const page = () => {
     if (readOnly) {
       return <div class="page">
+        
+      <SpaceSideNavigationBar/>
+      
       <nav class="document-manager">
         <button id='edit-button' onClick={clickEdit}> edit </button>
       </nav>
@@ -109,6 +119,9 @@ export const Page = () => {
     }
     else {
       return <div class="page">
+        
+      <SpaceSideNavigationBar/>
+      
       <nav class="document-manager">
         <div id="save-cancel">
           <button id='save-button' onClick={clickSave}> save </button>

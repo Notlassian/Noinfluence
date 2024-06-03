@@ -1,6 +1,4 @@
-import { Route, Routes } from 'react-router-dom';
 import { HomeDashboard, HomeSideNavigationBar } from "../components";
-import { OrganisationSetting } from "./";
 import './css/Home.css';
 
 export const Home = () => {
@@ -15,10 +13,6 @@ export const Home = () => {
       <HomeSideNavigationBar/>
 
       <HomeDashboard updatedSpaces={updatedSpaces} updatedFolders={updatedFolders} updatedPages={updatedPages} />
-
-      <Routes>
-        <Route path="/organisationSettings" element={<OrganisationSetting />} />
-      </Routes>
     </div>
   );
 };

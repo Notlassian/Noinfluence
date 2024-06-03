@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import '../css/SpaceSideNavigationBar.css';
+import { getData } from "../../utils";
 
 export const SpaceSideNavigationBar = () => {
   const [sideNavBarWindow, setSideNavigationBar] = useState(false);
@@ -8,17 +9,15 @@ export const SpaceSideNavigationBar = () => {
   const [folders, setFolders] = useState([]);
 
   const navigate = useNavigate();
-  const organisationName = localStorage.getItem('organisationName');
-  const spaceName = localStorage.getItem('spaceName');
+
+  const { orgName, spaceName } = useParams();
+
+  console.log(orgName + "/" + spaceName);
 
   const fetchFolders = async () => {
-    const fetchFoldersOptions = {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' }
-    };
 
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/org/${organisationName}/spaces/${spaceName}/list`, fetchFoldersOptions);
+      const response = await getData(`org/${orgName}/spaces/${spaceName}/list`, localStorage.getItem("accessToken"));
       const data = await response.json();
       console.log(data);
 
@@ -56,7 +55,7 @@ export const SpaceSideNavigationBar = () => {
       <span
         className="space-setting"
         style={{ display: sideNavBarWindow === false ? "none" : "inline-block" }}
-        onClick={() => navigate(`/${organisationName}/${spaceName}/spaceSettings`)}>
+        onClick={() => navigate(`/${orgName}/${spaceName}/settings`)}>
 
         {'Space Setting'}
       </span>
@@ -91,7 +90,7 @@ export const SpaceSideNavigationBar = () => {
                         <li
                           key={`page-${pageIndex}`}
                           className="sub-sub-item"
-                          onClick={() => navigate(`/org/${organisationName}/spaces/${spaceName}/pages/${folder.name}/${page}/retrieve`)}>
+                          onClick={() => navigate(`/${orgName}/${spaceName}/${folder.name}/${page}`)}>
 
                           <span
                             className="navbar-li"

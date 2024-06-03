@@ -1,15 +1,13 @@
 import { React, useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import '../css/HomeSideNavigationBar.css';
+import { getData } from "../../utils";
 
 export const HomeSideNavigationBar = () => {
 
   const [sideNavBarWindow, setSideNavigationBar] = useState(false);
   const [expandedIndex, setExpandedIndex] = useState(null);
   const [organisations, setOrganisations] = useState([]);
-  const [newOrganisationName, setNewOrganisationName] = useState('');
-
-  const organisationName = localStorage.getItem('organisationName');
 
   const navigate = useNavigate();
 
@@ -22,13 +20,8 @@ export const HomeSideNavigationBar = () => {
   };
 
   const fetchOrganisations = async () => {
-    const fetchOrganisationsOptions = {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' }
-    };
-
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/org/list`, fetchOrganisationsOptions);
+      const response = await getData('org/list', localStorage.getItem("accessToken"));
       const data = await response.json();
 
       const formattedData = Object.entries(data).map(([key, value]) => ({
@@ -46,11 +39,11 @@ export const HomeSideNavigationBar = () => {
     // const createOrganisationOptions = {
     //   method: 'POST',
     //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify({ org: newOrganisationName })
+    //   body: JSON.stringify()
     // };
 
     // try {
-    //   const response = await fetch(`${process.env.REACT_APP_API_URL}/org/create`, createOrganisationOptions);
+      // const response = await postData('org/create', { org: newOrganisationName }, localStorage.getItem("accessToken"));
     //   const result = await response.json();
 
     //   if (response.ok) {
@@ -84,20 +77,18 @@ export const HomeSideNavigationBar = () => {
         <img src="/menu.png" alt="menu-burger" />
       </div>
 
-      <span
-        className="organisation-setting"
-        style={{ display: sideNavBarWindow === false ? "none" : "inline-block" }}
-        onClick={() => navigate(`/${organisationName}/organisationSettings`)}>
-
-        {'Organisation Setting'}
-      </span>
-
       { sideNavBarWindow &&
         <ul className="navbar-list">
           {organisations.map((organisation, orgIndex) => (
             <li key={`organisation-${orgIndex}`} className="navbar-li-box">
               <div className="navbar-li" onClick={() => toggleExpanded(orgIndex)}>
                 {organisation.name}
+                <button
+                  style={{ display: sideNavBarWindow === false ? "none" : "inline-block" }}
+                  onClick={() => navigate(`/${organisation.name}/settings`)}
+                >
+                  {'Setting'} 
+                </button>
               </div>
               {expandedIndex === orgIndex && (
                 <ul className="sub-list">
