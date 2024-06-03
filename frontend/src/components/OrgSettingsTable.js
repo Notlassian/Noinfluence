@@ -1,38 +1,18 @@
 import React, { useState, useEffect } from "react";
 import './css/SettingTable.css';
 
-export const OrgSettingsTable = ({ users, onUpdateRoles  }) => {
+export const OrgSettingsTable = ({ users }) => {
 
   const [userRoles, setUserRoles] = useState(users);
-  const [selectedValue, setSelectedValue] = useState('');
-
-  const handleRoleChange = (username, newRole) => {
-    console.log("New Role:", newRole);
-    console.log("Previous userRoles:", userRoles);
-    setSelectedValue(newRole);
-
-
-    setUserRoles(prevUserRoles =>
-      prevUserRoles.map(user =>
-        user.username === username ? { ...user, role: newRole } : user
-      )
-    );
-  };
-
-  const handleConfirmClick = () => {
-    console.log("Updated userRoles:", userRoles);
-    onUpdateRoles(userRoles);
-  };
 
   useEffect(() => {
-    console.log("UseEffect triggered. Updated users:", users);
     setUserRoles(users);
   }, [users]);
 
   return (
     <div className="space-setting-table">
 
-      <h2>Space Settings</h2>
+      <h2>Organization Settings</h2>
 
       <table>
 
@@ -43,27 +23,13 @@ export const OrgSettingsTable = ({ users, onUpdateRoles  }) => {
         </thead>
         <tbody>
 
-          {users.map((user, index) => (
+          {userRoles.map((user, index) => (
             <tr key={index}>
               <td>{user.username}</td>
-              <td>
-                <select
-                  // key={user.role}
-                  defaultValue={user.role}
-                  value={selectedValue}
-                  onChange={(e) => handleRoleChange(user.username, e.target.value)}>
-
-                  <option value="Admin">Admin</option>
-                  <option value="Editor">Editor</option>
-                  <option value="Viewer">Viewer</option>
-                </select>
-              </td>
             </tr>
           ))}
         </tbody>
       </table>
-
-      <button className="confirm-button" onClick={handleConfirmClick}>Confirm</button>
     </div>
   );
 };

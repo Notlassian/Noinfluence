@@ -8,6 +8,7 @@ export const HomeSideNavigationBar = () => {
   const [sideNavBarWindow, setSideNavigationBar] = useState(false);
   const [expandedIndex, setExpandedIndex] = useState(null);
   const [organisations, setOrganisations] = useState([]);
+  const [isOrgAdmins, setIsOrgAdmins] = useState([]);
 
   const navigate = useNavigate();
 
@@ -29,6 +30,11 @@ export const HomeSideNavigationBar = () => {
         items: value.map(space => [space])
       }));
 
+      console.log(formattedData);
+
+      const isAdminArr = formattedData.map(async (item) => (await getData(`org/${item.name}/admin/check`)).ok);
+      
+      setIsOrgAdmins(isAdminArr);
       setOrganisations(formattedData);
     } catch (error) {
       console.error('Error:', error);
@@ -61,9 +67,6 @@ export const HomeSideNavigationBar = () => {
   }
 
   const onOrganisationClick = (organisationName, spaceName) => {
-    // console.log('organisationName:',organisationName);
-    localStorage.setItem('organisationName', organisationName);
-    localStorage.setItem('spaceName', spaceName);
     navigate(`/${organisationName}/${spaceName}`);
   }
 
@@ -83,12 +86,12 @@ export const HomeSideNavigationBar = () => {
             <li key={`organisation-${orgIndex}`} className="navbar-li-box">
               <div className="navbar-li" onClick={() => toggleExpanded(orgIndex)}>
                 {organisation.name}
-                <button
+                {isOrgAdmins[orgIndex] ? <button
                   style={{ display: sideNavBarWindow === false ? "none" : "inline-block" }}
                   onClick={() => navigate(`/${organisation.name}/settings`)}
                 >
                   {'Setting'} 
-                </button>
+                </button> : null}
               </div>
               {expandedIndex === orgIndex && (
                 <ul className="sub-list">

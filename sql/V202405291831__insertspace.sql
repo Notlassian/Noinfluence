@@ -1,4 +1,5 @@
 CREATE OR REPLACE PROCEDURE insert_space(
+    IN p_username VARCHAR(128),
     IN p_space_name VARCHAR(50),
     IN p_organization_name VARCHAR(50)
 )
@@ -21,6 +22,8 @@ BEGIN
     ELSE
         INSERT INTO space (space_name, space_created_at, organization_id)
         VALUES (p_space_name, CURRENT_TIMESTAMP, v_organization_id);
+
+        CALL add_role_to_user_in_space(p_username, 'Administrator', p_space_name, p_organization_name);
     END IF;
 END;
 $$;
