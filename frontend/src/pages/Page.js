@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { SpaceSideNavigationBar } from "../components";
 
 import {MDXEditor} from '@mdxeditor/editor';
-import '../components/Document.css'
+import '../components/css/Document.css'
 
 import '@mdxeditor/editor/style.css';
 import {

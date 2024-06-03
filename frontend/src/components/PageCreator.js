@@ -2,7 +2,7 @@ import React from 'react';
 import { Popup } from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 import { useNavigate } from 'react-router-dom';
-
+import './css/PageCreator.css'
 export const PageCreator = (props) => {
   const navigate = useNavigate();
 
@@ -27,20 +27,33 @@ export const PageCreator = (props) => {
       trigger={<button className="button"> Create Page </button>}
       position="bottom center"
       closeOnDocumentClick
+      modal 
+      nested
     >
       <div className="menu">
-        <h4> Org Name: </h4>
-        <text> {orgName} </text>
-        <h4> Space Name: </h4>
-        <text> {spaceName} </text>
-        <h4> Folder Name: </h4>
-        <input className="folder-name" />
-        <h4> Page Name: </h4>
-        <input className="page-name" />
-        <button className="create-page-button" onClick={() => createPage()}>
-          Create
-        </button>
+
+        <div class="org-input">
+         <h4> Org Name: </h4>
+          <text> {orgName} </text>
+        </div>
+        <div class="space-input">
+          <h4> Space Name: </h4>
+          <text> {spaceName} </text>
+        </div>
+
+        <div class="folder-input">
+          <h4> Folder Name: </h4>
+          <input class="folder-name" />
+        </div>
+
+        <div class="page-input">
+          <h4> Page Name: </h4>
+          <input class="page-name" />
+        </div>
       </div>
+      <button class="create-page-button" onClick={() => createPage()}>
+          Create
+      </button>
     </Popup>
   );
 };
