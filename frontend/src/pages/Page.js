@@ -27,6 +27,7 @@ import {
   AdmonitionDirectiveDescriptor
 } from '@mdxeditor/editor';
 import { useParams } from 'react-router-dom';
+import { getData } from '../utils';
 
 
 export const Page = () => {
@@ -62,11 +63,12 @@ export const Page = () => {
   };
 
   useEffect(() => {
-    fetch('readme.md')  // TODO: Replace with API endpoint
+    getData(`org/${orgName}/spaces/${spaceName}/pages/${folderName}/${pageName}/retrieve`)
       .then(response => response.text())
-      .then(response => {
-        setSavedMarkdown(response)
-        setCurrentMarkdown(response)
+      .then(data => {
+        console.log(data)
+        setSavedMarkdown(data)
+        setCurrentMarkdown(data)
 
         setLoading(false)
       })
@@ -80,7 +82,7 @@ export const Page = () => {
     if (readOnly) {
       return <div class="page">
         
-      <SpaceSideNavigationBar/>
+      {/* <SpaceSideNavigationBar/> */}
       
       <nav class="document-manager">
         <button id='edit-button' onClick={clickEdit}> edit </button>
@@ -120,7 +122,7 @@ export const Page = () => {
     else {
       return <div class="page">
         
-      <SpaceSideNavigationBar/>
+      {/* <SpaceSideNavigationBar/> */}
       
       <nav class="document-manager">
         <div id="save-cancel">

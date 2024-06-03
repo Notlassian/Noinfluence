@@ -33,6 +33,7 @@ async function uploadToS3(file, fileId, folder) {
 
 function checkSafeFilePath(...paths) {
     const normalizedPath = path.normalize(path.join(...paths));
+    console.log(paths);
 
     if (!normalizedPath.startsWith(localDir)) {
         throw new Error('Path error');
@@ -142,7 +143,6 @@ function checkIfFileExistsLocal(folder, fileId) {
 }
 
 export async function checkIfFileExists(
-    file,
     orgName,
     spaceName,
     folderName,

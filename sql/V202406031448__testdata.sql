@@ -26,10 +26,10 @@ VALUES ('Documents', NOW(), (SELECT space_id FROM space WHERE space_name = 'Sale
        ('Bugs', NOW(), (SELECT space_id FROM space WHERE space_name = 'Support'));
 
 INSERT INTO page (page_name, page_created_at, file_path, folder_id)
-VALUES ('Document 1', NOW(), '/documents/doc1.pdf', (SELECT folder_id FROM folder WHERE folder_name = 'Documents')),
-       ('Report 1', NOW(), '/reports/report1.pdf', (SELECT folder_id FROM folder WHERE folder_name = 'Reports')),
-       ('Design 1', NOW(), '/designs/design1.pdf', (SELECT folder_id FROM folder WHERE folder_name = 'Designs')),
-       ('Bug 1', NOW(), '/bugs/bug1.pdf', (SELECT folder_id FROM folder WHERE folder_name = 'Bugs'));
+VALUES ('Document 1', NOW(), (SELECT folder_id FROM folder WHERE folder_name = 'Documents')),
+       ('Report 1', NOW(), (SELECT folder_id FROM folder WHERE folder_name = 'Reports')),
+       ('Design 1', NOW(), (SELECT folder_id FROM folder WHERE folder_name = 'Designs')),
+       ('Bug 1', NOW(), (SELECT folder_id FROM folder WHERE folder_name = 'Bugs'));
 
 INSERT INTO user_space_role (user_id, space_id, role_id)
 VALUES ((SELECT "user_id" FROM "user" WHERE "username" = 'user1'), (SELECT space_id FROM space WHERE space_name = 'Sales'), 1),

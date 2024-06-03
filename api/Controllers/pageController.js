@@ -24,7 +24,8 @@ export const getPage = async (req, res) => {
         .query(query, params)
         .then(async (sqlRes) => {
             if (sqlRes.rowCount > 0) {
-                const { file_path: filePath } = sqlRes.rows[0];
+                const row = sqlRes.rows[0];
+                const file_path = `${row.organization_name}/${row.space_name}/${row.folder_name}/${row.page_name}`;
 
                 res.status(HttpStatusCodes.OK).json({
                     pageContent: await retrievePage(filePath),
@@ -105,7 +106,6 @@ export const createPage = async (req, res) => {
 
     try {
         const fileExists = await checkIfFileExists(
-            fileContents,
             orgName,
             spaceName,
             folderName,
@@ -119,12 +119,47 @@ export const createPage = async (req, res) => {
         }
 
         await storePage(fileContents, orgName, spaceName, folderName, pageName);
+
+        const query = 'call insert_folder($1, $2, $3)';
+        const params = [
+            folderName,
+            spaceName,
+            orgName
+        ];
+        sqlPool
+            .query(query, params)
+            .then(() => {
+                const query = 'call insert_folder($1, $2, $3, $4)';
+                const params = [
+                    pageName,
+                    folderName,
+                    spaceName,
+                    orgName
+                ];
+                sqlPool
+                    .query(query)
+                    .then(() => 
+                        res.status(HttpStatusCodes.Created).json({
+                            message: 'Page created successfully',
+                        })
+                    )
+                    .catch((err) => {
+                        console.log(error);
+                        res.status(HttpStatusCodes.BadRequest).json({
+                            error: 'Internal Server Error',
+                        });
+                    })
+            })
+            .catch((error) => {
+                console.log(error);
+                res.status(HttpStatusCodes.BadRequest).json({
+                    error: 'Internal Server Error',
+                });
+            });
     } catch (error) {
         console.error(`Error creating page: ${error}`);
         return res
             .status(HttpStatusCodes.InternalServerError)
             .json({ error: 'An error occurred' });
     }
-
-    return res.sendStatus(HttpStatusCodes.Created);
 };
