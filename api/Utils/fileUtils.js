@@ -66,6 +66,7 @@ async function retrieveFromS3(key) {
 }
 
 function retrieveLocally(filePath) {
+    filePath=`${localDir}/${filePath}`;
     checkSafeFilePath(filePath);
     return fs.readFileSync(filePath, 'utf8');
 }

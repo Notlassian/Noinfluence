@@ -25,10 +25,10 @@ export const getPage = async (req, res) => {
         .then(async (sqlRes) => {
             if (sqlRes.rowCount > 0) {
                 const row = sqlRes.rows[0];
-                const file_path = `${row.organization_name}/${row.space_name}/${row.folder_name}/${row.page_name}`;
+                const file_path = `${row.organization_name}/${row.space_name}/${row.folder_name}/${row.page_name}.md`;
 
                 res.status(HttpStatusCodes.OK).json({
-                    pageContent: await retrievePage(filePath),
+                    pageContent: await retrievePage(file_path),
                 });
             } else {
                 res.status(HttpStatusCodes.BadRequest).json({
