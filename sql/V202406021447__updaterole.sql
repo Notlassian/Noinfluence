@@ -47,6 +47,17 @@ BEGIN
     IF NOT EXISTS (
         SELECT 1
         FROM user_space_role
+        WHERE space_id = v_space_id
+		AND role_id = (SELECT role_id FROM role WHERE role_name = 'Administrator')
+		AND NOT user_id = v_user_id
+    )
+    THEN
+        RAISE EXCEPTION 'User is last admin';
+    END IF;
+
+    IF NOT EXISTS (
+        SELECT 1
+        FROM user_space_role
         WHERE user_id = v_user_id AND space_id = v_space_id
     ) THEN
         RAISE EXCEPTION 'User does not have a role in the space';

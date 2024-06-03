@@ -1,6 +1,5 @@
 CREATE OR REPLACE PROCEDURE insert_page(
     IN p_page_name VARCHAR(50),
-    IN p_file_path VARCHAR(1024),
     IN p_folder_name VARCHAR(50),
     IN p_space_name VARCHAR(50),
     IN p_organization_name VARCHAR(50)
@@ -35,8 +34,8 @@ BEGIN
     ) THEN
         RAISE EXCEPTION 'Page name already exists for this folder';
     ELSE
-        INSERT INTO page (page_name, page_created_at, file_path, folder_id)
-        VALUES (p_page_name, CURRENT_TIMESTAMP, p_file_path, v_folder_id)
+        INSERT INTO page (page_name, page_created_at, folder_id)
+        VALUES (p_page_name, CURRENT_TIMESTAMP, v_folder_id)
         RETURNING page_id INTO v_page_id;
     END IF;
 END;

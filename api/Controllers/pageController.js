@@ -24,10 +24,11 @@ export const getPage = async (req, res) => {
         .query(query, params)
         .then(async (sqlRes) => {
             if (sqlRes.rowCount > 0) {
-                const { file_path: filePath } = sqlRes.rows[0];
+                const row = sqlRes.rows[0];
+                const file_path = `${row.organization_name}/${row.space_name}/${row.folder_name}/${row.page_name}.md`;
 
                 res.status(HttpStatusCodes.OK).json({
-                    pageContent: await retrievePage(filePath),
+                    pageContent: await retrievePage(file_path),
                 });
             } else {
                 res.status(HttpStatusCodes.BadRequest).json({
@@ -105,7 +106,6 @@ export const createPage = async (req, res) => {
 
     try {
         const fileExists = await checkIfFileExists(
-            fileContents,
             orgName,
             spaceName,
             folderName,
@@ -119,6 +119,10 @@ export const createPage = async (req, res) => {
         }
 
         await storePage(fileContents, orgName, spaceName, folderName, pageName);
+        return res.status(HttpStatusCodes.OK).json({
+            message: 'Page created successfully',
+        });
+
     } catch (error) {
         console.error(`Error creating page: ${error}`);
         return res
@@ -126,5 +130,4 @@ export const createPage = async (req, res) => {
             .json({ error: 'An error occurred' });
     }
 
-    return res.sendStatus(HttpStatusCodes.Created);
 };

@@ -33,6 +33,7 @@ async function uploadToS3(file, fileId, folder) {
 
 function checkSafeFilePath(...paths) {
     const normalizedPath = path.normalize(path.join(...paths));
+    console.log(paths);
 
     if (!normalizedPath.startsWith(localDir)) {
         throw new Error('Path error');
@@ -65,6 +66,7 @@ async function retrieveFromS3(key) {
 }
 
 function retrieveLocally(filePath) {
+    filePath=`${localDir}/${filePath}`;
     checkSafeFilePath(filePath);
     return fs.readFileSync(filePath, 'utf8');
 }
@@ -93,11 +95,24 @@ export async function storePage(
     }
 
     if (!update) {
-        const query = 'call insert_page($1,$2,$3,$4,$5)';
-        const params = [pageName, fileLocation, folderName, spaceName, orgName];
-
+        const queryFolder = 'call insert_folder($1, $2, $3)';
+        const paramsFolder = [
+            folderName,
+            spaceName,
+            orgName
+        ];
         try {
-            await sqlPool.query(query, params);
+            await sqlPool.query(queryFolder, paramsFolder);
+            const query = 'call insert_page($1, $2, $3, $4)';
+                const params = [
+                    pageName,
+                    folderName,
+                    spaceName,
+                    orgName
+                ];
+               await sqlPool
+                    .query(query,params);
+
         } catch (error) {
             deleteFile(fileLocation);
             throw error;
@@ -142,7 +157,6 @@ function checkIfFileExistsLocal(folder, fileId) {
 }
 
 export async function checkIfFileExists(
-    file,
     orgName,
     spaceName,
     folderName,

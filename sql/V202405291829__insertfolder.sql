@@ -18,14 +18,12 @@ BEGIN
     WHERE space_name = p_space_name
     AND organization_id = v_organization_id;
 
-    IF EXISTS (
+    IF NOT EXISTS (
         SELECT 1
         FROM folder
         WHERE folder_name = p_folder_name
         AND space_id = v_space_id
     ) THEN
-        RAISE EXCEPTION 'Folder name already exists for this space';
-    ELSE
         INSERT INTO folder (folder_name, folder_created_at, space_id)
         VALUES (p_folder_name, CURRENT_TIMESTAMP, v_space_id);
     END IF;
