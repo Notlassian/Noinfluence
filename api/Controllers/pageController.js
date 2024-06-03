@@ -48,11 +48,11 @@ export const updatePage = async (req, res) => {
     const query =
         'SELECT * from page_details WHERE organization_name = $1 AND space_name = $2 AND folder_name = $3 AND page_name = $4';
     const { spaceName, orgName, folderName, pageName } = req.params;
-    const { fileContents } = req.body;
+    const { pageContent } = req.body;
 
-    if (!fileContents) {
+    if (!pageContent) {
         return res.status(HttpStatusCodes.BadRequest).json({
-            error: '"fileContents" required in request body',
+            error: '"pageContent" required in request body',
         });
     }
 
@@ -74,7 +74,7 @@ export const updatePage = async (req, res) => {
         }
 
         await storePage(
-            fileContents,
+            pageContent,
             orgName,
             spaceName,
             folderName,
@@ -96,11 +96,11 @@ export const updatePage = async (req, res) => {
 
 export const createPage = async (req, res) => {
     const { spaceName, orgName, folderName, pageName } = req.params;
-    const { fileContents } = req.body;
+    const { pageContent } = req.body;
 
-    if (!fileContents) {
+    if (!pageContent) {
         return res.status(HttpStatusCodes.BadRequest).json({
-            error: '"fileContents" required in request body',
+            error: '"pageContent" required in request body',
         });
     }
 
@@ -118,7 +118,7 @@ export const createPage = async (req, res) => {
             });
         }
 
-        await storePage(fileContents, orgName, spaceName, folderName, pageName);
+        await storePage(pageContent, orgName, spaceName, folderName, pageName);
         return res.status(HttpStatusCodes.OK).json({
             message: 'Page created successfully',
         });

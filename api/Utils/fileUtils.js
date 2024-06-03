@@ -43,9 +43,9 @@ function checkSafeFilePath(...paths) {
 function storeLocally(file, fileId, folder) {
     checkSafeFilePath(localDir, folder, fileId);
 
-    const folderDir = path.join(localDir, folder);
-    const filePath = path.join(folderDir, fileId);
-
+    const folderDir = path.resolve(localDir, folder);
+    const filePath = path.resolve(localDir, folder, fileId);
+    
     if (!fs.existsSync(folderDir)) {
         fs.mkdirSync(folderDir, { recursive: true });
     }
@@ -66,9 +66,9 @@ async function retrieveFromS3(key) {
 }
 
 function retrieveLocally(filePath) {
-    filePath=`${localDir}/${filePath}`;
+    filePath = `${localDir}/${filePath}`;
     checkSafeFilePath(filePath);
-    return fs.readFileSync(filePath, 'utf8');
+    return fs.readFileSync(path.resolve(filePath), 'utf8');
 }
 
 export async function storePage(

@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-// import { SpaceSideNavigationBar } from "../components";
+import { SpaceSideNavigationBar } from "../components";
 
 import {MDXEditor} from '@mdxeditor/editor';
 import '../components/css/Document.css'
@@ -27,7 +27,7 @@ import {
   AdmonitionDirectiveDescriptor
 } from '@mdxeditor/editor';
 import { useParams } from 'react-router-dom';
-import { getData } from '../utils';
+import { getData, putData } from '../utils';
 
 
 export const Page = () => {
@@ -57,6 +57,7 @@ export const Page = () => {
   const [readOnly, setReadOnly] = useState(true);
   const [loading, setLoading] = useState(true);
   const [ editState, setEditState] = useState(false);
+  const [ editEnabled, setEditEnabled] = useState(false);
 
   const handleMarkdownChange = (newMarkdown) => {
     setCurrentMarkdown(newMarkdown);
@@ -64,13 +65,27 @@ export const Page = () => {
 
   useEffect(() => {
     getData(`org/${orgName}/spaces/${spaceName}/pages/${folderName}/${pageName}/retrieve`)
-      .then(response => response.text())
+      .then(response => response.json())
       .then(data => {
-        console.log(data)
-        setSavedMarkdown(data)
-        setCurrentMarkdown(data)
+        console.log(data);
+        setSavedMarkdown(data.pageContent);
+        setCurrentMarkdown(data.pageContent);
 
-        setLoading(false)
+        setLoading(false);
+
+        getData(`org/${orgName}/spaces/${spaceName}/permissions`, localStorage.getItem("accessToken"))
+          .then(response => response.json())
+          .then(permData => {
+            console.log("PERM DATA:")
+            console.log(permData);
+            if (permData.perms.includes("Write")) {
+              setEditEnabled(true);
+            }
+          })
+          .catch(error => {
+            console.error('Error fetching data:', error);
+            setLoading(false);
+          });
       })
       .catch(error => {
         console.error('Error fetching data:', error);
@@ -82,11 +97,11 @@ export const Page = () => {
     if (readOnly) {
       return <div class="page">
         
-      {/* <SpaceSideNavigationBar/> */}
+      <SpaceSideNavigationBar/>
       
-      <nav class="document-manager">
+      { editEnabled ? <nav class="document-manager">
         <button id='edit-button' onClick={clickEdit}> edit </button>
-      </nav>
+      </nav> : null}
       <div class="background">
         <div class="document-container">
           <MDXEditor
@@ -122,7 +137,7 @@ export const Page = () => {
     else {
       return <div class="page">
         
-      {/* <SpaceSideNavigationBar/> */}
+      <SpaceSideNavigationBar/>
       
       <nav class="document-manager">
         <div id="save-cancel">
@@ -173,10 +188,9 @@ export const Page = () => {
     setReadOnly(true)
     setEditState(!editState)
     setSavedMarkdown(currentMarkdown)
-    /*
-    TODO:
-    Post the markdown to the api endpoint that accepts file changes
-    */
+    
+    putData(`org/${orgName}/spaces/${spaceName}/pages/${folderName}/${pageName}/update`, { pageContent: currentMarkdown}, localStorage.getItem("accessToken"))
+      .catch(error => console.log(error));
   };
 
   const clickCancel = () => {
