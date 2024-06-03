@@ -3,9 +3,9 @@ import { sqlPool } from '../Utils/dbUtils.js';
 
 export const getOrgAdmins = async (req, res) => {
     const query =
-        'Select username FROM organization_admins_view where org_name=$1';
-    const params = [req.params.orgName];
-    if (!params[0]) {
+        'Select username FROM organization_admins_view where organization_name=$1 AND NOT username=$2';
+    const params = [req.params.orgName, req.user];
+    if (!params[0] || !params[1]) {
         res.status(HttpStatusCodes.InternalServerError).json({
             error: 'Internal Server Error',
         });

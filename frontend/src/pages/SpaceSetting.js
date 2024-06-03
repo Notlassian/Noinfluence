@@ -3,6 +3,7 @@ import { SettingTable } from "../components";
 import './css/SpaceSetting.css';
 import { useParams } from "react-router-dom";
 import { getData, postData } from "../utils";
+import { SpaceSideNavigationBar } from "../components/sideNavigationBar/SpaceSideNavigationBar";
 
 export const SpaceSetting = () => {
 
@@ -12,7 +13,7 @@ export const SpaceSetting = () => {
 
   console.log(orgName + "/" + spaceName);
 
-  const fetchUsers = async () => {
+  const fetchUsers = React.useCallback(async () => {
 
     try {
       const response = await getData(`org/${orgName}/spaces/${spaceName}/admin/list`, localStorage.getItem("accessToken"));
@@ -23,7 +24,7 @@ export const SpaceSetting = () => {
     } catch (error) {
       console.error('Error:', error);
     }
-  };
+  }, [orgName, spaceName]);
 
   const updateRoles = async (updatedUsers) => {
     try {
@@ -40,10 +41,11 @@ export const SpaceSetting = () => {
 
   useEffect(() => {
     fetchUsers();
-  });
+  }, [fetchUsers]);
 
   return (
     <div className="space-setting-container">
+      <SpaceSideNavigationBar />
 
       <SettingTable users={users} onUpdateRoles={updateRoles}/>
     </div>

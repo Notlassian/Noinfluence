@@ -3,9 +3,9 @@ import { HttpStatusCodes } from '../Utils/httpStatusCodes.js';
 
 export const getSpaceUsers = async (req, res) => {
     const query =
-        'Select Distinct(username), role FROM user_space_organization_permissions where organization_name=$1 AND space_name=$2';
-    const params = [req.params.orgName, req.params.spaceName];
-    if (!params[0] || !params[1]) {
+        'Select Distinct(username), role FROM user_space_organization_permissions where organization_name=$1 AND space_name=$2 AND NOT username=$3';
+    const params = [req.params.orgName, req.params.spaceName, req.user];
+    if (!params[0] || !params[1] || !params[2]) {
         res.status(HttpStatusCodes.InternalServerError).json({
             error: 'Internal Server Error',
         });
@@ -25,12 +25,12 @@ export const getSpaceUsers = async (req, res) => {
 };
 
 export const updateUserRole = async (req, res) => {
-    const query = 'call space_update_user_role($1, $2, $3, $4)';
+    const query = 'call update_user_roles_in_space($1, $2, $3, $4)';
     const params = [
-        req.params.orgName,
-        req.params.spaceName,
         req.body.user,
         req.body.role,
+        req.params.spaceName,
+        req.params.orgName,
     ];
     if (!params[0] || !params[1] || !params[2] || !params[3]) {
         res.status(HttpStatusCodes.InternalServerError).json({
@@ -41,7 +41,7 @@ export const updateUserRole = async (req, res) => {
             .query(query, params)
             .then((sqlRes) => {
                 res.status(HttpStatusCodes.OK).json({
-                    message: `Successfully updated ${params[2]} role to ${params[3]}`,
+                    message: `Successfully updated ${params[0]} role to ${params[1]}`,
                 });
             })
             .catch((error) => {

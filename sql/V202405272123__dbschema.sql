@@ -1,7 +1,6 @@
 CREATE TABLE "user" (
   "user_id" serial PRIMARY KEY,
   "username" varchar(128) UNIQUE NOT NULL
-
 );
 
 CREATE TABLE "user_space_role" (
@@ -59,19 +58,4 @@ CREATE TABLE "page" (
   "page_created_at" timestamptz NOT NULL,
   "file_path" varchar(1024),
   "folder_id" integer NOT NULL
-);
-
-CREATE TABLE "issue" (
-  "issue_id" serial PRIMARY KEY,
-  "issue_key" varchar(10) NOT NULL,
-  "issue_name" varchar(50) NOT NULL,
-  "issue_description" varchar(500) NOT NULL,
-  "issue_created_at" timestamptz NOT NULL,
-  "page_id" integer NOT NULL,
-  "issue_progress_id" integer NOT NULL
-);
-
-CREATE TABLE "issue_progress" (
-  "issue_progress_id" serial PRIMARY KEY,
-  "issue_progress_name" varchar(50) UNIQUE NOT NULL
 );
