@@ -10,9 +10,12 @@ const config = {
     max: 20,
     idleTimeoutMillis: 30000,
     connectionTimeoutMillis: 2000,
-    ssl: process.env.APP_ENVIRONMENT === "PROD" ? {
-        rejectUnauthorized: false
-    } : false
+    ssl:
+        process.env.APP_ENVIRONMENT === 'PROD'
+            ? {
+                  rejectUnauthorized: false,
+              }
+            : false,
 };
 export const sqlPool = new Pool(config);
 

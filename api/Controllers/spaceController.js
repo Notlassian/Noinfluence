@@ -14,11 +14,16 @@ export const createSpace = async (req, res) => {
         sqlPool
             .query(query, params)
             .then(async () => {
-                await storePage(`#Welcome to ${req.body.space}`, req.params.orgName, req.body.space, "", "home");
+                await storePage(
+                    `#Welcome to ${req.body.space}`,
+                    req.params.orgName,
+                    req.body.space,
+                    '',
+                    'home'
+                );
                 res.status(HttpStatusCodes.OK).json({
                     message: `${params[0]} in ${params[1]} has been created successfully`,
                 });
-
             })
             .catch((error) => {
                 console.log(error);
@@ -80,7 +85,7 @@ export const getFoldersWithPages = async (req, res) => {
     }
 };
 
-export const getMyPermissions  = async (req, res) => {
+export const getMyPermissions = async (req, res) => {
     const query =
         'Select DISTINCT (permission_name) FROM user_space_organization_permissions where username=$1 and organization_name=$2 and space_name=$3';
     const params = [req.user, req.params.orgName, req.params.spaceName];
@@ -92,8 +97,10 @@ export const getMyPermissions  = async (req, res) => {
         sqlPool
             .query(query, params)
             .then((sqlRes) => {
-                const permissions = sqlRes.rows.map((perm) => perm.permission_name);
-                res.status(HttpStatusCodes.OK).json({ perms: permissions});
+                const permissions = sqlRes.rows.map(
+                    (perm) => perm.permission_name
+                );
+                res.status(HttpStatusCodes.OK).json({ perms: permissions });
             })
             .catch((error) => {
                 console.log(error);
@@ -105,16 +112,44 @@ export const getMyPermissions  = async (req, res) => {
 };
 
 export const getHome = async (req, res) => {
-    try{
-    const file_path = `${req.params.orgName}/${req.params.spaceName}/home.md`;
+    try {
+        const file_path = `${req.params.orgName}/${req.params.spaceName}/home.md`;
 
-    res.status(HttpStatusCodes.OK).json({
-        pageContent: await retrievePage(file_path),
-    });}
-    catch(error){
+        res.status(HttpStatusCodes.OK).json({
+            pageContent: await retrievePage(file_path),
+        });
+    } catch (error) {
         console.error(error);
-            res.status(HttpStatusCodes.InternalServerError).json({
-                error: 'Internal Server Error',
-            });
+        res.status(HttpStatusCodes.InternalServerError).json({
+            error: 'Internal Server Error',
+        });
     }
-}
+};
+
+export const updateHome = async (req, res) => {
+    const { spaceName, orgName } = req.params;
+    const { pageContent } = req.body;
+
+    if (!pageContent) {
+        return res.status(HttpStatusCodes.BadRequest).json({
+            error: '"pageContent" required in request body',
+        });
+    }
+
+    if (!orgName || !spaceName) {
+        return res.status(HttpStatusCodes.InternalServerError).json({
+            error: 'Internal Server Error',
+        });
+    }
+    try {
+        await storePage(pageContent, orgName, spaceName, '', 'home', true);
+    } catch {
+        return res.status(HttpStatusCodes.InternalServerError).json({
+            error: 'Internal Server Error',
+        });
+    }
+
+    return res.status(HttpStatusCodes.OK).json({
+        message: `Homepage updated successfully`,
+    });
+};

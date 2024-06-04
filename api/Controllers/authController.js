@@ -21,17 +21,14 @@ export const postToken = async (req, res) => {
         redirect_uri: process.env.COGNITO_REDIRECT,
     };
 
-    const response = await fetch(
-        `${process.env.COGNITO_DOMAIN}/oauth2/token`,
-        {
-            method: 'post',
-            headers: {
-                Authorization: `Basic ${authHeader}`,
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: new URLSearchParams(body),
-        }
-    );
+    const response = await fetch(`${process.env.COGNITO_DOMAIN}/oauth2/token`, {
+        method: 'post',
+        headers: {
+            Authorization: `Basic ${authHeader}`,
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams(body),
+    });
 
     if (response.status !== HttpStatusCodes.OK) {
         const error = await response.json();

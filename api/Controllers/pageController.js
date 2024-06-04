@@ -122,12 +122,10 @@ export const createPage = async (req, res) => {
         return res.status(HttpStatusCodes.OK).json({
             message: 'Page created successfully',
         });
-
     } catch (error) {
         console.error(`Error creating page: ${error}`);
         return res
             .status(HttpStatusCodes.InternalServerError)
             .json({ error: 'An error occurred' });
     }
-
 };
