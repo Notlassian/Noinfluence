@@ -1,6 +1,6 @@
 import { sqlPool } from '../Utils/dbUtils.js';
 import { HttpStatusCodes } from '../Utils/httpStatusCodes.js';
-import { buildUniqueMap } from '../Utils/mapUtils.js';
+import { buildObjectMap, buildUniqueMap } from '../Utils/mapUtils.js';
 
 export const createOrg = async (req, res) => {
     const query = 'call create_organization_and_admin($1,$2)';
@@ -43,6 +43,48 @@ export const getMyOrgs = async (req, res) => {
                     'organization_name',
                     'space_name'
                 );
+                res.status(HttpStatusCodes.OK).json(resMap);
+            })
+            .catch((error) => {
+                console.log(error);
+                res.status(HttpStatusCodes.InternalServerError).json({
+                    error: 'Internal Server Error',
+                });
+            });
+    }
+};
+
+export const getRecentlyUpdatedOrgs = async (req, res) => {
+    const query = `
+                SELECT
+                    pd.page_name,
+                    pd.page_created_at,
+                    pd.folder_name,
+                    pd.space_name,
+                    pd.organization_name
+                FROM
+                    page_details AS pd
+                JOIN
+                    user_space_organization_permissions AS uso
+                ON
+                    pd.space_name = uso.space_name
+                AND
+                    pd.organization_name = uso.organization_name
+                WHERE
+                    uso.username = $1
+                ORDER BY
+                    pd.page_created_at DESC
+                LIMIT 10;`;
+    const params = [req.user];
+    if (!params[0])
+        res.status(HttpStatusCodes.InternalServerError).json({
+            error: 'Internal Server Error',
+        });
+    else {
+        sqlPool
+            .query(query, params)
+            .then((sqlRes) => {
+                const resMap = buildObjectMap(sqlRes.rows, 'organization_name');
                 res.status(HttpStatusCodes.OK).json(resMap);
             })
             .catch((error) => {
