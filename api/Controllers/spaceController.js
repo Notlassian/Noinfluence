@@ -1,4 +1,5 @@
 import { sqlPool } from '../Utils/dbUtils.js';
+import { retrievePage, storePage } from '../Utils/fileUtils.js';
 import { HttpStatusCodes } from '../Utils/httpStatusCodes.js';
 import { buildUniqueMap } from '../Utils/mapUtils.js';
 
@@ -12,10 +13,12 @@ export const createSpace = async (req, res) => {
     else {
         sqlPool
             .query(query, params)
-            .then(() => {
+            .then(async () => {
+                await storePage(`#Welcome to ${req.body.space}`, req.params.orgName, req.body.space, "", "home");
                 res.status(HttpStatusCodes.OK).json({
                     message: `${params[0]} in ${params[1]} has been created successfully`,
                 });
+
             })
             .catch((error) => {
                 console.log(error);
@@ -100,3 +103,18 @@ export const getMyPermissions  = async (req, res) => {
             });
     }
 };
+
+export const getHome = async (req, res) => {
+    try{
+    const file_path = `${req.params.orgName}/${req.params.spaceName}/home.md`;
+
+    res.status(HttpStatusCodes.OK).json({
+        pageContent: await retrievePage(file_path),
+    });}
+    catch(error){
+        console.error(error);
+            res.status(HttpStatusCodes.InternalServerError).json({
+                error: 'Internal Server Error',
+            });
+    }
+}
