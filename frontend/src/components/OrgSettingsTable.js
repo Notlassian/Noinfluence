@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { AddSpaceUserPopUp } from './popup';
+import { AddOrgUserPopUp } from './popup';
 import './css/SettingTable.css';
 
 export const OrgSettingsTable = ({ users }) => {
@@ -33,7 +33,7 @@ export const OrgSettingsTable = ({ users }) => {
         </tbody>
       </table>
 
-      <AddSpaceUserPopUp/>
+      <AddOrgUserPopUp/>
     </div>
   );
 };

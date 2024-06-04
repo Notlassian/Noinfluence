@@ -61,10 +61,6 @@ export const SpaceSideNavigationBar = () => {
 
     <nav className='sideNavBarWindow'>
 
-      <div className='burger'>
-        <img src='/menu.png' alt='menu-burger' />
-      </div>
-
       {isAdmin ? <span
         className='space-setting'
         onClick={() => navigate(`/${orgName}/${spaceName}/settings`)}>

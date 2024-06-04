@@ -51,10 +51,6 @@ export const HomeSideNavigationBar = () => {
 
     <nav className='sideNavBarWindow' >
 
-      <div className='burger' >
-        <img src='/menu.png' alt='menu-burger' />
-      </div>
-
       <ul className="navbar-list">
         {organisations.map((organisation, orgIndex) => (
           <li key={`organisation-${orgIndex}`} className="navbar-li-box">
