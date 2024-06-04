@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { postDataWithoutBearer } from '../../utils';
+import { AlertType, postDataWithoutBearer, showAlert } from '../../utils';
 
 export const Callback = () => {
 
@@ -28,12 +28,17 @@ export const Callback = () => {
             localStorage.setItem('idToken', id_token);
             localStorage.setItem('refreshToken', refresh_token);
             navigate('/');
+            showAlert('Successfully logged in, welcome to Noinfluence.', AlertType.Success);
           } else {
             setError(true);
+            showAlert('An error occured with validating your login, please try again.', AlertType.Error);
           }
         })
       })
-      .catch(error => console.error(error));
+      .catch(error => {
+        console.error(error);
+        showAlert('An error occured with login validation, please try again.', AlertType.Error);
+      });
     }
   }, [location, navigate]);
 

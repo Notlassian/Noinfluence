@@ -1,6 +1,6 @@
 import React from 'react';
 import { Popup } from 'reactjs-popup';
-import { postData } from '../../utils';
+import { AlertType, postData, showAlert } from '../../utils';
 
 import 'reactjs-popup/dist/index.css';
 import '../css/CreateResourcePopup.css';
@@ -17,10 +17,11 @@ export const AddOrgUserPopUp = (props) => {
       const response = await postData(`org/${orgName}/admin/add`, { user: inputUserName }, localStorage.getItem('accessToken'));
       const data = await response.json();
       console.log('Add response:', data);
+      showAlert('Admin user added successfully.', AlertType.Success);
 
     } catch (error) {
       console.error('Error:', error);
-      alert(`Error: ${error.message}`);
+      showAlert('An error occured while adding user, please try again in a moment.', AlertType.Error);
     }
   }
 

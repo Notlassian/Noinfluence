@@ -1,7 +1,9 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { NavigationBar, Callback } from './components';
-import { Home, Space, Page, SpaceSetting, OrganisationSetting } from './pages';
+import { Home, Space, Page, SpaceSetting, OrganisationSetting, Unauthenticated } from './pages';
 import './App.css';
+import { ToastContainer } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
 
 export default function App() {
 
@@ -20,9 +22,12 @@ export default function App() {
             <Route path="/:orgName/:spaceName/settings" element={<SpaceSetting />} />
             <Route path="/:orgName/:spaceName/:folderName/:pageName" element={<Page />} />
             <Route path="/callback" element={<Callback />} />
+            <Route path="/noauth" element={<Unauthenticated />} />
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
       </div>
+
+      <ToastContainer />
     </div>
   );
 };

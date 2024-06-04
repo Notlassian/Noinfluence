@@ -1,5 +1,5 @@
 import { Popup } from 'reactjs-popup';
-import { postData } from "../../utils";
+import { AlertType, postData, showAlert } from "../../utils";
 
 import 'reactjs-popup/dist/index.css';
 import '../css/CreateResourcePopup.css';
@@ -13,10 +13,11 @@ export const CreateOrganisationPopUp = () => {
       const response = await postData(`org/create`, { org: inputOrgName }, localStorage.getItem("accessToken"));
       const data = await response.json();
       console.log('Add response:', data);
-
+      showAlert(`Organisation ${inputOrgName} added successfully.`, AlertType.Success);
     } catch (error) {
       console.error('Error:', error);
       alert(`Error: ${error.message}`);
+      showAlert(`An error occured while creating an organisation, please try again in a moment.`, AlertType.Error);
     }
   }
 

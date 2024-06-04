@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { SettingTable } from '../components';
 import { SpaceSideNavigationBar } from '../components/sideNavigationBar/SpaceSideNavigationBar';
-import { getData, postData } from '../utils';
+import { AlertType, HttpStatusCodes, getData, postData, showAlert } from '../utils';
 import './css/SpaceSetting.css';
 
 export const SpaceSetting = () => {
@@ -13,17 +13,25 @@ export const SpaceSetting = () => {
 
   console.log(orgName + '/' + spaceName);
 
+  const navigate = useNavigate();
+
   const fetchUsers = React.useCallback(async () => {
 
     try {
 
       const response = await getData(`org/${orgName}/spaces/${spaceName}/admin/list`, localStorage.getItem('accessToken'));
-      const data = await response.json();
-      console.log('data: ', data);
+      if (response.ok) {
+        const data = await response.json();
+        console.log('data: ', data);
 
-      setUsers(data);
+        setUsers(data);
+      } else if (response.status === HttpStatusCodes.Forbidden) {
+        showAlert(`You are unable to view this spaces settings.`, AlertType.Info);
+        navigate(`/${orgName}/${spaceName}`);
+      }
     } catch (error) {
       console.error('Error:', error);
+      showAlert(`Unable to retrieve admin list, please make sure you are logged in.`, AlertType.Error);
     }
   }, [orgName, spaceName]);
 
@@ -41,6 +49,7 @@ export const SpaceSetting = () => {
       fetchUsers();
     } catch (error) {
       console.error('Error:', error);
+      showAlert(`Unable to retrieve admin list, please make sure you are logged in.`, AlertType.Error);
     }
   };
 

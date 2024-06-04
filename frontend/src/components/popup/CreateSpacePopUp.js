@@ -1,5 +1,5 @@
 import { Popup } from 'reactjs-popup';
-import { postData } from "../../utils";
+import { AlertType, postData, showAlert } from "../../utils";
 
 import 'reactjs-popup/dist/index.css';
 import '../css/CreateResourcePopup.css';
@@ -15,10 +15,12 @@ export const CreateSpacePopUp = (props) => {
       const response = await postData(`org/${orgName}/spaces/add`, { space: inputSpaceName }, localStorage.getItem("accessToken"));
       const data = await response.json();
       console.log('Add response:', data);
+      showAlert(`Space ${inputSpaceName} added successfully.`, AlertType.Success);
 
     } catch (error) {
       console.error('Error:', error);
       alert(`Error: ${error.message}`);
+      showAlert(`An error occured while trying to make a new space, please try again in a moment.`, AlertType.Error);
     }
   }
 

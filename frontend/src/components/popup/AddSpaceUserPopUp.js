@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Popup } from 'reactjs-popup';
-import { postData } from "../../utils";
+import { AlertType, postData, showAlert } from "../../utils";
 
 import 'reactjs-popup/dist/index.css';
 import '../css/CreateResourcePopup.css';
@@ -19,10 +19,12 @@ export const AddSpaceUserPopUp = (props) => {
       const response = await postData(`org/${orgName}/spaces/${spaceName}/admin/add`, { user: inputUserName, role: userRole }, localStorage.getItem("accessToken"));
       const data = await response.json();
       console.log('Add response:', data);
+      showAlert(`User successfully added as ${userRole === "Administrator" ? `an ${userRole}` : `a ${userRole}`}.`, AlertType.Success);
 
     } catch (error) {
       console.error('Error:', error);
       alert(`Error: ${error.message}`);
+      showAlert(`An error occured while adding user as ${userRole}, please try again in a moment.`, AlertType.Error);
     }
   }
 

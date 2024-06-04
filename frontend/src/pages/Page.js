@@ -5,8 +5,8 @@ import { MarkdownDisplay, SpaceSideNavigationBar } from "../components";
 import '../components/css/Document.css';
 
 import '@mdxeditor/editor/style.css';
-import { useParams } from 'react-router-dom';
-import { getData, putData } from '../utils';
+import { useNavigate, useParams } from 'react-router-dom';
+import { AlertType, HttpStatusCodes, getData, putData, showAlert } from '../utils';
 
 
 export const Page = () => {
@@ -17,37 +17,55 @@ export const Page = () => {
 
   const { orgName, spaceName, folderName, pageName } = useParams();
 
+  const navigate = useNavigate();
+
   const fetchPage = React.useCallback(async () => {
     getData(`org/${orgName}/spaces/${spaceName}/pages/${folderName}/${pageName}/retrieve`)
-      .then(response => response.json())
-      .then(data => {
-        console.log(data);
-        setMarkdown(data.pageContent);
-        setIsLoading(false);
+      .then(async (response) => {
 
-        getData(`org/${orgName}/spaces/${spaceName}/permissions`, localStorage.getItem("accessToken"))
-          .then(response => response.json())
-          .then(permData => {
-            console.log("PERM DATA:")
-            console.log(permData);
-            if (permData.perms.includes("Write")) {
-              setEditEnabled(true);
-            }
-          })
-          .catch(error => {
-            console.error('Error fetching data:', error);
-            setIsLoading(false);
-          });
-      })
-      .catch(error => {
-        console.error('Error fetching data:', error);
+        if (response.ok) {
+          const data = await response.json();
+          console.log(data);
+          setMarkdown(data.pageContent);
+          setIsLoading(false);
+
+          getData(`org/${orgName}/spaces/${spaceName}/permissions`, localStorage.getItem("accessToken"))
+            .then(response => response.json())
+            .then(permData => {
+              console.log("PERM DATA:")
+              console.log(permData);
+              if (permData.perms.includes("Write")) {
+                setEditEnabled(true);
+              }
+            })
+            .catch(() => {
+              setIsLoading(false);
+            });
+        } else if (response.status === HttpStatusCodes.Forbidden) {
+          showAlert(`You are unable to view this space.`, AlertType.Info);
+          navigate('/');
+        } else if (response.status === HttpStatusCodes.BadRequest) {
+          showAlert(`The page you are looking for doesn't exist.`, AlertType.Info);
+          navigate(`/${orgName}/${spaceName}`);
+        } else {
+          showAlert(`An error occured while loading this page, please contact Noinfluence for support.`, AlertType.Error);
+        }
+
         setIsLoading(false);
+      })
+      .catch(() => {
+        showAlert(`Page you are trying to retrieve doesn't exist.`, AlertType.Info);
+        setIsLoading(false);
+        navigate(`/${orgName}/${spaceName}`);
       });
-  }, [orgName, spaceName, folderName, pageName]);
+  }, [orgName, spaceName, folderName, pageName, navigate]);
 
   const updateMarkdown = async (newMarkdown) => {
     putData(`org/${orgName}/spaces/${spaceName}/pages/${folderName}/${pageName}/update`, { pageContent: newMarkdown}, localStorage.getItem("accessToken"))
-      .catch(error => console.log(error));
+      .catch(error => {
+        console.log(error);
+        showAlert('Unable to update markdown, please try again in a moment.');
+      });
   };
 
   useEffect(() => {

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { MarkdownDisplay, SpaceSideNavigationBar } from "../components";
 import './css/Space.css';
-import { getData, putData } from '../utils';
+import { AlertType, HttpStatusCodes, getData, putData, showAlert } from '../utils';
 
 export const Space = () => {
 
@@ -12,10 +12,14 @@ export const Space = () => {
 
   const { orgName, spaceName } = useParams();
 
+  const navigate = useNavigate();
+
   const fetchPage = React.useCallback(async () => {
     getData(`org/${orgName}/spaces/${spaceName}/homepage/retrieve`)
-      .then(response => response.json())
-      .then(data => {
+    .then(async (response) => {
+
+      if (response.ok) {
+        const data = await response.json();
         console.log(data);
         setMarkdown(data.pageContent);
         setIsLoading(false);
@@ -29,20 +33,26 @@ export const Space = () => {
               setEditEnabled(true);
             }
           })
-          .catch(error => {
-            console.error('Error fetching data:', error);
+          .catch(() => {
             setIsLoading(false);
           });
-      })
-      .catch(error => {
-        console.error('Error fetching data:', error);
-        setIsLoading(false);
-      });
-  }, [orgName, spaceName]);
+      } else if (response.status === HttpStatusCodes.Forbidden) {
+        showAlert(`You are unable to view this space.`, AlertType.Info);
+        navigate('/');
+      }
+    })
+    .catch(() => {
+      showAlert(`Page you are trying to retrieve doesn't exist.`, AlertType.Info);
+      setIsLoading(false);
+    });
+  }, [orgName, spaceName, navigate]);
 
   const updateMarkdown = async (newMarkdown) => {
     putData(`org/${orgName}/spaces/${spaceName}/homepage/update`, { pageContent: newMarkdown}, localStorage.getItem("accessToken"))
-      .catch(error => console.log(error));
+      .catch(error => {
+        console.log(error);
+        showAlert('Unable to update markdown, please try again in a moment.');
+      });
   };
 
   useEffect(() => {

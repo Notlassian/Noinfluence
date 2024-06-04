@@ -1,7 +1,7 @@
 import { React, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CreateSpacePopUp, CreateOrganisationPopUp } from '../popup';
-import { getData } from '../../utils';
+import { AlertType, HttpStatusCodes, getData, showAlert } from '../../utils';
 import '../css/HomeSideNavigationBar.css';
 
 export const HomeSideNavigationBar = () => {
@@ -19,28 +19,36 @@ export const HomeSideNavigationBar = () => {
   const fetchOrganisations = async () => {
     try {
       const response = await getData('org/list', localStorage.getItem("accessToken"));
-      const data = await response.json();
 
-      const formattedData = Object.entries(data).map(([key, value]) => ({
-        name: key,
-        items: value.map(space => [space])
-      }));
-
-      console.log(formattedData);
-
-      const isAdminPromises = formattedData.map(async (item) => {
-        const response = await getData(`org/${item.name}/admin/check`);
-        return response.ok;
-      });
-    
-      const isAdminArr = await Promise.all(isAdminPromises);
+      if (response.ok) {
+        const data = await response.json();
+  
+        const formattedData = Object.entries(data).map(([key, value]) => ({
+          name: key,
+          items: value.map(space => [space])
+        }));
+  
+        console.log(formattedData);
+  
+        const isAdminPromises = formattedData.map(async (item) => {
+          const response = await getData(`org/${item.name}/admin/check`);
+          return response.ok;
+        });
       
-      console.log(isAdminArr);
-
-      setIsOrgAdmins(isAdminArr);
-      setOrganisations(formattedData);
+        const isAdminArr = await Promise.all(isAdminPromises);
+        
+        console.log(isAdminArr);
+  
+        setIsOrgAdmins(isAdminArr);
+        setOrganisations(formattedData);
+      } else if (response.status === HttpStatusCodes.Unauthorized) {
+        showAlert(`You are not logged in, please login to continue.`, AlertType.Error);
+        navigate("/unauthorized");
+      }
+      
     } catch (error) {
       console.error('Error:', error);
+      showAlert(`Couldn't retrieve your organisations, make sure you are connected to the internet.`, AlertType.Error);
     }
   };
 

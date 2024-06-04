@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { CreatePagePopup } from '../popup';
-import { getData } from "../../utils";
+import { AlertType, HttpStatusCodes, getData, showAlert } from "../../utils";
 import '../css/SpaceSideNavigationBar.css';
 
 export const SpaceSideNavigationBar = () => {
@@ -32,7 +32,9 @@ export const SpaceSideNavigationBar = () => {
     try {
 
       const response = await getData(`org/${orgName}/spaces/${spaceName}/list`, localStorage.getItem('accessToken'));
-      const data = await response.json();
+
+      if (response.ok) {
+        const data = await response.json();
       console.log(data);
 
       const formattedData = Object.entries(data).map(([key, value]) => ({
@@ -43,10 +45,19 @@ export const SpaceSideNavigationBar = () => {
       console.log(formattedData);
 
       setFolders(formattedData);
+      } else if (response.status === HttpStatusCodes.Unauthorized) {
+        showAlert(`You are not logged in, please login to continue.`, AlertType.Error);
+        navigate('/unauthorized');
+      } else if (response.status === HttpStatusCodes.Forbidden) {
+        showAlert(`You are unable to view this space.`, AlertType.Info);
+        navigate('/');
+      }
+
     } catch (error) {
+      showAlert(`Unable to retrive spaces pages, please make sure you are logged in.`, AlertType.Error);
       console.error('Error:', error);
     }
-  }, [orgName, spaceName]);
+  }, [orgName, spaceName, navigate]);
 
   const toggleFolderExpanded = (folderIndex) => {
     setExpandedFolderIndex(expandedFolderIndex === folderIndex ? null : folderIndex);
