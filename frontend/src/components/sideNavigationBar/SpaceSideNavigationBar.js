@@ -61,12 +61,12 @@ export const SpaceSideNavigationBar = () => {
 
     <nav className='sideNavBarWindow'>
 
-      {isAdmin ? <span
-        className='space-setting'
-        onClick={() => navigate(`/${orgName}/${spaceName}/settings`)}>
+      {isAdmin &&
 
-        {'Space Setting'}
-      </span> : null }
+        <div className="space-setting-container" onClick={() => navigate(`/${orgName}/${spaceName}/settings`)}>
+          {'Space Setting'}
+        </div>
+      }
 
       <ul className='navbar-list'>
 
@@ -83,6 +83,8 @@ export const SpaceSideNavigationBar = () => {
                 <li
                   className={`sub-item ${expandedFolderIndex === folderIndex ? 'expanded' : ''}`}
                   onClick={() => toggleFolderExpanded(folderIndex)}>
+
+                  <img src='/folder.svg' alt='menu-burger'/>
 
                   <span
                     className='navbar-li'>

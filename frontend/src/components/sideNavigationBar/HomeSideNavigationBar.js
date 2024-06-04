@@ -32,9 +32,9 @@ export const HomeSideNavigationBar = () => {
         const response = await getData(`org/${item.name}/admin/check`);
         return response.ok;
       });
-    
+
       const isAdminArr = await Promise.all(isAdminPromises);
-      
+
       console.log(isAdminArr);
 
       setIsOrgAdmins(isAdminArr);
@@ -60,12 +60,22 @@ export const HomeSideNavigationBar = () => {
         {organisations.map((organisation, orgIndex) => (
           <li key={`organisation-${orgIndex}`} className="navbar-li-box">
             <div className="navbar-li" onClick={() => toggleExpanded(orgIndex)}>
+
               {organisation.name}
-              {isOrgAdmins[orgIndex] ? <button
-                onClick={() => navigate(`/${organisation.name}/settings`)}
-              >
-                {'Setting'}
-              </button> : null}
+
+              {isOrgAdmins[orgIndex] ? (
+                <div className="navbar-li-button-container">
+                  <button
+                    className="navbar-li-button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      navigate(`/${organisation.name}/settings`);
+                    }}
+                  >
+                    {'Setting'}
+                  </button>
+                </div>
+              ) : null}
             </div>
             {expandedIndex === orgIndex && (
               <ul className="sub-list">

@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import { AddOrgUserPopUp } from './popup';
 import './css/SettingTable.css';
 
 export const OrgSettingsTable = ({ users }) => {
 
   const [userRoles, setUserRoles] = useState(users);
+
+  const { orgName } = useParams();
 
   useEffect(() => {
     setUserRoles(users);
@@ -33,7 +36,7 @@ export const OrgSettingsTable = ({ users }) => {
         </tbody>
       </table>
 
-      <AddOrgUserPopUp/>
+      <AddOrgUserPopUp orgName={orgName}/>
     </div>
   );
 };

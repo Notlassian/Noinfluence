@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { SettingTable } from '../components';
-import { SpaceSideNavigationBar } from '../components/sideNavigationBar/SpaceSideNavigationBar';
+import { SettingTable, SpaceSideNavigationBar } from '../components';
 import { getData, postData } from '../utils';
 import './css/SpaceSetting.css';
 
