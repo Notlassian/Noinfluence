@@ -3,7 +3,7 @@ import { Popup } from 'reactjs-popup';
 import { postData } from "../../utils";
 
 import 'reactjs-popup/dist/index.css';
-import '../css/CreateResourcePopup.css';
+import '../css/Popup.css';
 
 export const AddSpaceUserPopUp = (props) => {
 
@@ -69,7 +69,7 @@ export const AddSpaceUserPopUp = (props) => {
             </select>
           </div>
 
-          <button class="add-user-button" onClick={() => addSpaceUser(close)}>
+          <button class="popup-button add-user-button" onClick={() => addSpaceUser(close)}>
             Add
           </button>
         </div>

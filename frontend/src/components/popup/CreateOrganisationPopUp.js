@@ -2,7 +2,7 @@ import { Popup } from 'reactjs-popup';
 import { postData } from "../../utils";
 
 import 'reactjs-popup/dist/index.css';
-import '../css/CreateResourcePopup.css';
+import '../css/Popup.css';
 
 export const CreateOrganisationPopUp = () => {
 
@@ -37,7 +37,7 @@ export const CreateOrganisationPopUp = () => {
           <input className="org-name" />
         </div>
 
-        <button className="add-organisation-button" onClick={() => addOrg(close)}>
+        <button class="popup-button add-organisation-button" onClick={() => addOrg(close)}>
           Create
         </button>
       </div>

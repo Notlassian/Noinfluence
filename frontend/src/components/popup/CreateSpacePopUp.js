@@ -2,7 +2,7 @@ import { Popup } from 'reactjs-popup';
 import { postData } from "../../utils";
 
 import 'reactjs-popup/dist/index.css';
-import '../css/CreateResourcePopup.css';
+import '../css/Popup.css';
 
 export const CreateSpacePopUp = (props) => {
 
@@ -44,7 +44,7 @@ export const CreateSpacePopUp = (props) => {
             <input className="space-name" />
           </div>
 
-          <button className="add-space-button" onClick={() => addSpace(close)}>
+          <button className="popup-button add-space-button" onClick={() => addSpace(close)}>
             Create space
           </button>
         </div>

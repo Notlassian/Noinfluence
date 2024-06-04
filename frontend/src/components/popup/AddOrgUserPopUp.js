@@ -3,7 +3,7 @@ import { Popup } from 'reactjs-popup';
 import { postData } from '../../utils';
 
 import 'reactjs-popup/dist/index.css';
-import '../css/CreateResourcePopup.css';
+import '../css/Popup.css';
 
 export const AddOrgUserPopUp = (props) => {
 
@@ -47,7 +47,7 @@ export const AddOrgUserPopUp = (props) => {
             <input class='user-name' />
           </div>
 
-          <button class='add-user-button' onClick={() => addOrgUser(close)}>
+          <button class='popup-button add-user-button' onClick={() => addOrgUser(close)}>
             Add
           </button>
         </div>
