@@ -1,15 +1,16 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Popup } from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 import { useNavigate, useParams } from 'react-router-dom';
 import '../css/CreateResourcePopup.css'
+import './ErrorPopup'
 
 export const CreatePagePopup = (props) => {
 
   const navigate = useNavigate();
 
   const { orgName, spaceName } = useParams();
-
+  const { allowed, setAllowed } = useState(false)
   const createPage = () => {
 
     const folder = document.getElementsByClassName("folder-name")[0].value;
@@ -19,7 +20,29 @@ export const CreatePagePopup = (props) => {
     // Redirect to the new page
     navigate(`/pages/${orgName}/${spaceName}/${folder}/${page}`);
   };
+  
+  useEffect(() => {
+    getData(`org/${orgName}/spaces/${spaceName}/permissions`, localStorage.getItem("accessToken"))
+      .then(response => response.json())
+      .then(permData => {
+        console.log("PERM DATA:")
+        console.log(permData);
+        if (permData.perms.includes("Write")) {
+          setAllowed(true);
+        } else {
+          setAllowed(false);
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+        setLoading(false);
+      });
+  }, [folderName, orgName, pageName, spaceName]);
 
+  if (!allowed) {
+    return <ErrorPopup/>
+  }
+  
   return (
     <Popup
       trigger={<button className="button"> Create Page </button>}

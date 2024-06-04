@@ -3,3 +3,4 @@ export * from './AddOrgUserPopUp';
 export * from './CreateOrganisationPopUp';
 export * from './CreateSpacePopUp';
 export * from './CreatePagePopup';
+export * from './ErrorPopup';
