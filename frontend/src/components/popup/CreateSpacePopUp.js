@@ -4,11 +4,11 @@ import { Popup } from 'reactjs-popup';
 import { getData, postData } from "../../utils";
 
 import 'reactjs-popup/dist/index.css';
-import '../css/PageCreator.css';
+import '../css/CreateResourcePopup.css';
 
-export const CreateSpacePopUp = () => {
+export const CreateSpacePopUp = (props) => {
 
-  const orgName = useParams();
+  const orgName = props.orgName;
 
   const addSpace = async () => {
     const inputSpaceName = document.getElementsByClassName("space-name")[0].value;
@@ -39,15 +39,24 @@ export const CreateSpacePopUp = () => {
           <span> {orgName} </span>
         </div>
 
-        <div className="user-input">
+        <div className="space-input">
           <h4> Space Name: </h4>
           <input className="space-name" />
         </div>
       </div>
 
       <button className="add-space-button" onClick={() => addSpace()}>
-        Create
+        Create space
       </button>
     </Popup>
   );
 };
+
+// cosnt myContainer = styled.div`
+//   width: 60%;
+//   height: 50%;
+// `;
+
+// <MyContainer>
+
+// </MyContainer>

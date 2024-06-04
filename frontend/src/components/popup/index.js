@@ -2,4 +2,4 @@ export * from './AddSpaceUserPopUp';
 export * from './AddOrgUserPopUp';
 export * from './CreateOrganisationPopUp';
 export * from './CreateSpacePopUp';
-export * from './PageCreator';
+export * from './CreatePagePopup';

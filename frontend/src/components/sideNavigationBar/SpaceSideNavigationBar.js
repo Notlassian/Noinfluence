@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from 'react-router-dom';
-import {PageCreator} from '../popup';
+import { CreatePagePopup } from '../popup';
 import { getData } from "../../utils";
 import '../css/SpaceSideNavigationBar.css';
 
@@ -88,7 +88,7 @@ export const SpaceSideNavigationBar = () => {
                     {folder.name}
                   </span>
 
-                  <PageCreator/>
+                  <CreatePagePopup/>
 
                   {expandedFolderIndex === folderIndex && (
                     <ul className="sub-sub-list">
@@ -115,7 +115,7 @@ export const SpaceSideNavigationBar = () => {
 
 
       <div className="create-button-container">
-        <PageCreator/>
+        <CreatePagePopup/>
       </div>
 
     </nav>

@@ -2,9 +2,9 @@ import React from 'react';
 import { Popup } from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 import { useNavigate, useParams } from 'react-router-dom';
-import '../css/PageCreator.css'
+import '../css/CreateResourcePopup.css'
 
-export const PageCreator = (props) => {
+export const CreatePagePopup = (props) => {
 
   const navigate = useNavigate();
 

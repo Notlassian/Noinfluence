@@ -3,7 +3,7 @@ import { Popup } from 'reactjs-popup';
 import { getData, postData } from "../../utils";
 
 import 'reactjs-popup/dist/index.css';
-import '../css/PageCreator.css';
+import '../css/CreateResourcePopup.css';
 
 export const CreateOrganisationPopUp = () => {
 
@@ -30,13 +30,11 @@ export const CreateOrganisationPopUp = () => {
       nested
     >
       <div className="menu">
-
-        <div className="user-input">
+        <div className="org-input">
           <h4> Organisation Name: </h4>
           <input className="org-name" />
         </div>
       </div>
-
       <button className="add-organisation-button" onClick={() => addOrg()}>
         Create
       </button>

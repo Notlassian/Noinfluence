@@ -73,7 +73,7 @@ export const HomeSideNavigationBar = () => {
                   </li>
                 ))}
                 <li>
-                  <CreateSpacePopUp/>
+                  <CreateSpacePopUp orgName={organisation.name}/>
                 </li>
               </ul>
             )}

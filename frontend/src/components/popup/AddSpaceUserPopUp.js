@@ -3,7 +3,7 @@ import { Popup } from 'reactjs-popup';
 import { getData, postData } from "../../utils";
 
 import 'reactjs-popup/dist/index.css';
-import '../css/PageCreator.css';
+import '../css/CreateResourcePopup.css';
 
 export const AddSpaceUserPopUp = (props) => {
 
