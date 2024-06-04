@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Popup } from 'reactjs-popup';
-import { getData, postData } from "../../utils";
+import { postData } from "../../utils";
 
 import 'reactjs-popup/dist/index.css';
 import '../css/CreateResourcePopup.css';
