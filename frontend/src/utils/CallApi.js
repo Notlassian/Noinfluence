@@ -18,6 +18,16 @@ function getData(endpoint, jwt) {
     });
 }
 
+function putData(endpoint, payload, jwt) {
+    return fetch(`${process.env.REACT_APP_API_URL}/${endpoint}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+    });
+}
+
 function getDataWithoutBearer(endpoint) {
     return fetch(`${process.env.REACT_APP_API_URL}/${endpoint}`, {
         headers: {
@@ -36,4 +46,4 @@ function postDataWithoutBearer(endpoint, payload) {
     });
 }
 
-export { getData, postData, getDataWithoutBearer, postDataWithoutBearer }
+export { getData, postData, getDataWithoutBearer, postDataWithoutBearer, putData }

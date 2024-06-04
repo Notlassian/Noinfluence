@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import {PageCreator} from '../popup';
-import { getData } from '../../utils';
+import { CreatePagePopup } from '../popup';
+import { getData } from "../../utils";
 import '../css/SpaceSideNavigationBar.css';
 
 export const SpaceSideNavigationBar = () => {
@@ -94,6 +94,8 @@ export const SpaceSideNavigationBar = () => {
                     {folder.name}
                   </span>
 
+                  <CreatePagePopup/>
+
                   {expandedFolderIndex === folderIndex && (
                     <ul className='sub-sub-list'>
                       {folder.items.map((page, pageIndex) => (
@@ -117,8 +119,9 @@ export const SpaceSideNavigationBar = () => {
           </li>
       </ul>
 
-      <div className='create-button-container'>
-        <PageCreator/>
+
+      <div className="create-button-container">
+        <CreatePagePopup/>
       </div>
 
     </nav>

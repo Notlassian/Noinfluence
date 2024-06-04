@@ -15,7 +15,7 @@ const environments = {
 
 const { PAGE_BUCKET: bucket } = process.env;
 const localDir = 'savedFiles';
-const s3Client = new S3Client([{ region: 'eu-west-1' }]);
+const s3Client = new S3Client({ region: 'eu-west-1' });
 
 async function uploadToS3(file, fileId, folder) {
     const key = [folder, fileId].join('/');
@@ -33,6 +33,7 @@ async function uploadToS3(file, fileId, folder) {
 
 function checkSafeFilePath(...paths) {
     const normalizedPath = path.normalize(path.join(...paths));
+    console.log(paths);
 
     if (!normalizedPath.startsWith(localDir)) {
         throw new Error('Path error');
@@ -42,8 +43,8 @@ function checkSafeFilePath(...paths) {
 function storeLocally(file, fileId, folder) {
     checkSafeFilePath(localDir, folder, fileId);
 
-    const folderDir = path.join(localDir, folder);
-    const filePath = path.join(folderDir, fileId);
+    const folderDir = path.resolve(localDir, folder);
+    const filePath = path.resolve(localDir, folder, fileId);
 
     if (!fs.existsSync(folderDir)) {
         fs.mkdirSync(folderDir, { recursive: true });
@@ -65,8 +66,9 @@ async function retrieveFromS3(key) {
 }
 
 function retrieveLocally(filePath) {
+    filePath = `${localDir}/${filePath}`;
     checkSafeFilePath(filePath);
-    return fs.readFileSync(filePath, 'utf8');
+    return fs.readFileSync(path.resolve(filePath), 'utf8');
 }
 
 export async function storePage(
@@ -93,10 +95,12 @@ export async function storePage(
     }
 
     if (!update) {
-        const query = 'call insert_page($1,$2,$3,$4,$5)';
-        const params = [pageName, fileLocation, folderName, spaceName, orgName];
-
+        const queryFolder = 'call insert_folder($1, $2, $3)';
+        const paramsFolder = [folderName, spaceName, orgName];
         try {
+            await sqlPool.query(queryFolder, paramsFolder);
+            const query = 'call insert_page($1, $2, $3, $4)';
+            const params = [pageName, folderName, spaceName, orgName];
             await sqlPool.query(query, params);
         } catch (error) {
             deleteFile(fileLocation);
@@ -126,7 +130,7 @@ async function checkIfFileExistsS3(folder, fileId) {
     try {
         await s3Client.send(command);
     } catch (error) {
-        if (error['$metadata'].httpStatusCode === 404) {
+        if (error.name === 'NotFound') {
             return false;
         } else {
             throw error;
@@ -142,7 +146,6 @@ function checkIfFileExistsLocal(folder, fileId) {
 }
 
 export async function checkIfFileExists(
-    file,
     orgName,
     spaceName,
     folderName,
