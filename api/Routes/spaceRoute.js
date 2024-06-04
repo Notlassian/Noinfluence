@@ -29,5 +29,5 @@ spaceRouter.post('/add', isOrgAdmin, createSpace);
 spaceRouter.get('/list', getSpaces);
 spaceRouter.get('/:spaceName/list', getFoldersWithPages);
 spaceRouter.get('/:spaceName/permissions', getMyPermissions);
-spaceRouter.get('/:spaceName/home', getHome);
-spaceRouter.put('/:spaceName/home/update', updateHome);
+spaceRouter.get('/:spaceName/homepage/retrieve', getHome);
+spaceRouter.put('/:spaceName/homepage/update', updateHome);

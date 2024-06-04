@@ -1,77 +1,29 @@
 
 import React, { useState, useEffect } from 'react';
-import { SpaceSideNavigationBar } from "../components";
+import { MarkdownDisplay, SpaceSideNavigationBar } from "../components";
 
-import {MDXEditor} from '@mdxeditor/editor';
-import '../components/css/Document.css'
+import '../components/css/Document.css';
 
 import '@mdxeditor/editor/style.css';
-import {
-  toolbarPlugin,
-  listsPlugin,
-  quotePlugin,
-  headingsPlugin,
-  linkPlugin,
-  linkDialogPlugin,
-  imagePlugin,
-  tablePlugin,
-  thematicBreakPlugin,
-  frontmatterPlugin,
-  codeBlockPlugin,
-  sandpackPlugin,
-  codeMirrorPlugin,
-  directivesPlugin,
-  diffSourcePlugin,
-  markdownShortcutPlugin,
-  KitchenSinkToolbar,
-  AdmonitionDirectiveDescriptor
-} from '@mdxeditor/editor';
 import { useParams } from 'react-router-dom';
 import { getData, putData } from '../utils';
 
 
 export const Page = () => {
 
+  const [markdown, setMarkdown] = useState(null);
+  const [editEnabled, setEditEnabled] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
   const { orgName, spaceName, folderName, pageName } = useParams();
 
-  console.log(orgName + "/" + spaceName + "/" + folderName + "/" + pageName);
-
-  const simpleSandpackConfig = {
-    defaultPreset: 'txt',
-    presets: [
-      {
-        label: 'React',
-        name: 'react',
-        meta: 'live react',
-        sandpackTemplate: 'react',
-        sandpackTheme: 'light',
-        snippetFileName: '/App.js',
-        snippetLanguage: 'jsx',
-        initialSnippetContent: "defaultSnippetContent"
-      },
-    ]
-  }
-
-  const [currentMarkdown, setCurrentMarkdown] = useState(null);
-  const [savedMarkdown, setSavedMarkdown] = useState(null);
-  const [readOnly, setReadOnly] = useState(true);
-  const [loading, setLoading] = useState(true);
-  const [ editState, setEditState] = useState(false);
-  const [ editEnabled, setEditEnabled] = useState(false);
-
-  const handleMarkdownChange = (newMarkdown) => {
-    setCurrentMarkdown(newMarkdown);
-  };
-
-  useEffect(() => {
+  const fetchPage = React.useCallback(async () => {
     getData(`org/${orgName}/spaces/${spaceName}/pages/${folderName}/${pageName}/retrieve`)
       .then(response => response.json())
       .then(data => {
         console.log(data);
-        setSavedMarkdown(data.pageContent);
-        setCurrentMarkdown(data.pageContent);
-
-        setLoading(false);
+        setMarkdown(data.pageContent);
+        setIsLoading(false);
 
         getData(`org/${orgName}/spaces/${spaceName}/permissions`, localStorage.getItem("accessToken"))
           .then(response => response.json())
@@ -84,129 +36,27 @@ export const Page = () => {
           })
           .catch(error => {
             console.error('Error fetching data:', error);
-            setLoading(false);
+            setIsLoading(false);
           });
       })
       .catch(error => {
         console.error('Error fetching data:', error);
-        setLoading(false);
+        setIsLoading(false);
       });
-  }, [folderName, orgName, pageName, spaceName]);
+  }, [orgName, spaceName, folderName, pageName]);
 
-  const page = () => {
-    if (readOnly) {
-      return <div class="page">
-        
-      <SpaceSideNavigationBar/>
-      
-      <nav class="document-manager">
-        { editEnabled ? <button id='edit-button' onClick={clickEdit}> edit </button> : null}
-      </nav>
-      <div class="background">
-        <div class="document-container">
-          <MDXEditor
-            key={`${editState}`}
-            contentEditableClassName="editable-document-page"
-            class="document"
-            markdown={currentMarkdown}
-            plugins={[
-              toolbarPlugin({ toolbarContents: () => <KitchenSinkToolbar/> }),
-              listsPlugin(),
-              quotePlugin(),
-              headingsPlugin(),
-              linkPlugin(),
-              linkDialogPlugin(),
-              imagePlugin(),
-              tablePlugin(),
-              thematicBreakPlugin(),
-              frontmatterPlugin(),
-              codeBlockPlugin({ defaultCodeBlockLanguage: 'txt' }),
-              sandpackPlugin({ sandpackConfig: simpleSandpackConfig }),
-              codeMirrorPlugin({ codeBlockLanguages: { js: 'JavaScript', css: 'CSS', txt: 'text', tsx: 'TypeScript' } }),
-              directivesPlugin({ directiveDescriptors: [AdmonitionDirectiveDescriptor] }),
-              diffSourcePlugin({ viewMode: 'rich-text', diffMarkdown: savedMarkdown }),
-              markdownShortcutPlugin()
-            ]}
-            readOnly
-          />
-        </div>
-      </div>
-    </div>
-
-    }
-    else {
-      return <div class="page">
-        
-      <SpaceSideNavigationBar/>
-      
-      <nav class="document-manager">
-        <div id="save-cancel">
-          <button id='save-button' onClick={clickSave}> save </button>
-          <button id='cancel-button' onClick={clickCancel}> cancel </button>
-        </div>
-      </nav>
-      <div class="background">
-        <div class="document-container">
-          <MDXEditor
-            key={`${editState}`}
-            contentEditableClassName="editable-document-page"
-            class="document"
-            markdown={currentMarkdown}
-            plugins={[
-              toolbarPlugin({ toolbarContents: () => <KitchenSinkToolbar/> }),
-              listsPlugin(),
-              quotePlugin(),
-              headingsPlugin(),
-              linkPlugin(),
-              linkDialogPlugin(),
-              imagePlugin(),
-              tablePlugin(),
-              thematicBreakPlugin(),
-              frontmatterPlugin(),
-              codeBlockPlugin({ defaultCodeBlockLanguage: 'txt' }),
-              sandpackPlugin({ sandpackConfig: simpleSandpackConfig }),
-              codeMirrorPlugin({ codeBlockLanguages: { js: 'JavaScript', css: 'CSS', txt: 'text', tsx: 'TypeScript' } }),
-              directivesPlugin({ directiveDescriptors: [AdmonitionDirectiveDescriptor] }),
-              diffSourcePlugin({ viewMode: 'rich-text', diffMarkdown: savedMarkdown }),
-              markdownShortcutPlugin()
-            ]}
-            onChange={(e) => handleMarkdownChange(e)}
-          />
-        </div>
-      </div>
-    </div>
-
-    }
-  };
-
-  const clickEdit = () => {
-    setReadOnly(false)
-  };
-
-  const clickSave = () => {
-
-    setReadOnly(true)
-    setEditState(!editState)
-    setSavedMarkdown(currentMarkdown)
-    
-    putData(`org/${orgName}/spaces/${spaceName}/pages/${folderName}/${pageName}/update`, { pageContent: currentMarkdown}, localStorage.getItem("accessToken"))
+  const updateMarkdown = async (newMarkdown) => {
+    putData(`org/${orgName}/spaces/${spaceName}/pages/${folderName}/${pageName}/update`, { pageContent: newMarkdown}, localStorage.getItem("accessToken"))
       .catch(error => console.log(error));
   };
 
-  const clickCancel = () => {
-    setReadOnly(true)
-    setEditState(!editState)
-    setCurrentMarkdown(savedMarkdown)
-  };
+  useEffect(() => {
+    fetchPage();
+  }, [fetchPage]);
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-  if (!savedMarkdown) {
-    return <div>No data available</div>;
-  }
+  return <div class="page-container">
+    <SpaceSideNavigationBar/>
 
-  else {
-    return page(readOnly)
-  }
+    <MarkdownDisplay markdown={markdown} loading={isLoading} editEnabled={editEnabled} onSave={updateMarkdown} />  
+  </div>
 };

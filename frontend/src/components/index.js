@@ -6,3 +6,4 @@ export * from './sideNavigationBar';
 export * from './PageCreator';
 export * from './SettingTable';
 export * from './OrgSettingsTable';
+export * from './MarkdownDisplay';
