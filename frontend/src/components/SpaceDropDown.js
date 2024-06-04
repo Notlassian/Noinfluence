@@ -12,21 +12,22 @@ export const SpaceDropDown = ({ title, items }) => {
   };
 
   return (
-    <div className="dropdown">
+
+    <div className='dropdown'>
 
       <div className={`dropdown-button ${isHovered ? 'hovered' : ''}`}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}>
-        <button onClick={toggleDropdown} className="dropdown-toggle">
-          {title}
-          <img onClick={toggleDropdown} src="/down-arrow.png" alt="menu-burger" />
-        </button>
 
+        <button onClick={toggleDropdown} className='dropdown-toggle'>
+          {title}
+          <img onClick={toggleDropdown} src='/down-arrow.png' alt='menu-burger' />
+        </button>
       </div>
 
       {isOpen &&
 
-        <ul className="dropdown-menu">
+        <ul className='dropdown-menu'>
 
           {items.map((item, index) => (
 

@@ -17,8 +17,3 @@ body {
   flex: 1;
   overflow: hidden;
 }
-
-input {
-  border-radius: 0.5em;
-  min-height: 2.3rem;
-}

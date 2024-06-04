@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
-import { OrgSettingsTable } from "../components";
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import { OrgSettingsTable } from '../components';
+import { HomeSideNavigationBar } from '../components';
+import { getData } from '../utils';
 import './css/SpaceSetting.css';
-import { HomeSideNavigationBar } from "../components";
-import { useParams } from "react-router-dom";
-import { getData } from "../utils";
 
 export const OrganisationSetting = () => {
 
@@ -14,11 +14,12 @@ export const OrganisationSetting = () => {
   console.log(orgName);
 
   const fetchUsers = React.useCallback(async () => {
-    console.log("in org fetchUsers");
+    console.log('in org fetchUsers');
 
     try {
+
       console.log(`fetch org users url: ${process.env.REACT_APP_API_URL}/org/${orgName}/admin/list`);
-      const response = await getData(`org/${orgName}/admin/list`, localStorage.getItem("accessToken"));
+      const response = await getData(`org/${orgName}/admin/list`, localStorage.getItem('accessToken'));
       const data = await response.json();
       console.log('organisation user data: ', data);
 
@@ -31,7 +32,7 @@ export const OrganisationSetting = () => {
   // const updateRoles = async (updatedUsers) => {
   //   try {
   //     await Promise.all(updatedUsers.map(async (user) => {
-  //       const response = await postData(`org/${orgName}/admin/add`, { user: user.username }, localStorage.getItem("accessToken"));
+  //       const response = await postData(`org/${orgName}/admin/add`, { user: user.username }, localStorage.getItem('accessToken'));
   //       const data = await response.json();
   //       console.log('Update response:', data);
   //     }));
@@ -43,10 +44,12 @@ export const OrganisationSetting = () => {
 
   useEffect(() => {
     fetchUsers();
-  }, [fetchUsers]);
+  }, [
+    fetchUsers
+  ]);
 
   return (
-    <div className="space-setting-container">
+    <div className='space-setting-container'>
 
       <HomeSideNavigationBar/>
 

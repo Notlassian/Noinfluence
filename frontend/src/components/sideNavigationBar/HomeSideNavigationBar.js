@@ -1,8 +1,7 @@
-import { React, useState, useEffect } from "react";
+import { React, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getData } from "../../utils";
 import { CreateSpacePopUp, CreateOrganisationPopUp } from '../popup';
-
+import { getData } from '../../utils';
 import '../css/HomeSideNavigationBar.css';
 
 export const HomeSideNavigationBar = () => {
@@ -18,8 +17,10 @@ export const HomeSideNavigationBar = () => {
   };
 
   const fetchOrganisations = async () => {
+
     try {
-      const response = await getData('org/list', localStorage.getItem("accessToken"));
+
+      const response = await getData('org/list', localStorage.getItem('accessToken'));
       const data = await response.json();
 
       const formattedData = Object.entries(data).map(([key, value]) => ({
@@ -47,31 +48,42 @@ export const HomeSideNavigationBar = () => {
   }, []);
 
   return (
-    <nav className="sideNavBarWindow" >
-      <div className="burger" >
-        <img src="/menu.png" alt="menu-burger" />
+
+    <nav className='sideNavBarWindow' >
+
+      <div className='burger' >
+        <img src='/menu.png' alt='menu-burger' />
       </div>
 
-      <ul className="navbar-list">
+      <ul className='navbar-list'>
+
         {organisations.map((organisation, orgIndex) => (
-          <li key={`organisation-${orgIndex}`} className="navbar-li-box">
-            <div className="navbar-li" onClick={() => toggleExpanded(orgIndex)}>
+
+          <li key={`organisation-${orgIndex}`} className='navbar-li-box'>
+
+            <div className='navbar-li' onClick={() => toggleExpanded(orgIndex)}>
               {organisation.name}
+
               {isOrgAdmins[orgIndex] ? <button
-                onClick={() => navigate(`/${organisation.name}/settings`)}
-              >
+                onClick={() => navigate(`/${organisation.name}/settings`)}>
+
                 {'Setting'}
               </button> : null}
             </div>
+
             {expandedIndex === orgIndex && (
-              <ul className="sub-list">
+
+              <ul className='sub-list'>
+
                 {organisation.items.map((item, itemIndex) => (
-                  <li key={`item-${itemIndex}`} className="sub-item">
-                    <div className="navbar-li" onClick={() => onOrganisationClick(organisation.name,item[0])}>
+
+                  <li key={`item-${itemIndex}`} className='sub-item'>
+                    <div className='navbar-li' onClick={() => onOrganisationClick(organisation.name,item[0])}>
                       {item[0]}
                     </div>
                   </li>
                 ))}
+
                 <li>
                   <CreateSpacePopUp/>
                 </li>
@@ -81,7 +93,7 @@ export const HomeSideNavigationBar = () => {
         ))}
       </ul>
 
-      <div className="create-button-container">
+      <div className='create-button-container'>
         <CreateOrganisationPopUp/>
       </div>
     </nav>

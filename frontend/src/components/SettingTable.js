@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { AddSpaceUserPopUp } from './popup';
-
 import './css/SettingTable.css';
 
 export const SettingTable = ({ users, onUpdateRoles  }) => {
@@ -11,8 +10,8 @@ export const SettingTable = ({ users, onUpdateRoles  }) => {
   const { organisationName, spaceName } = useParams();
 
   const handleRoleChange = (username, newRole) => {
-    console.log("New Role:", newRole);
-    console.log("Previous userRoles:", userRoles);
+    console.log('New Role:', newRole);
+    console.log('Previous userRoles:', userRoles);
 
     setUserRoles(prevUserRoles =>
       prevUserRoles.map(user =>
@@ -22,17 +21,18 @@ export const SettingTable = ({ users, onUpdateRoles  }) => {
   };
 
   const handleConfirmClick = () => {
-    console.log("Updated userRoles:", userRoles);
+    console.log('Updated userRoles:', userRoles);
     onUpdateRoles(userRoles);
   };
 
   useEffect(() => {
-    console.log("UseEffect triggered. Updated users:", users);
+    console.log('UseEffect triggered. Updated users:', users);
     setUserRoles(users);
   }, [users]);
 
   return (
-    <div className="space-setting-table">
+
+    <div className='space-setting-table'>
 
       <h2>Space Settings</h2>
 
@@ -44,9 +44,11 @@ export const SettingTable = ({ users, onUpdateRoles  }) => {
             <th>Role</th>
           </tr>
         </thead>
+
         <tbody>
 
           {userRoles.map((user, index) => (
+
             <tr key={index}>
               <td>{user.username}</td>
               <td>
@@ -54,9 +56,9 @@ export const SettingTable = ({ users, onUpdateRoles  }) => {
                   value={user.role}
                   onChange={(e) => handleRoleChange(user.username, e.target.value)}>
 
-                  <option value="Administrator">Administrator</option>
-                  <option value="Editor">Editor</option>
-                  <option value="Viewer">Viewer</option>
+                  <option value='Administrator'>Administrator</option>
+                  <option value='Editor'>Editor</option>
+                  <option value='Viewer'>Viewer</option>
                 </select>
               </td>
             </tr>
@@ -64,7 +66,7 @@ export const SettingTable = ({ users, onUpdateRoles  }) => {
         </tbody>
       </table>
 
-      <button className="confirm-button" onClick={handleConfirmClick}>Confirm</button>
+      <button className='confirm-button' onClick={handleConfirmClick}>Confirm</button>
 
       <AddSpaceUserPopUp orgName={`${organisationName}`} spaceName={`${spaceName}`} />
     </div>

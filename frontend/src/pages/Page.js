@@ -1,11 +1,12 @@
 
 import React, { useState, useEffect } from 'react';
-import { SpaceSideNavigationBar } from "../components";
+import { useParams } from 'react-router-dom';
+import { SpaceSideNavigationBar } from '../components';
 
 import {MDXEditor} from '@mdxeditor/editor';
 import '../components/css/Document.css'
-
 import '@mdxeditor/editor/style.css';
+
 import {
   toolbarPlugin,
   listsPlugin,
@@ -26,14 +27,13 @@ import {
   KitchenSinkToolbar,
   AdmonitionDirectiveDescriptor
 } from '@mdxeditor/editor';
-import { useParams } from 'react-router-dom';
 
 
 export const Page = () => {
 
   const { orgName, spaceName, folderName, pageName } = useParams();
 
-  console.log(orgName + "/" + spaceName + "/" + folderName + "/" + pageName);
+  console.log(orgName + '/' + spaceName + '/' + folderName + '/' + pageName);
 
   const simpleSandpackConfig = {
     defaultPreset: 'txt',
@@ -46,7 +46,7 @@ export const Page = () => {
         sandpackTheme: 'light',
         snippetFileName: '/App.js',
         snippetLanguage: 'jsx',
-        initialSnippetContent: "defaultSnippetContent"
+        initialSnippetContent: 'defaultSnippetContent'
       },
     ]
   }
@@ -77,20 +77,22 @@ export const Page = () => {
   }, []);
 
   const page = () => {
+
     if (readOnly) {
-      return <div class="page">
-        
+
+      return <div class='page'>
+
       <SpaceSideNavigationBar/>
-      
-      <nav class="document-manager">
+
+      <nav class='document-manager'>
         <button id='edit-button' onClick={clickEdit}> edit </button>
       </nav>
-      <div class="background">
-        <div class="document-container">
+      <div class='background'>
+        <div class='document-container'>
           <MDXEditor
             key={`${editState}`}
-            contentEditableClassName="editable-document-page"
-            class="document"
+            contentEditableClassName='editable-document-page'
+            class='document'
             markdown={currentMarkdown}
             plugins={[
               toolbarPlugin({ toolbarContents: () => <KitchenSinkToolbar/> }),
@@ -118,22 +120,23 @@ export const Page = () => {
 
     }
     else {
-      return <div class="page">
-        
+
+      return <div class='page'>
+
       <SpaceSideNavigationBar/>
-      
-      <nav class="document-manager">
-        <div id="save-cancel">
+
+      <nav class='document-manager'>
+        <div id='save-cancel'>
           <button id='save-button' onClick={clickSave}> save </button>
           <button id='cancel-button' onClick={clickCancel}> cancel </button>
         </div>
       </nav>
-      <div class="background">
-        <div class="document-container">
+      <div class='background'>
+        <div class='document-container'>
           <MDXEditor
             key={`${editState}`}
-            contentEditableClassName="editable-document-page"
-            class="document"
+            contentEditableClassName='editable-document-page'
+            class='document'
             markdown={currentMarkdown}
             plugins={[
               toolbarPlugin({ toolbarContents: () => <KitchenSinkToolbar/> }),
@@ -178,6 +181,7 @@ export const Page = () => {
   };
 
   const clickCancel = () => {
+
     setReadOnly(true)
     setEditState(!editState)
     setCurrentMarkdown(savedMarkdown)
@@ -186,6 +190,7 @@ export const Page = () => {
   if (loading) {
     return <div>Loading...</div>;
   }
+
   if (!savedMarkdown) {
     return <div>No data available</div>;
   }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import { AddSpaceUserPopUp } from './popup';
 import './css/SettingTable.css';
 
@@ -11,7 +11,7 @@ export const OrgSettingsTable = ({ users }) => {
   }, [users]);
 
   return (
-    <div className="space-setting-table">
+    <div className='space-setting-table'>
 
       <h2>Organization Settings</h2>
 
@@ -22,6 +22,7 @@ export const OrgSettingsTable = ({ users }) => {
             <th>Admins</th>
           </tr>
         </thead>
+
         <tbody>
 
           {userRoles.map((user, index) => (
