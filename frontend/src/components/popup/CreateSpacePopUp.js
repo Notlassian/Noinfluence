@@ -1,5 +1,6 @@
 import { Popup } from 'reactjs-popup';
-import { AlertType, postData, showAlert } from "../../utils";
+import { AlertType, HttpStatusCodes, postData, showAlert } from "../../utils";
+import { useNavigate } from 'react-router-dom';
 
 import 'reactjs-popup/dist/index.css';
 import '../css/CreateResourcePopup.css';
@@ -8,14 +9,24 @@ export const CreateSpacePopUp = (props) => {
 
   const orgName = props.orgName;
 
+  const navigate = useNavigate();
+
   const addSpace = async () => {
     const inputSpaceName = document.getElementsByClassName("space-name")[0].value;
 
     try {
       const response = await postData(`org/${orgName}/spaces/add`, { space: inputSpaceName }, localStorage.getItem("accessToken"));
-      const data = await response.json();
-      console.log('Add response:', data);
-      showAlert(`Space ${inputSpaceName} added successfully.`, AlertType.Success);
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Add response:', data);
+        showAlert(`Space ${inputSpaceName} added successfully.`, AlertType.Success);
+      } else if (response.status === HttpStatusCodes.Forbidden) {
+        showAlert('You are unable to add spaces to this organisation.', AlertType.Info);
+        navigate('/');
+      } else {
+        showAlert('An error occured while adding an user, please contact Noinfluence for support.', AlertType.Error);
+      }
 
     } catch (error) {
       console.error('Error:', error);

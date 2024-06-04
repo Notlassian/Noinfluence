@@ -19,7 +19,6 @@ export const SpaceSideNavigationBar = () => {
   const fetchIsAdmin = React.useCallback(async () => {
 
     try {
-
       const response = await getData(`org/${orgName}/spaces/${spaceName}/admin/check`, localStorage.getItem('accessToken'));
       setIsAdmin(response.ok);
     } catch (error) {
@@ -35,26 +34,23 @@ export const SpaceSideNavigationBar = () => {
 
       if (response.ok) {
         const data = await response.json();
-      console.log(data);
+        console.log(data);
 
-      const formattedData = Object.entries(data).map(([key, value]) => ({
-        name: key,
-        items: value.map(folder => folder)
-      }));
+        const formattedData = Object.entries(data).map(([key, value]) => ({
+          name: key,
+          items: value.map(folder => folder)
+        }));
 
-      console.log(formattedData);
+        console.log(formattedData);
 
-      setFolders(formattedData);
+        setFolders(formattedData);
       } else if (response.status === HttpStatusCodes.Unauthorized) {
         showAlert(`You are not logged in, please login to continue.`, AlertType.Error);
         navigate('/unauthorized');
-      } else if (response.status === HttpStatusCodes.Forbidden) {
-        showAlert(`You are unable to view this space.`, AlertType.Info);
-        navigate('/');
-      }
+      } 
 
     } catch (error) {
-      showAlert(`Unable to retrive spaces pages, please make sure you are logged in.`, AlertType.Error);
+      showAlert(`Unable to retrieve spaces pages, please make sure you are logged in.`, AlertType.Error);
       console.error('Error:', error);
     }
   }, [orgName, spaceName, navigate]);

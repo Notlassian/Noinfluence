@@ -1,13 +1,16 @@
 import React from 'react';
 import { Popup } from 'reactjs-popup';
-import { AlertType, postData, showAlert } from '../../utils';
+import { AlertType, HttpStatusCodes, postData, showAlert } from '../../utils';
 
 import 'reactjs-popup/dist/index.css';
 import '../css/CreateResourcePopup.css';
+import { useNavigate } from 'react-router-dom';
 
 export const AddOrgUserPopUp = (props) => {
 
   const orgName = props.organisationName;
+
+  const navigate = useNavigate();
 
   const addOrgUser = async () => {
 
@@ -15,9 +18,17 @@ export const AddOrgUserPopUp = (props) => {
 
     try {
       const response = await postData(`org/${orgName}/admin/add`, { user: inputUserName }, localStorage.getItem('accessToken'));
-      const data = await response.json();
-      console.log('Add response:', data);
-      showAlert('Admin user added successfully.', AlertType.Success);
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Add response:', data);
+        showAlert('Admin user added successfully.', AlertType.Success);
+      } else if (response.status === HttpStatusCodes.Forbidden) {
+        showAlert('You are unable to access this organisations settings.', AlertType.Info);
+        navigate('/');
+      } else {
+        showAlert('An error occured while adding a user, please contact Noinfluence for support.', AlertType.Error);
+      }
 
     } catch (error) {
       console.error('Error:', error);

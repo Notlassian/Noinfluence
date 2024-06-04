@@ -22,7 +22,7 @@ export default function App() {
             <Route path="/:orgName/:spaceName/settings" element={<SpaceSetting />} />
             <Route path="/:orgName/:spaceName/:folderName/:pageName" element={<Page />} />
             <Route path="/callback" element={<Callback />} />
-            <Route path="/noauth" element={<Unauthenticated />} />
+            <Route path="/unauthorized" element={<Unauthenticated />} />
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
       </div>

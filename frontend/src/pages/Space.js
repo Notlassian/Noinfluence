@@ -15,7 +15,7 @@ export const Space = () => {
   const navigate = useNavigate();
 
   const fetchPage = React.useCallback(async () => {
-    getData(`org/${orgName}/spaces/${spaceName}/homepage/retrieve`)
+    getData(`org/${orgName}/spaces/${spaceName}/homepage/retrieve`, localStorage.getItem('accessToken'))
     .then(async (response) => {
 
       if (response.ok) {

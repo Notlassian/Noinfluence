@@ -20,7 +20,7 @@ export const Page = () => {
   const navigate = useNavigate();
 
   const fetchPage = React.useCallback(async () => {
-    getData(`org/${orgName}/spaces/${spaceName}/pages/${folderName}/${pageName}/retrieve`)
+    getData(`org/${orgName}/spaces/${spaceName}/pages/${folderName}/${pageName}/retrieve`, localStorage.getItem('accessToken'))
       .then(async (response) => {
 
         if (response.ok) {

@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import { Popup } from 'reactjs-popup';
-import { AlertType, postData, showAlert } from "../../utils";
+import { AlertType, HttpStatusCodes, postData, showAlert } from "../../utils";
 
 import 'reactjs-popup/dist/index.css';
 import '../css/CreateResourcePopup.css';
+import { useNavigate } from 'react-router-dom';
 
 export const AddSpaceUserPopUp = (props) => {
 
   const [userRole, setUserRole] = useState('Admin');
+  const navigate = useNavigate();
 
   const orgName = props.organisationName;
   const spaceName = props.spaceName;
@@ -17,9 +19,17 @@ export const AddSpaceUserPopUp = (props) => {
 
     try {
       const response = await postData(`org/${orgName}/spaces/${spaceName}/admin/add`, { user: inputUserName, role: userRole }, localStorage.getItem("accessToken"));
-      const data = await response.json();
-      console.log('Add response:', data);
-      showAlert(`User successfully added as ${userRole === "Administrator" ? `an ${userRole}` : `a ${userRole}`}.`, AlertType.Success);
+      
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Add response:', data);
+        showAlert(`User successfully added user as ${userRole === "Administrator" ? `an ${userRole}` : `a ${userRole}`}.`, AlertType.Success);
+      } else if (response.status === HttpStatusCodes.Forbidden) {
+        showAlert('You are unable to access this spaces settings.', AlertType.Info);
+        navigate(`/${orgName}/${spaceName}`);
+      } else {
+        showAlert('An error occured while adding a user, please contact Noinfluence for support.', AlertType.Error);
+      }
 
     } catch (error) {
       console.error('Error:', error);

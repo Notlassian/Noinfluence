@@ -11,9 +11,14 @@ export const CreateOrganisationPopUp = () => {
 
     try {
       const response = await postData(`org/create`, { org: inputOrgName }, localStorage.getItem("accessToken"));
-      const data = await response.json();
-      console.log('Add response:', data);
-      showAlert(`Organisation ${inputOrgName} added successfully.`, AlertType.Success);
+      
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Add response:', data);
+        showAlert(`Organisation ${inputOrgName} added successfully.`, AlertType.Success);
+      } else {
+        showAlert('An error occured while creating an organisation, please contact Noinfluence for support.', AlertType.Error);
+      }
     } catch (error) {
       console.error('Error:', error);
       alert(`Error: ${error.message}`);

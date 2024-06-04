@@ -31,7 +31,7 @@ export const HomeSideNavigationBar = () => {
         console.log(formattedData);
   
         const isAdminPromises = formattedData.map(async (item) => {
-          const response = await getData(`org/${item.name}/admin/check`);
+          const response = await getData(`org/${item.name}/admin/check`, localStorage.getItem('accessToken'));
           return response.ok;
         });
       
