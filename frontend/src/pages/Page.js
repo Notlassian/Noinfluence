@@ -48,13 +48,13 @@ export const Page = () => {
           showAlert(`The page you are looking for doesn't exist.`, AlertType.Info);
           navigate(`/${orgName}/${spaceName}`);
         } else {
-          showAlert(`An error occured while loading this page, please contact Noinfluence for support.`, AlertType.Error);
+          showAlert(`Unable to load this page, please contact Noinfluence for support.`, AlertType.Error);
         }
 
         setIsLoading(false);
       })
       .catch(() => {
-        showAlert(`Page you are trying to retrieve doesn't exist.`, AlertType.Info);
+        showAlert(`Unable to load this page, please try again in a moment. If this issue continues, please contact Noinfluence for support.`, AlertType.Error);
         setIsLoading(false);
         navigate(`/${orgName}/${spaceName}`);
       });
@@ -62,9 +62,14 @@ export const Page = () => {
 
   const updateMarkdown = async (newMarkdown) => {
     putData(`org/${orgName}/spaces/${spaceName}/pages/${folderName}/${pageName}/update`, { pageContent: newMarkdown}, localStorage.getItem("accessToken"))
+      .then(response => {
+        if (!response.ok) {
+          showAlert('Unable to update this page, please contact Noinfluence for support.');
+        }
+      })
       .catch(error => {
         console.log(error);
-        showAlert('Unable to update markdown, please try again in a moment.');
+        showAlert('Unable to update this page, please try again in a moment. If this issue continues, please contact Noinfluence for support.');
       });
   };
 

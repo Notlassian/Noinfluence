@@ -28,12 +28,14 @@ export const SpaceSetting = () => {
       } else if (response.status === HttpStatusCodes.Forbidden) {
         showAlert(`You are unable to view this spaces settings.`, AlertType.Info);
         navigate(`/${orgName}/${spaceName}`);
+      } else {
+        showAlert(`Unable to view user list for this space, please contact Noinfluence support`, AlertType.Error);
       }
     } catch (error) {
       console.error('Error:', error);
-      showAlert(`Unable to retrieve admin list, please make sure you are logged in.`, AlertType.Error);
+      showAlert(`Unable to view user list for this space, please try in a moment. If this error continues, please contact Noinfluence support.`, AlertType.Error);
     }
-  }, [orgName, spaceName]);
+  }, [orgName, spaceName, navigate]);
 
   const updateRoles = async (updatedUsers) => {
 

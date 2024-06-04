@@ -34,7 +34,7 @@ export const AddSpaceUserPopUp = (props) => {
     } catch (error) {
       console.error('Error:', error);
       alert(`Error: ${error.message}`);
-      showAlert(`An error occured while adding user as ${userRole}, please try again in a moment.`, AlertType.Error);
+      showAlert(`An error occured while adding a user, please try again in a moment. If this error continues, please contact Noinfluence support.`, AlertType.Error);
     }
   }
 

@@ -25,13 +25,13 @@ export const CreateSpacePopUp = (props) => {
         showAlert('You are unable to add spaces to this organisation.', AlertType.Info);
         navigate('/');
       } else {
-        showAlert('An error occured while adding an user, please contact Noinfluence for support.', AlertType.Error);
+        showAlert('An error occured while adding a user, please contact Noinfluence support.', AlertType.Error);
       }
 
     } catch (error) {
       console.error('Error:', error);
       alert(`Error: ${error.message}`);
-      showAlert(`An error occured while trying to make a new space, please try again in a moment.`, AlertType.Error);
+      showAlert(`An error occured while trying to make a new space, please try again in a moment. If this error continues, please contact Noinfluence support`, AlertType.Error);
     }
   }
 

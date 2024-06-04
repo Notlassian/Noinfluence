@@ -42,13 +42,13 @@ export const HomeSideNavigationBar = () => {
         setIsOrgAdmins(isAdminArr);
         setOrganisations(formattedData);
       } else if (response.status === HttpStatusCodes.Unauthorized) {
-        showAlert(`You are not logged in, please login to continue.`, AlertType.Error);
+        showAlert(`You are not logged in, please login to continue.`, AlertType.Info);
         navigate("/unauthorized");
       }
       
     } catch (error) {
       console.error('Error:', error);
-      showAlert(`Couldn't retrieve your organisations, make sure you are connected to the internet.`, AlertType.Error);
+      showAlert(`Couldn't retrieve your organisations, please try again in a moment. If this error continues, please contact Noinfluence support.`, AlertType.Error);
     }
   };
 

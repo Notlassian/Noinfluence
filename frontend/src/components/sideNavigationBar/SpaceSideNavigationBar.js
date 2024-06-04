@@ -50,8 +50,8 @@ export const SpaceSideNavigationBar = () => {
       } 
 
     } catch (error) {
-      showAlert(`Unable to retrieve spaces pages, please make sure you are logged in.`, AlertType.Error);
       console.error('Error:', error);
+      showAlert(`Couldn't retrieve this spaces pages, please try again in a moment. If this error continues, please contact Noinfluence support.`, AlertType.Error);
     }
   }, [orgName, spaceName, navigate]);
 

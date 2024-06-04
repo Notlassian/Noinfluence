@@ -22,7 +22,7 @@ export const CreateOrganisationPopUp = () => {
     } catch (error) {
       console.error('Error:', error);
       alert(`Error: ${error.message}`);
-      showAlert(`An error occured while creating an organisation, please try again in a moment.`, AlertType.Error);
+      showAlert(`An error occured while creating an organisation, please try again in a moment. If this error continues, please try again in a moment.`, AlertType.Error);
     }
   }
 

@@ -31,13 +31,13 @@ export const Callback = () => {
             showAlert('Successfully logged in, welcome to Noinfluence.', AlertType.Success);
           } else {
             setError(true);
-            showAlert('An error occured with validating your login, please try again.', AlertType.Error);
+            showAlert('An error occured with validating your login, please try logging in again.', AlertType.Error);
           }
         })
       })
       .catch(error => {
         console.error(error);
-        showAlert('An error occured with login validation, please try again.', AlertType.Error);
+        showAlert('An error occured with login validation, please try again in a moment. If this error continues, please contact Noinfluence support', AlertType.Error);
       });
     }
   }, [location, navigate]);

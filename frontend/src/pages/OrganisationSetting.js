@@ -31,13 +31,15 @@ export const OrganisationSetting = () => {
       } else if (response.status === HttpStatusCodes.Forbidden) {
         showAlert(`You are unable to view this organisations settings.`, AlertType.Info);
         navigate('/');
+      } else {
+        showAlert(`Unable to view admin list, please contact Noinfluence support`, AlertType.Error);
       }
       
     } catch (error) {
       console.error('Error:', error);
-      showAlert(`Unable to retrieve user list for space, please make sure you are logged in.`, AlertType.Error);
+      showAlert(`Unable to view admin list, please try again in a moment. If this issue continues, please contact Noinfluence support`, AlertType.Error);
     }
-  }, [orgName]);
+  }, [orgName, navigate]);
 
   useEffect(() => {
     fetchUsers();
