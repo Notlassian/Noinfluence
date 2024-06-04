@@ -15,7 +15,7 @@ const environments = {
 
 const { PAGE_BUCKET: bucket } = process.env;
 const localDir = 'savedFiles';
-const s3Client = new S3Client([{ region: 'eu-west-1' }]);
+const s3Client = new S3Client({ region: 'eu-west-1' });
 
 async function uploadToS3(file, fileId, folder) {
     const key = [folder, fileId].join('/');
