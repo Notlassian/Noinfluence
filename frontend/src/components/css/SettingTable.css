@@ -1,3 +1,10 @@
+.space-setting-table-container {
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  align-items: start;
+}
+
 .space-setting-table {
   margin: 20px;
   padding: 20px;

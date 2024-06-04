@@ -63,8 +63,10 @@ export const SpaceSideNavigationBar = () => {
 
       {isAdmin &&
 
-        <div className="space-setting-container" onClick={() => navigate(`/${orgName}/${spaceName}/settings`)}>
-          {'Space Setting'}
+        <div className="space-setting-icon-container" onClick={() => navigate(`/${orgName}/${spaceName}/settings`)}>
+
+          <img className='setting-icon' src='/setting.svg' alt='setting'/>
+          <span className="space-setting-text">Space Setting</span>
         </div>
       }
 
@@ -74,6 +76,7 @@ export const SpaceSideNavigationBar = () => {
             <span
               className='navbar-li'>
 
+              <img className='space-icon' src='/space.png' alt='space'/>
               {spaceName}
             </span>
 
@@ -84,12 +87,17 @@ export const SpaceSideNavigationBar = () => {
                   className={`sub-item ${expandedFolderIndex === folderIndex ? 'expanded' : ''}`}
                   onClick={() => toggleFolderExpanded(folderIndex)}>
 
-                  <img src='/folder.svg' alt='menu-burger'/>
-
                   <span
                     className='navbar-li'>
 
+                    <img className='folder-icon' src='/folder.png' alt='folder'/>
+
                     {folder.name}
+
+                    {folder.items.length > 0 &&
+
+                      <img className='down-arrow-icon' src='/down-arrow.png' alt='down-arrow'/>
+                    }
                   </span>
 
                   {expandedFolderIndex === folderIndex && (
@@ -103,6 +111,7 @@ export const SpaceSideNavigationBar = () => {
                           <span
                             className='navbar-li'>
 
+                            <img className='page-icon' src='/page.png' alt='page'/>
                             {page}
                           </span>
                         </li>

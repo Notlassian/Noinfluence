@@ -29,19 +29,6 @@ export const OrganisationSetting = () => {
     }
   }, [orgName]);
 
-  // const updateRoles = async (updatedUsers) => {
-  //   try {
-  //     await Promise.all(updatedUsers.map(async (user) => {
-  //       const response = await postData(`org/${orgName}/admin/add`, { user: user.username }, localStorage.getItem('accessToken'));
-  //       const data = await response.json();
-  //       console.log('Update response:', data);
-  //     }));
-  //     fetchUsers();
-  //   } catch (error) {
-  //     console.error('Error:', error);
-  //   }
-  // };
-
   useEffect(() => {
     fetchUsers();
   }, [

@@ -57,31 +57,38 @@ export const HomeSideNavigationBar = () => {
     <nav className='sideNavBarWindow' >
 
       <ul className="navbar-list">
+
         {organisations.map((organisation, orgIndex) => (
           <li key={`organisation-${orgIndex}`} className="navbar-li-box">
+
             <div className="navbar-li" onClick={() => toggleExpanded(orgIndex)}>
 
-              {organisation.name}
+              <img className='organisation-icon' src='/organisation.png' alt='organisation'/>
+              <span className="organisation-name">{organisation.name}</span>
 
-              {isOrgAdmins[orgIndex] ? (
-                <div className="navbar-li-button-container">
-                  <button
-                    className="navbar-li-button"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      navigate(`/${organisation.name}/settings`);
-                    }}
-                  >
-                    {'Setting'}
-                  </button>
-                </div>
-              ) : null}
+              {isOrgAdmins[orgIndex] && (
+                <button
+                  className="navbar-li-button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigate(`/${organisation.name}/settings`);
+                  }}>
+
+                  {'Setting'}
+                </button>
+              )}
             </div>
+
             {expandedIndex === orgIndex && (
+
               <ul className="sub-list">
+
                 {organisation.items.map((item, itemIndex) => (
                   <li key={`item-${itemIndex}`} className="sub-item">
+
                     <div className="navbar-li" onClick={() => onOrganisationClick(organisation.name,item[0])}>
+
+                      <img className='space-icon' src='/space.png' alt='space'/>
                       {item[0]}
                     </div>
                   </li>
