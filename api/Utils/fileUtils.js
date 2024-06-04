@@ -45,7 +45,7 @@ function storeLocally(file, fileId, folder) {
 
     const folderDir = path.resolve(localDir, folder);
     const filePath = path.resolve(localDir, folder, fileId);
-    
+
     if (!fs.existsSync(folderDir)) {
         fs.mkdirSync(folderDir, { recursive: true });
     }
@@ -96,23 +96,12 @@ export async function storePage(
 
     if (!update) {
         const queryFolder = 'call insert_folder($1, $2, $3)';
-        const paramsFolder = [
-            folderName,
-            spaceName,
-            orgName
-        ];
+        const paramsFolder = [folderName, spaceName, orgName];
         try {
             await sqlPool.query(queryFolder, paramsFolder);
             const query = 'call insert_page($1, $2, $3, $4)';
-                const params = [
-                    pageName,
-                    folderName,
-                    spaceName,
-                    orgName
-                ];
-               await sqlPool
-                    .query(query,params);
-
+            const params = [pageName, folderName, spaceName, orgName];
+            await sqlPool.query(query, params);
         } catch (error) {
             deleteFile(fileLocation);
             throw error;
