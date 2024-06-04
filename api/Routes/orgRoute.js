@@ -1,5 +1,9 @@
 import { Router } from 'express';
-import { createOrg, getMyOrgs } from '../Controllers/orgController.js';
+import {
+    createOrg,
+    getMyOrgs,
+    getRecentlyUpdatedOrgs,
+} from '../Controllers/orgController.js';
 import { spaceRouter } from './spaceRoute.js';
 import { orgAdminRouter } from './orgAdminRoute.js';
 import { isOrgAdmin } from '../Middleware/authorizationMiddleware.js';
@@ -11,3 +15,4 @@ orgRouter.use('/:orgName/spaces', spaceRouter);
 
 orgRouter.post('/create', createOrg);
 orgRouter.get('/list', getMyOrgs);
+orgRouter.get('/dashboard', getRecentlyUpdatedOrgs);
