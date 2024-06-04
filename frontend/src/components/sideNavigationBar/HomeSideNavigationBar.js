@@ -77,7 +77,7 @@ export const HomeSideNavigationBar = () => {
                   </li>
                 ))}
                 <li>
-                  <CreateSpacePopUp orgName={organisation.name}/>
+                  { isOrgAdmins[orgIndex] ? <CreateSpacePopUp orgName={organisation.name}/> : null }
                 </li>
               </ul>
             )}
