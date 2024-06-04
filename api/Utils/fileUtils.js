@@ -141,7 +141,7 @@ async function checkIfFileExistsS3(folder, fileId) {
     try {
         await s3Client.send(command);
     } catch (error) {
-        if (error['$metadata'].httpStatusCode === 404) {
+        if (error.name === 'NotFound') {
             return false;
         } else {
             throw error;
