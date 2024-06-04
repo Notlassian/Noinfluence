@@ -113,9 +113,9 @@ export const SpaceSideNavigationBar = () => {
           </li>
       </ul>
 
-      <div className="create-button-container">
+      {isAdmin ? <div className="create-button-container">
         <CreatePagePopup/>
-      </div>
+      </div> : null }
     </nav>
   );
 };
