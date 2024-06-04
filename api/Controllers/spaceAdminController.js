@@ -53,23 +53,23 @@ export const updateUserRole = async (req, res) => {
     }
 };
 export const addUserRole = async (req, res) => {
-    const query = 'call space_create_user_role($1, $2, $3, $4)';
+    const query = 'call add_role_to_user_in_space($1, $2, $3, $4)';
     const params = [
-        req.params.orgName,
-        req.params.spaceName,
-        req.body.user,
+        req.body.username,
         req.body.role,
+        req.params.spaceName,
+        req.params.orgName,
     ];
     if (!params[0] || !params[1] || !params[2] || !params[3]) {
         res.status(HttpStatusCodes.InternalServerError).json({
-            error: '"user" and "role" required in request body',
+            error: '"username" and "role" required in request body',
         });
     } else {
         sqlPool
             .query(query, params)
             .then((sqlRes) => {
                 res.status(HttpStatusCodes.OK).json({
-                    message: `Successfully added ${params[2]} to the space as ${params[3]}`,
+                    message: `Successfully added ${params[0]} to the space as ${params[1]}`,
                 });
             })
             .catch((error) => {
