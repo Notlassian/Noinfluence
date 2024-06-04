@@ -40,11 +40,11 @@ export const Space = () => {
         showAlert(`You are unable to view this space.`, AlertType.Info);
         navigate('/');
       } else {
-        showAlert(`Unable to load this page, please contact Noinfluence support`, AlertType.Info);
+        showAlert(`Unable to load this page, please contact Noinfluence support`, AlertType.Error);
       }
     })
     .catch(() => {
-      showAlert(`Unable to load this page, please try again in a moment. If this error continues, please contact Noinfluence support.`, AlertType.Info);
+      showAlert(`Unable to load this page, please try again in a moment. If this error continues, please contact Noinfluence support.`, AlertType.Error);
       setIsLoading(false);
     });
   }, [orgName, spaceName, navigate]);
