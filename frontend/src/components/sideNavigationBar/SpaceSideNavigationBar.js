@@ -94,8 +94,6 @@ export const SpaceSideNavigationBar = () => {
                     {folder.name}
                   </span>
 
-                  <CreatePagePopup/>
-
                   {expandedFolderIndex === folderIndex && (
                     <ul className='sub-sub-list'>
                       {folder.items.map((page, pageIndex) => (
@@ -119,11 +117,9 @@ export const SpaceSideNavigationBar = () => {
           </li>
       </ul>
 
-
       <div className="create-button-container">
         <CreatePagePopup/>
       </div>
-
     </nav>
   );
 };

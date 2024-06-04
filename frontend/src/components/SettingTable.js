@@ -7,7 +7,7 @@ export const SettingTable = ({ users, onUpdateRoles  }) => {
 
   const [userRoles, setUserRoles] = useState(users);
 
-  const { organisationName, spaceName } = useParams();
+  const { orgName, spaceName } = useParams();
 
   const handleRoleChange = (username, newRole) => {
     console.log('New Role:', newRole);
@@ -68,7 +68,7 @@ export const SettingTable = ({ users, onUpdateRoles  }) => {
 
       <button className='confirm-button' onClick={handleConfirmClick}>Confirm</button>
 
-      <AddSpaceUserPopUp orgName={`${organisationName}`} spaceName={`${spaceName}`} />
+      <AddSpaceUserPopUp orgName={`${orgName}`} spaceName={`${spaceName}`} />
     </div>
   );
 };
