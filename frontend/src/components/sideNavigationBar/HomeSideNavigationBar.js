@@ -17,10 +17,8 @@ export const HomeSideNavigationBar = () => {
   };
 
   const fetchOrganisations = async () => {
-
     try {
-
-      const response = await getData('org/list', localStorage.getItem('accessToken'));
+      const response = await getData('org/list', localStorage.getItem("accessToken"));
       const data = await response.json();
 
       const formattedData = Object.entries(data).map(([key, value]) => ({
@@ -30,7 +28,14 @@ export const HomeSideNavigationBar = () => {
 
       console.log(formattedData);
 
-      const isAdminArr = formattedData.map(async (item) => (await getData(`org/${item.name}/admin/check`)).ok);
+      const isAdminPromises = formattedData.map(async (item) => {
+        const response = await getData(`org/${item.name}/admin/check`);
+        return response.ok;
+      });
+    
+      const isAdminArr = await Promise.all(isAdminPromises);
+      
+      console.log(isAdminArr);
 
       setIsOrgAdmins(isAdminArr);
       setOrganisations(formattedData);
