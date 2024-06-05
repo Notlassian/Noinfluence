@@ -5,6 +5,7 @@ import {
 } from '../Utils/fileUtils.js';
 import { HttpStatusCodes } from '../Utils/httpStatusCodes.js';
 import { sqlPool } from '../Utils/dbUtils.js';
+import { checkStr } from '../Utils/checkStrAllowed.js';
 
 export const getPage = async (req, res) => {
     const query =
