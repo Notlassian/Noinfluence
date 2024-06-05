@@ -12,17 +12,22 @@ export const createSpace = async (req, res) => {
     } else {
         if (!checkStr(req.body.space, 30)) {
             res.status(HttpStatusCodes.BadRequest).json({
-                error: 'Space name doesn\'t conform to allowed format',
+                error: "Space name doesn't conform to allowed format",
             });
         } else {
-            const query = 'Select space_name FROM user_space_organization_permissions where organization_name=$1';
+            const query =
+                'Select space_name FROM user_space_organization_permissions where organization_name=$1';
             const params = [req.params.orgName];
             sqlPool
                 .query(query, params)
                 .then((sqlRes) => {
                     if (sqlRes.rowCount < 10) {
                         const query = 'call insert_space($1,$2,$3)';
-                        const params = [req.user, req.body.space.trim(), req.params.orgName];
+                        const params = [
+                            req.user,
+                            req.body.space.trim(),
+                            req.params.orgName,
+                        ];
                         sqlPool
                             .query(query, params)
                             .then(async () => {

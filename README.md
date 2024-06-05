@@ -11,7 +11,7 @@ Get your local environment up and running with these easy steps:
 To construct your development haven:
 
 ```bash
-docker-compose build
+docker compose build
 ```
 
 ### Launch the Environment
@@ -19,7 +19,7 @@ docker-compose build
 Unleash the power of Noinfluence:
 
 ```bash
-docker-compose up
+docker compose up
 ```
 
 ### Wind Down
@@ -31,3 +31,8 @@ docker-compose down
 ```
 
 Embrace the simplicity of Noinfluence and watch your productivity soar!
+
+## Important Note
+
+**Note**: For access to the environment files for the test environment, please contact **Ryan** 
+You must place one in the /api folder and one in the /frontend.

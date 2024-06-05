@@ -80,7 +80,9 @@ export async function storePage(
     update = false
 ) {
     const environment = process.env.APP_ENVIRONMENT;
-    const folder = folderName ? `${orgName}/${spaceName}/${folderName}` : `${orgName}/${spaceName}`;
+    const folder = folderName
+        ? `${orgName}/${spaceName}/${folderName}`
+        : `${orgName}/${spaceName}`;
     const fileId = `${pageName}.md`;
     let fileLocation;
 
