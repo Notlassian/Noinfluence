@@ -1,8 +1,7 @@
-import { React, useState, useEffect } from "react";
+import { React, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getData } from "../../utils";
 import { CreateSpacePopUp, CreateOrganisationPopUp } from '../popup';
-
+import { getData } from '../../utils';
 import '../css/HomeSideNavigationBar.css';
 
 export const HomeSideNavigationBar = () => {
@@ -29,7 +28,14 @@ export const HomeSideNavigationBar = () => {
 
       console.log(formattedData);
 
-      const isAdminArr = formattedData.map(async (item) => (await getData(`org/${item.name}/admin/check`)).ok);
+      const isAdminPromises = formattedData.map(async (item) => {
+        const response = await getData(`org/${item.name}/admin/check`);
+        return response.ok;
+      });
+
+      const isAdminArr = await Promise.all(isAdminPromises);
+
+      console.log(isAdminArr);
 
       setIsOrgAdmins(isAdminArr);
       setOrganisations(formattedData);
@@ -47,33 +53,48 @@ export const HomeSideNavigationBar = () => {
   }, []);
 
   return (
-    <nav className="sideNavBarWindow" >
-      <div className="burger" >
-        <img src="/menu.png" alt="menu-burger" />
-      </div>
+
+    <nav className='sideNavBarWindow' >
 
       <ul className="navbar-list">
+
         {organisations.map((organisation, orgIndex) => (
           <li key={`organisation-${orgIndex}`} className="navbar-li-box">
+
             <div className="navbar-li" onClick={() => toggleExpanded(orgIndex)}>
-              {organisation.name}
-              {isOrgAdmins[orgIndex] ? <button
-                onClick={() => navigate(`/${organisation.name}/settings`)}
-              >
-                {'Setting'}
-              </button> : null}
+
+              <img className='organisation-icon' src='/organisation.png' alt='organisation'/>
+              <span className="organisation-name">{organisation.name}</span>
+
+              {isOrgAdmins[orgIndex] && (
+                <button
+                  className="navbar-li-button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigate(`/${organisation.name}/settings`);
+                  }}>
+
+                  {'Setting'}
+                </button>
+              )}
             </div>
+
             {expandedIndex === orgIndex && (
+
               <ul className="sub-list">
+
                 {organisation.items.map((item, itemIndex) => (
                   <li key={`item-${itemIndex}`} className="sub-item">
+
                     <div className="navbar-li" onClick={() => onOrganisationClick(organisation.name,item[0])}>
+
+                      <img className='space-icon' src='/space.png' alt='space'/>
                       {item[0]}
                     </div>
                   </li>
                 ))}
                 <li>
-                  <CreateSpacePopUp orgName={organisation.name}/>
+                  { isOrgAdmins[orgIndex] ? <CreateSpacePopUp orgName={organisation.name}/> : null }
                 </li>
               </ul>
             )}

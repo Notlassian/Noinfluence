@@ -2,22 +2,31 @@ import React from 'react';
 import { Popup } from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 import { useNavigate, useParams } from 'react-router-dom';
+import { postData } from "../../utils";
 import '../css/CreateResourcePopup.css'
 
-export const CreatePagePopup = (props) => {
+export const CreatePagePopup = () => {
 
   const navigate = useNavigate();
 
   const { orgName, spaceName } = useParams();
 
-  const createPage = () => {
+  const createPage = async (close) => {
 
     const folder = document.getElementsByClassName("folder-name")[0].value;
     const page = document.getElementsByClassName("page-name")[0].value;
 
-    console.log(`org/${orgName}/spaces/${spaceName}/pages/${folder}/${page}/retreive`); // TODO: replace with call to API
-    // Redirect to the new page
-    navigate(`/pages/${orgName}/${spaceName}/${folder}/${page}`);
+    try {
+      const response = await postData(`org/${orgName}/spaces/${spaceName}/pages/${folder}/${page}/add`, { pageContent: `# This is your new page, ${page}!` }, localStorage.getItem("accessToken"));
+      const data = await response.json();
+      console.log('Add response:', data);
+      navigate(`/${orgName}/${spaceName}/${folder}/${page}`);
+
+      close();
+    } catch (error) {
+      console.error('Error:', error);
+      alert(`Error: ${error.message}`);
+    }
   };
 
   return (
@@ -26,32 +35,35 @@ export const CreatePagePopup = (props) => {
       position="bottom center"
       closeOnDocumentClick
       modal
-      nested
-    >
-      <div className="menu">
+      nested>
 
-        <div class="org-input">
-         <h4> Org Name: </h4>
-          <text> {orgName} </text>
-        </div>
-        <div class="space-input">
-          <h4> Space Name: </h4>
-          <text> {spaceName} </text>
-        </div>
+      {(close) => (
+        <div className="menu">
 
-        <div class="folder-input">
-          <h4> Folder Name: </h4>
-          <input class="folder-name" />
-        </div>
+          <div class="org-input">
+          <h4> Org Name: </h4>
+            <text> {orgName} </text>
+          </div>
+          <div class="space-input">
+            <h4> Space Name: </h4>
+            <text> {spaceName} </text>
+          </div>
 
-        <div class="page-input">
-          <h4> Page Name: </h4>
-          <input class="page-name" />
+          <div class="folder-input">
+            <h4> Folder Name: </h4>
+            <input class="folder-name" />
+          </div>
+
+          <div class="page-input">
+            <h4> Page Name: </h4>
+            <input class="page-name" />
+          </div>
+
+          <button class="create-page-button" onClick={() => createPage(close)}>
+            Create
+          </button>
         </div>
-      </div>
-      <button class="create-page-button" onClick={() => createPage()}>
-          Create
-      </button>
+      )}
     </Popup>
   );
 };

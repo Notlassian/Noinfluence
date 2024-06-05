@@ -17,19 +17,20 @@ export const SpaceDashboard = ({ description, openIssues, openIssuesNum, complet
   };
 
   return (
-    <div className="dashboard">
+
+    <div className='dashboard'>
 
       <h2>Space</h2>
 
       <div className='LeftComponent'>
 
-        <div className="card">
+        <div className='card'>
 
           <h5>Space Description</h5>
           <p>{description}</p>
         </div>
 
-        <div className="card">
+        <div className='card'>
 
           <h5>Open Issues</h5>
           <ul>
@@ -42,7 +43,7 @@ export const SpaceDashboard = ({ description, openIssues, openIssuesNum, complet
       </div>
 
 
-      <div className="chart">
+      <div className='chart'>
 
         <h5>Issues</h5>
         <Pie data={issueData} />

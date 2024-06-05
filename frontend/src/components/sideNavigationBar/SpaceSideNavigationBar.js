@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { CreatePagePopup } from '../popup';
 import { getData } from "../../utils";
 import '../css/SpaceSideNavigationBar.css';
 
 export const SpaceSideNavigationBar = () => {
+
   const [expandedFolderIndex, setExpandedFolderIndex] = useState(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [folders, setFolders] = useState([]);
@@ -13,11 +14,13 @@ export const SpaceSideNavigationBar = () => {
 
   const { orgName, spaceName } = useParams();
 
-  console.log(orgName + "/" + spaceName);
+  console.log(orgName + '/' + spaceName);
 
   const fetchIsAdmin = React.useCallback(async () => {
+
     try {
-      const response = await getData(`org/${orgName}/spaces/${spaceName}/admin/check`, localStorage.getItem("accessToken"));
+
+      const response = await getData(`org/${orgName}/spaces/${spaceName}/admin/check`, localStorage.getItem('accessToken'));
       setIsAdmin(response.ok);
     } catch (error) {
       console.error('Error:', error);
@@ -27,7 +30,8 @@ export const SpaceSideNavigationBar = () => {
   const fetchFolders = React.useCallback(async () => {
 
     try {
-      const response = await getData(`org/${orgName}/spaces/${spaceName}/list`, localStorage.getItem("accessToken"));
+
+      const response = await getData(`org/${orgName}/spaces/${spaceName}/list`, localStorage.getItem('accessToken'));
       const data = await response.json();
       console.log(data);
 
@@ -54,53 +58,60 @@ export const SpaceSideNavigationBar = () => {
   }, [fetchFolders, fetchIsAdmin]);
 
   return (
-    <nav className="sideNavBarWindow">
-      <div className="burger">
-        <img src="/menu.png" alt="menu-burger" />
-      </div>
 
-      {isAdmin ? <span
-        className="space-setting"
-        onClick={() => navigate(`/${orgName}/${spaceName}/settings`)}>
+    <nav className='sideNavBarWindow'>
 
-        {'Space Setting'}
-      </span> : null }
+      {isAdmin &&
 
-      <ul className="navbar-list">
+        <div className="space-setting-icon-container" onClick={() => navigate(`/${orgName}/${spaceName}/settings`)}>
+
+          <img className='setting-icon' src='/setting.svg' alt='setting'/>
+          <span className="space-setting-text">Space Setting</span>
+        </div>
+      }
+
+      <ul className='navbar-list'>
 
           <li key={`${spaceName}`}>
             <span
-              className="navbar-li">
+              className='navbar-li'>
 
+              <img className='space-icon' src='/space.png' alt='space'/>
               {spaceName}
             </span>
 
             {folders.map((folder, folderIndex) => (
 
-              <ul key={`folder-${folderIndex}`} className="sub-list">
+              <ul key={`folder-${folderIndex}`} className='sub-list'>
                 <li
-                  className={`sub-item ${expandedFolderIndex === folderIndex ? "expanded" : ""}`}
+                  className={`sub-item ${expandedFolderIndex === folderIndex ? 'expanded' : ''}`}
                   onClick={() => toggleFolderExpanded(folderIndex)}>
 
                   <span
-                    className="navbar-li">
+                    className='navbar-li'>
+
+                    <img className='folder-icon' src='/folder.png' alt='folder'/>
 
                     {folder.name}
+
+                    {folder.items.length > 0 &&
+
+                      <img className='down-arrow-icon' src='/down-arrow.png' alt='down-arrow'/>
+                    }
                   </span>
 
-                  <CreatePagePopup/>
-
                   {expandedFolderIndex === folderIndex && (
-                    <ul className="sub-sub-list">
+                    <ul className='sub-sub-list'>
                       {folder.items.map((page, pageIndex) => (
                         <li
                           key={`page-${pageIndex}`}
-                          className="sub-sub-item"
+                          className='sub-sub-item'
                           onClick={() => navigate(`/${orgName}/${spaceName}/${folder.name}/${page}`)}>
 
                           <span
-                            className="navbar-li">
+                            className='navbar-li'>
 
+                            <img className='page-icon' src='/page.png' alt='page'/>
                             {page}
                           </span>
                         </li>
@@ -113,11 +124,9 @@ export const SpaceSideNavigationBar = () => {
           </li>
       </ul>
 
-
-      <div className="create-button-container">
+      {isAdmin ? <div className="create-button-container">
         <CreatePagePopup/>
-      </div>
-
+      </div> : null }
     </nav>
   );
 };

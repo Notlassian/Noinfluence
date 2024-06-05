@@ -52,6 +52,6 @@ export const Space = () => {
   return <div class="page-container">
     <SpaceSideNavigationBar/>
 
-    <MarkdownDisplay markdown={markdown} loading={isLoading} editEnabled={editEnabled} onSave={updateMarkdown} />  
+    <MarkdownDisplay markdown={markdown} loading={isLoading} editEnabled={editEnabled} onSave={updateMarkdown} />
   </div>
 };

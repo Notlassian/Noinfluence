@@ -25,8 +25,8 @@ export const getOrgAdmins = async (req, res) => {
 };
 
 export const addOrgAdmin = async (req, res) => {
-    const query = 'call org_add_admin($1, $2)';
-    const params = [req.params.orgName, req.body.username];
+    const query = 'call add_organization_admin($1, $2)';
+    const params = [req.body.username, req.params.orgName];
     if (!params[0] || !params[1]) {
         res.status(HttpStatusCodes.BadRequest).json({
             error: '"username" required in request body',

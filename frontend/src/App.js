@@ -1,5 +1,4 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
-
 import { NavigationBar, Callback } from './components';
 import { Home, Space, Page, SpaceSetting, OrganisationSetting } from './pages';
 import './App.css';
@@ -7,6 +6,7 @@ import './App.css';
 export default function App() {
 
   return (
+
     <div className="App">
 
       <NavigationBar />

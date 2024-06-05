@@ -1,4 +1,4 @@
-import { HomeDashboard, HomeSideNavigationBar } from "../components";
+import { HomeDashboard, HomeSideNavigationBar } from '../components';
 import './css/Home.css';
 
 export const Home = () => {
@@ -8,7 +8,7 @@ export const Home = () => {
   const updatedPages = ['Page 1', 'Page 2', 'Page 3'];
 
   return (
-    <div className="home-container">
+    <div className='home-container'>
 
       <HomeSideNavigationBar/>
 
