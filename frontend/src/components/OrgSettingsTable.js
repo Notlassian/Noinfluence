@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { AddOrgUserPopUp } from './popup';
 import './css/SettingTable.css';
 
-export const OrgSettingsTable = ({ users }) => {
+export const OrgSettingsTable = ({ users, refresh }) => {
 
   const [userRoles, setUserRoles] = useState(users);
 
@@ -37,7 +37,7 @@ export const OrgSettingsTable = ({ users }) => {
           </tbody>
         </table>
 
-        <AddOrgUserPopUp orgName={orgName}/>
+        <AddOrgUserPopUp orgName={orgName} refresh={refresh}/>
       </div>
     </div>
   );

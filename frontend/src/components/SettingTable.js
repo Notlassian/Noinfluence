@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { AddSpaceUserPopUp } from './popup';
 import './css/SettingTable.css';
 
-export const SettingTable = ({ users, onUpdateRoles  }) => {
+export const SettingTable = ({ users, onUpdateRoles, refresh  }) => {
 
   const [userRoles, setUserRoles] = useState(users);
 
@@ -62,7 +62,7 @@ export const SettingTable = ({ users, onUpdateRoles  }) => {
 
         <button className='confirm-button' onClick={handleConfirmClick}>Update Role</button>
 
-        <AddSpaceUserPopUp orgName={`${orgName}`} spaceName={`${spaceName}`} />
+        <AddSpaceUserPopUp orgName={`${orgName}`} spaceName={`${spaceName}`} refresh={refresh}/>
       </div>
     </div>
   );

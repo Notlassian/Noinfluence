@@ -26,7 +26,7 @@ export const OrganisationSetting = () => {
       } else {
         showAlert(`Unable to view admin list, please contact Noinfluence support`, AlertType.Error);
       }
-      
+
     } catch (error) {
       console.error('Error:', error);
       showAlert(`Unable to view admin list, please try again in a moment. If this issue continues, please contact Noinfluence support`, AlertType.Error);
@@ -44,7 +44,7 @@ export const OrganisationSetting = () => {
 
       <HomeSideNavigationBar/>
 
-      <OrgSettingsTable users={users}/>
+      <OrgSettingsTable users={users} refresh={fetchUsers}/>
     </div>
   );
 };

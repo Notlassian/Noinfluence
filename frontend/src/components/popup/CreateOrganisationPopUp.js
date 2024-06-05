@@ -4,7 +4,7 @@ import { AlertType, HttpStatusCodes, checkStr, postData, showAlert } from "../..
 import 'reactjs-popup/dist/index.css';
 import '../css/CreateResourcePopup.css';
 
-export const CreateOrganisationPopUp = () => {
+export const CreateOrganisationPopUp = ({refresh}) => {
 
   const addOrg = async (close) => {
     try {
@@ -19,9 +19,10 @@ export const CreateOrganisationPopUp = () => {
       }
 
       const response = await postData(`org/create`, { org: inputOrgName }, localStorage.getItem("accessToken"));
-      
+
       if (response.ok) {
         showAlert(`Organisation ${inputOrgName} added successfully.`, AlertType.Success);
+        refresh();
         close();
       } else if (response.status === HttpStatusCodes.NotAcceptable) {
         showAlert('You can only have up to 10 organisations per account.', AlertType.Info);

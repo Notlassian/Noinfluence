@@ -13,10 +13,11 @@ export const AddSpaceUserPopUp = (props) => {
 
   const orgName = props.orgName;
   const spaceName = props.spaceName;
+  const refresh = props.refresh;
 
   const addSpaceUser = async (close) => {
     try {
-      
+
       const inputUserName = document.getElementsByClassName("user-name")[0].value.trim();
 
       if (!inputUserName) {
@@ -28,9 +29,10 @@ export const AddSpaceUserPopUp = (props) => {
       }
 
       const response = await postData(`org/${orgName}/spaces/${spaceName}/admin/add`, { username: inputUserName, role: userRole }, localStorage.getItem("accessToken"));
-      
+
       if (response.ok) {
         showAlert(`User successfully added user as ${userRole === "Administrator" ? `an ${userRole}` : `a ${userRole}`}.`, AlertType.Success);
+        refresh();
         close();
       } else if (response.status === HttpStatusCodes.Forbidden) {
         showAlert('You are unable to access this spaces settings.', AlertType.Info);
