@@ -1,9 +1,28 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { LoginLink } from './authentication';
+import { LoginLink, LogoutLink } from './authentication';
 import './css/NavigationBar.css';
 
 export const NavigationBar = () => {
+
+  const {loggedIn, setLoggedIn} = useState(false);
+
+  useEffect(() => {
+    const handleStorageChange = (event) => {
+      if (event.key === 'accessToken' && event.newValue) {
+        setLoggedIn(true);
+      } else {
+        setLoggedIn(false);
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+
+    // Cleanup event listener on component unmount
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+    };
+  }, [setLoggedIn]);
 
   return (
 
@@ -20,9 +39,7 @@ export const NavigationBar = () => {
 
         <ul className='nav-list'>
 
-          <LoginLink>
-            <Link to='/login'>Log In</Link>
-          </LoginLink>
+          { loggedIn ? <LogoutLink /> : <LoginLink /> }
         </ul>
       </div>
     </nav>

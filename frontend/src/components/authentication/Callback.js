@@ -37,12 +37,15 @@ export const Callback = () => {
       })
       .catch(error => {
         console.error(error);
-        showAlert('An error occured with login validation, please try again in a moment. If this error continues, please contact Noinfluence support', AlertType.Error);
+        setError(true);
+        showAlert('Unable to validate your login token, please try again in a moment. If this error continues, please contact Noinfluence support', AlertType.Error);
       });
+    } else {
+      navigate("/unauthorized");
     }
   }, [location, navigate]);
 
-  if (error) return <div>Couldn't log you in please try again.</div>;
+  if (error) return <div>Couldn't log you in, please try again.</div>;
 
   return <div>Trying to log you in...</div>;
 };
