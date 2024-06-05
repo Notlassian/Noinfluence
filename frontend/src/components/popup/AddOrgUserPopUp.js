@@ -28,9 +28,7 @@ export const AddOrgUserPopUp = (props) => {
       const response = await postData(`org/${orgName}/admin/add`, { username: inputUserName }, localStorage.getItem('accessToken'));
 
       if (response.ok) {
-        const data = await response.json();
         showAlert('Admin user added successfully.', AlertType.Success);
-
         close();
       } else if (response.status === HttpStatusCodes.Forbidden) {
         showAlert('You are unable to access this organisations settings.', AlertType.Info);
