@@ -16,7 +16,7 @@ export const HomeSideNavigationBar = () => {
     setExpandedIndex(expandedIndex === index ? null : index);
   };
 
-  const fetchOrganisations = async () => {
+  const fetchOrganisations = React.useCallback(async () => {
     try {
       const response = await getData('org/list', localStorage.getItem("accessToken"));
 
@@ -50,7 +50,7 @@ export const HomeSideNavigationBar = () => {
       console.error('Error:', error);
       showAlert(`Couldn't retrieve your organisations, please try again in a moment. If this error continues, please contact Noinfluence support.`, AlertType.Error);
     }
-  };
+  }, [navigate]);
 
   const onOrganisationClick = (organisationName, spaceName) => {
     navigate(`/${organisationName}/${spaceName}`);
@@ -58,7 +58,7 @@ export const HomeSideNavigationBar = () => {
 
   useEffect(() => {
     fetchOrganisations();
-  }, []);
+  }, [fetchOrganisations]);
 
   return (
 

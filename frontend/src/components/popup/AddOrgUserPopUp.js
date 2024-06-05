@@ -1,6 +1,6 @@
 import React from 'react';
 import { Popup } from 'reactjs-popup';
-import { AlertType, HttpStatusCodes, checkStr, postData, showAlert } from '../../utils';
+import { AlertType, HttpStatusCodes, postData, showAlert } from '../../utils';
 
 import 'reactjs-popup/dist/index.css';
 import '../css/CreateResourcePopup.css';
