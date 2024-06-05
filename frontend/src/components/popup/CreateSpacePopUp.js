@@ -21,13 +21,16 @@ export const CreateSpacePopUp = (props) => {
         const data = await response.json();
         console.log('Add response:', data);
         showAlert(`Space ${inputSpaceName} added successfully.`, AlertType.Success);
+
+        close();
       } else if (response.status === HttpStatusCodes.Forbidden) {
         showAlert('You are unable to add spaces to this organisation.', AlertType.Info);
         navigate('/');
+
+        close();
       } else {
         showAlert('An error occured while adding a user, please contact Noinfluence support.', AlertType.Error);
       }
-
     } catch (error) {
       console.error('Error:', error);
       alert(`Error: ${error.message}`);
@@ -41,33 +44,26 @@ export const CreateSpacePopUp = (props) => {
       position="bottom center"
       closeOnDocumentClick
       modal
-      nested
-    >
-      <div className="menu">
+      nested>
 
-      <div className="org-input">
-         <h4> Organisation Name: </h4>
-          <span> {orgName} </span>
+      {(close) => (
+        <div className="menu">
+
+        <div className="org-input">
+          <h4> Organisation Name: </h4>
+            <span> {orgName} </span>
+          </div>
+
+          <div className="space-input">
+            <h4> Space Name: </h4>
+            <input className="space-name" />
+          </div>
+
+          <button className="add-space-button" onClick={() => addSpace(close)}>
+            Create space
+          </button>
         </div>
-
-        <div className="space-input">
-          <h4> Space Name: </h4>
-          <input className="space-name" />
-        </div>
-      </div>
-
-      <button className="add-space-button" onClick={() => addSpace()}>
-        Create space
-      </button>
+      )}
     </Popup>
   );
 };
-
-// cosnt myContainer = styled.div`
-//   width: 60%;
-//   height: 50%;
-// `;
-
-// <MyContainer>
-
-// </MyContainer>

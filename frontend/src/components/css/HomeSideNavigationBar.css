@@ -1,30 +1,13 @@
 .sideNavBarWindow {
-  height: calc(100vh - 4.7rem);
+  height: 100vh;
   width: 20vw;
   background-color: #333;
   box-shadow: 1px 1px 7px rgba(0, 0, 0, 0.15);
   transition: all 0.5s ease;
-  overflow: hidden;
+  overflow: auto;
   display: flex;
   flex-direction: column;
-}
-
-.burger {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  border-bottom: 0.2rem solid red;
-  color: white;
-}
-
-.burger img {
-  padding: 25px 8px 0 0;
-  cursor: pointer;
-}
-
-.burger img:hover {
-  cursor: pointer;
-  background-color: #58b5fc;
+  border-right: 0.2rem solid red;
 }
 
 .navbar-list {
@@ -33,30 +16,48 @@
   margin: 0;
 }
 
-.navbar-li-box {
-  margin-top: 15px;
-}
-
-.navbar-li-box:first-child {
-  margin-top: 53px;
-}
-
 .navbar-li {
-  display: block;
-  padding: 0 0 0 12px;
+  padding: 0 12px;
   position: relative;
   top: 2.5px;
   font-size: 16px;
   letter-spacing: 0;
-  line-height: 38px;
+  line-height: 1.5;
   color: #ffffff;
   font-family: "Lato", sans-serif;
   font-weight: 400;
+  white-space: normal;
+  word-wrap: break-word;
+  max-width: 18vw;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .navbar-li:hover {
   cursor: pointer;
   background-color: #58b5fc;
+}
+
+.navbar-li-box {
+  margin-top: 15px;
+}
+
+.navbar-li-button {
+  display: inline-block;
+  margin-left: 10px;
+  padding: 5px 10px;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.navbar-li-button-container {
+  display: inline-block;
+  vertical-align: middle;
 }
 
 .sub-list {
@@ -79,4 +80,24 @@
   color: white;
   border: none;
   border-radius: 5px;
+}
+
+.organisation-icon {
+  width: 25px;
+  height: 25px;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
+.space-icon {
+  width: 25px;
+  height: 25px;
+  margin-right: 10px;
+  vertical-align: middle;
+  color: #ffffff;
+}
+
+.organisation-name {
+  flex-grow: 1;
+  padding-left: 10px;
 }

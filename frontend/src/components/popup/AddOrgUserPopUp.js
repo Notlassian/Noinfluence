@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 
 export const AddOrgUserPopUp = (props) => {
 
-  const orgName = props.organisationName;
+  const orgName = props.orgName;
 
   const navigate = useNavigate();
 
@@ -30,6 +30,7 @@ export const AddOrgUserPopUp = (props) => {
         showAlert('An error occured while adding a user, please contact Noinfluence support.', AlertType.Error);
       }
 
+      close();
     } catch (error) {
       console.error('Error:', error);
       showAlert('An error occured while adding user, please try again in a moment. If this error continues, please contact Noinfluence support', AlertType.Error);
@@ -45,22 +46,24 @@ export const AddOrgUserPopUp = (props) => {
       modal
       nested>
 
-      <div className='menu'>
+      {(close) => (
+        <div className='menu'>
 
-        <div className='org-input'>
-         <h4> Organisation Name: </h4>
-          <span> {orgName} </span>
+          <div className='org-input'>
+          <h4> Organisation Name: </h4>
+            <span> {orgName} </span>
+          </div>
+
+          <div className='user-input'>
+            <h4> User Name: </h4>
+            <input class='user-name' />
+          </div>
+
+          <button class='add-user-button' onClick={() => addOrgUser(close)}>
+            Add
+          </button>
         </div>
-
-        <div className='user-input'>
-          <h4> User Name: </h4>
-          <input class='user-name' />
-        </div>
-      </div>
-
-      <button class='add-user-button' onClick={() => addOrgUser()}>
-        Add
-      </button>
+      )}
     </Popup>
   );
 };
