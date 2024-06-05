@@ -34,4 +34,3 @@ docker-compose down
 ```
 
 Embrace the simplicity of Noinfluence and watch your productivity soar!
-```
