@@ -2,7 +2,7 @@ import React from 'react';
 import { Popup } from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 import { useNavigate, useParams } from 'react-router-dom';
-import { postData } from "../../utils";
+import { AlertType, HttpStatusCodes, checkStr, postData, showAlert } from "../../utils";
 import '../css/CreateResourcePopup.css'
 
 export const CreatePagePopup = () => {
@@ -13,16 +13,39 @@ export const CreatePagePopup = () => {
 
   const createPage = async (close) => {
 
-    const folder = document.getElementsByClassName("folder-name")[0].value;
-    const page = document.getElementsByClassName("page-name")[0].value;
-
     try {
-      const response = await postData(`org/${orgName}/spaces/${spaceName}/pages/${folder}/${page}/add`, { pageContent: `# This is your new page, ${page}!` }, localStorage.getItem("accessToken"));
-      const data = await response.json();
-      console.log('Add response:', data);
-      navigate(`/${orgName}/${spaceName}/${folder}/${page}`);
 
-      close();
+      const folder = document.getElementsByClassName("folder-name")[0].value.trim();
+      const page = document.getElementsByClassName("page-name")[0].value.trim();
+
+      if (!folder || !page) {
+        showAlert('The folder and page names cannot be empty.', AlertType.Info);
+        return;
+      } else if (!checkStr(folder, 30) || !checkStr(page, 30)) {
+        showAlert(`Folder and page names can be up to 30 characters long must contain only alphanumeric characters or dashes.`, AlertType.Info);
+        return;
+      }
+
+      const response = await postData(`org/${orgName}/spaces/${spaceName}/pages/${folder}/${page}/add`, { pageContent: `# This is your new page, ${page}!` }, localStorage.getItem("accessToken"));
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Add response:', data);
+        navigate(`/${orgName}/${spaceName}/${folder}/${page}`);
+
+        close();
+      } else if (response.status === HttpStatusCodes.Forbidden) {
+        showAlert(`You don't have access to this space.`, AlertType.Info);
+        navigate('/');
+
+        close();
+      } else if (response.status === HttpStatusCodes.NotAcceptable) {
+        showAlert(`A space can only have up to 30 pages.`, AlertType.Info);
+        navigate('/');
+
+        close();
+      } else {
+        showAlert('An error occured while adding a user, please contact Noinfluence support.', AlertType.Error);
+      }
     } catch (error) {
       console.error('Error:', error);
       alert(`Error: ${error.message}`);

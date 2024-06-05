@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { MarkdownDisplay, SpaceSideNavigationBar } from "../components";
 import './css/Space.css';
-import { getData, putData } from '../utils';
+import { AlertType, HttpStatusCodes, getData, putData, showAlert } from '../utils';
 
 export const Space = () => {
 
@@ -12,10 +12,14 @@ export const Space = () => {
 
   const { orgName, spaceName } = useParams();
 
+  const navigate = useNavigate();
+
   const fetchPage = React.useCallback(async () => {
-    getData(`org/${orgName}/spaces/${spaceName}/homepage/retrieve`)
-      .then(response => response.json())
-      .then(data => {
+    getData(`org/${orgName}/spaces/${spaceName}/homepage/retrieve`, localStorage.getItem('accessToken'))
+    .then(async (response) => {
+
+      if (response.ok) {
+        const data = await response.json();
         console.log(data);
         setMarkdown(data.pageContent);
         setIsLoading(false);
@@ -29,20 +33,37 @@ export const Space = () => {
               setEditEnabled(true);
             }
           })
-          .catch(error => {
-            console.error('Error fetching data:', error);
+          .catch(() => {
             setIsLoading(false);
           });
-      })
-      .catch(error => {
-        console.error('Error fetching data:', error);
-        setIsLoading(false);
-      });
-  }, [orgName, spaceName]);
+      } else if (response.status === HttpStatusCodes.Forbidden) {
+        showAlert(`You are unable to view this space.`, AlertType.Info);
+        navigate('/');
+      } else {
+        showAlert(`Unable to load this page, please contact Noinfluence support`, AlertType.Error);
+      }
+      
+      setIsLoading(false);
+    })
+    .catch(() => {
+      showAlert(`Unable to load this page, please try again in a moment. If this error continues, please contact Noinfluence support.`, AlertType.Error);
+      setIsLoading(false);
+    });
+  }, [orgName, spaceName, navigate]);
 
   const updateMarkdown = async (newMarkdown) => {
     putData(`org/${orgName}/spaces/${spaceName}/homepage/update`, { pageContent: newMarkdown}, localStorage.getItem("accessToken"))
-      .catch(error => console.log(error));
+    .then(response => {
+      if (response.ok) {
+        showAlert('Additions made to this page were saved successfully.', AlertType.Success);
+      } else {
+        showAlert('Unable to update this page, please contact Noinfluence for support.', AlertType.Error);
+      }
+    })
+    .catch(error => {
+      console.log(error);
+      showAlert('Unable to update this page, please try again in a moment. If this issue continues, please contact Noinfluence for support.', AlertType.Error);
+    });
   };
 
   useEffect(() => {

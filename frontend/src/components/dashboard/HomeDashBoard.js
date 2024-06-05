@@ -6,7 +6,7 @@ export const HomeDashboard = ({ updatedSpaces, updatedFolders, updatedPages }) =
 
   return (
 
-    <div className='dashboard'>
+    <div className='dashboard-container'>
 
       <h2>DashBoard</h2>
 

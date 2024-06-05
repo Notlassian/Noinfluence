@@ -1,29 +1,55 @@
 import React, { useState } from 'react';
 import { Popup } from 'reactjs-popup';
-import { postData } from "../../utils";
+import { AlertType, HttpStatusCodes, postData, showAlert } from "../../utils";
 
 import 'reactjs-popup/dist/index.css';
 import '../css/CreateResourcePopup.css';
+import { useNavigate } from 'react-router-dom';
 
 export const AddSpaceUserPopUp = (props) => {
 
-  const [userRole, setUserRole] = useState('Admin');
+  const [userRole, setUserRole] = useState('Viewer');
+  const navigate = useNavigate();
 
   const orgName = props.orgName;
   const spaceName = props.spaceName;
 
   const addSpaceUser = async (close) => {
-    const inputUserName = document.getElementsByClassName("user-name")[0].value;
-
     try {
-      const response = await postData(`org/${orgName}/spaces/${spaceName}/admin/add`, { username: inputUserName, role: userRole }, localStorage.getItem("accessToken"));
-      const data = await response.json();
-      console.log('Add response:', data);
+      
+      const inputUserName = document.getElementsByClassName("user-name")[0].value.trim();
 
-      close();
+      if (!inputUserName) {
+        showAlert(`The user's username cannot be empty.`, AlertType.Info);
+        return;
+      } else if (inputUserName < 128) {
+        showAlert(`The username you entered doesn't exist.`, AlertType.Info);
+        return;
+      }
+
+      const response = await postData(`org/${orgName}/spaces/${spaceName}/admin/add`, { username: inputUserName, role: userRole }, localStorage.getItem("accessToken"));
+      
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Add response:', data);
+        showAlert(`User successfully added user as ${userRole === "Administrator" ? `an ${userRole}` : `a ${userRole}`}.`, AlertType.Success);
+        close();
+      } else if (response.status === HttpStatusCodes.Forbidden) {
+        showAlert('You are unable to access this spaces settings.', AlertType.Info);
+        navigate(`/${orgName}/${spaceName}`);
+        close();
+      } else if (response.status === HttpStatusCodes.NotAcceptable) {
+        showAlert('A space can only have up to 25 users.', AlertType.Info);
+        close();
+      } else if (response.status === HttpStatusCodes.BadRequest) {
+        showAlert(`This username doesn't exist or already has access to this space.`, AlertType.Info);
+      }else {
+        showAlert('An error occured while adding a user, please contact Noinfluence for support.', AlertType.Error);
+      }
     } catch (error) {
       console.error('Error:', error);
       alert(`Error: ${error.message}`);
+      showAlert(`An error occured while adding a user, please try again in a moment. If this error continues, please contact Noinfluence support.`, AlertType.Error);
     }
   }
 
@@ -58,8 +84,8 @@ export const AddSpaceUserPopUp = (props) => {
           </div>
 
           <div className="page-input">
+            <h4> User's Role: </h4>
             <select
-              defaultValue={'Administrator'}
               value={userRole}
               onChange={(e) => handleRoleChange(e.target.value)}>
 

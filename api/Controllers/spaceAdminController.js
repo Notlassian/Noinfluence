@@ -53,14 +53,12 @@ export const updateUserRole = async (req, res) => {
     }
 };
 export const addUserRole = async (req, res) => {
-    const query = 'call add_role_to_user_in_space($1, $2, $3, $4)';
+    const query = 'Select Distinct(username), role FROM user_space_organization_permissions where organization_name=$2 AND space_name=$1';
     const params = [
-        req.body.username,
-        req.body.role,
         req.params.spaceName,
         req.params.orgName,
     ];
-    if (!params[0] || !params[1] || !params[2] || !params[3]) {
+    if (!req.body.username || !req.body.role) {
         res.status(HttpStatusCodes.InternalServerError).json({
             error: '"username" and "role" required in request body',
         });
@@ -68,13 +66,37 @@ export const addUserRole = async (req, res) => {
         sqlPool
             .query(query, params)
             .then((sqlRes) => {
-                res.status(HttpStatusCodes.OK).json({
-                    message: `Successfully added ${params[0]} to the space as ${params[1]}`,
-                });
+
+                if (sqlRes.rowCount < 25) {
+                    const query = 'call add_role_to_user_in_space($1, $2, $3, $4)';
+                    const params = [
+                        req.body.username,
+                        req.body.role,
+                        req.params.spaceName,
+                        req.params.orgName,
+                    ];
+                    sqlPool
+                        .query(query, params)
+                        .then(() => {
+                            res.status(HttpStatusCodes.OK).json({
+                                message: `Successfully added ${params[0]} to the space as ${params[1]}`,
+                            });
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                            res.status(HttpStatusCodes.BadRequest).json({
+                                error: 'User already exists in space',
+                            });
+                        });
+                } else {
+                    res.status(HttpStatusCodes.NotAcceptable).json({
+                        error: 'A space can have a max of 25 users',
+                    });
+                }
             })
             .catch((error) => {
                 console.log(error);
-                res.status(HttpStatusCodes.BadRequest).json({
+                res.status(HttpStatusCodes.InternalServerError).json({
                     error: 'Internal Server Error',
                 });
             });

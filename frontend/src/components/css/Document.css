@@ -1,3 +1,7 @@
+.document-display {
+  width: 80vw;
+}
+
 .document-container {
   text-align: initial;
   background-color: white;

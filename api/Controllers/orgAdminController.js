@@ -25,19 +25,39 @@ export const getOrgAdmins = async (req, res) => {
 };
 
 export const addOrgAdmin = async (req, res) => {
-    const query = 'call add_organization_admin($1, $2)';
-    const params = [req.body.username, req.params.orgName];
-    if (!params[0] || !params[1]) {
+    const query = 'Select username FROM organization_admins_view where organization_name=$1';
+    const params = [req.params.orgName];
+
+    if (!req.body.username) {
         res.status(HttpStatusCodes.BadRequest).json({
             error: '"username" required in request body',
         });
     } else {
         sqlPool
             .query(query, params)
-            .then(() => {
-                res.status(HttpStatusCodes.OK).json({
-                    message: `Successfully added ${params[1]} as admin to ${params[0]}`,
-                });
+            .then((sqlRes) => {
+
+                if (sqlRes.rowCount < 25) {
+                    const query = 'call add_organization_admin($1, $2)';
+                    const params = [req.body.username, req.params.orgName];
+                    sqlPool
+                        .query(query, params)
+                        .then(() => {
+                            res.status(HttpStatusCodes.OK).json({
+                                message: `Successfully added ${params[1]} as admin to ${params[0]}`,
+                            });
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                            res.status(HttpStatusCodes.InternalServerError).json({
+                                error: 'Internal Server Error',
+                            });
+                        });
+                } else {
+                    res.status(HttpStatusCodes.NotAcceptable).json({
+                        error: 'An organisation can have a max of 10 admins',
+                    });
+                }
             })
             .catch((error) => {
                 console.log(error);
@@ -49,5 +69,5 @@ export const addOrgAdmin = async (req, res) => {
 };
 export const checkOrgAdmin = (req, res) => {
     res.status(HttpStatusCodes.OK);
-    res.json({ message: 'You are an admin for this ORG' });
+    res.json({ message: 'You are an admin for this organisation' });
 };

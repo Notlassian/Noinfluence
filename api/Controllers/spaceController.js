@@ -1,38 +1,65 @@
+import { checkStr } from '../Utils/checkStrAllowed.js';
 import { sqlPool } from '../Utils/dbUtils.js';
 import { retrievePage, storePage } from '../Utils/fileUtils.js';
 import { HttpStatusCodes } from '../Utils/httpStatusCodes.js';
 import { buildUniqueMap } from '../Utils/mapUtils.js';
 
 export const createSpace = async (req, res) => {
-    const query = 'call insert_space($1,$2,$3)';
-    const params = [req.user, req.body.space, req.params.orgName];
-    if (!params[0] || !params[1] || !params[2])
+    if (!req.body.space) {
         res.status(HttpStatusCodes.BadRequest).json({
             error: '"space" parameter required in request body',
         });
-    else {
-        sqlPool
-            .query(query, params)
-            .then(async () => {
-                await storePage(
-                    `#Welcome to ${req.body.space}`,
-                    req.params.orgName,
-                    req.body.space,
-                    '',
-                    'home'
-                );
-                res.status(HttpStatusCodes.OK).json({
-                    message: `${params[0]} in ${params[1]} has been created successfully`,
-                });
-            })
-            .catch((error) => {
-                console.log(error);
-                res.status(HttpStatusCodes.BadRequest).json({
-                    error: `${params[0]} already exists in ${params[1]}`,
-                });
+    } else {
+        if (!checkStr(req.body.space, 30)) {
+            res.status(HttpStatusCodes.BadRequest).json({
+                error: 'Space name doesn\'t conform to allowed format',
             });
+        } else {
+            const query = 'Select space_name FROM user_space_organization_permissions where organization_name=$1';
+            const params = [req.params.orgName];
+            sqlPool
+                .query(query, params)
+                .then((sqlRes) => {
+                    if (sqlRes.rowCount < 10) {
+                        const query = 'call insert_space($1,$2,$3)';
+                        const params = [req.user, req.body.space, req.params.orgName];
+                        sqlPool
+                            .query(query, params)
+                            .then(async () => {
+                                await storePage(
+                                    `# Welcome to ${req.body.space}`,
+                                    req.params.orgName,
+                                    req.body.space,
+                                    '',
+                                    'home',
+                                    true
+                                );
+                                res.status(HttpStatusCodes.OK).json({
+                                    message: `${params[0]} in ${params[1]} has been created successfully`,
+                                });
+                            })
+                            .catch((error) => {
+                                console.log(error);
+                                res.status(HttpStatusCodes.BadRequest).json({
+                                    error: `${params[0]} already exists in ${params[1]}`,
+                                });
+                            });
+                    } else {
+                        res.status(HttpStatusCodes.NotAcceptable).json({
+                            error: 'An organisation can have a max of 10 spaces',
+                        });
+                    }
+                })
+                .catch((error) => {
+                    console.log(error);
+                    res.status(HttpStatusCodes.InternalServerError).json({
+                        error: 'Internal Server Error',
+                    });
+                });
+        }
     }
 };
+
 export const getSpaces = async (req, res) => {
     const query =
         'Select DISTINCT (space_name) FROM user_space_organization_permissions where username=$1 and organization_name=$2';

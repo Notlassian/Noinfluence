@@ -1,7 +1,7 @@
-import { React, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CreateSpacePopUp, CreateOrganisationPopUp } from '../popup';
-import { getData } from '../../utils';
+import { AlertType, HttpStatusCodes, getData, showAlert } from '../../utils';
 import '../css/HomeSideNavigationBar.css';
 
 export const HomeSideNavigationBar = () => {
@@ -16,33 +16,41 @@ export const HomeSideNavigationBar = () => {
     setExpandedIndex(expandedIndex === index ? null : index);
   };
 
-  const fetchOrganisations = async () => {
+  const fetchOrganisations = React.useCallback(async () => {
     try {
       const response = await getData('org/list', localStorage.getItem("accessToken"));
-      const data = await response.json();
 
-      const formattedData = Object.entries(data).map(([key, value]) => ({
-        name: key,
-        items: value.map(space => [space])
-      }));
-
-      console.log(formattedData);
-
-      const isAdminPromises = formattedData.map(async (item) => {
-        const response = await getData(`org/${item.name}/admin/check`);
-        return response.ok;
-      });
-
-      const isAdminArr = await Promise.all(isAdminPromises);
-
-      console.log(isAdminArr);
-
-      setIsOrgAdmins(isAdminArr);
-      setOrganisations(formattedData);
+      if (response.ok) {
+        const data = await response.json();
+  
+        const formattedData = Object.entries(data).map(([key, value]) => ({
+          name: key,
+          items: value.map(space => [space])
+        }));
+  
+        console.log(formattedData);
+  
+        const isAdminPromises = formattedData.map(async (item) => {
+          const response = await getData(`org/${item.name}/admin/check`, localStorage.getItem('accessToken'));
+          return response.ok;
+        });
+      
+        const isAdminArr = await Promise.all(isAdminPromises);
+        
+        console.log(isAdminArr);
+  
+        setIsOrgAdmins(isAdminArr);
+        setOrganisations(formattedData);
+      } else if (response.status === HttpStatusCodes.Unauthorized) {
+        showAlert(`You are not logged in, please login to continue.`, AlertType.Info);
+        navigate("/unauthorized");
+      }
+      
     } catch (error) {
       console.error('Error:', error);
+      showAlert(`Couldn't retrieve your organisations, please try again in a moment. If this error continues, please contact Noinfluence support.`, AlertType.Error);
     }
-  };
+  }, [navigate]);
 
   const onOrganisationClick = (organisationName, spaceName) => {
     navigate(`/${organisationName}/${spaceName}`);
@@ -50,7 +58,7 @@ export const HomeSideNavigationBar = () => {
 
   useEffect(() => {
     fetchOrganisations();
-  }, []);
+  }, [fetchOrganisations]);
 
   return (
 

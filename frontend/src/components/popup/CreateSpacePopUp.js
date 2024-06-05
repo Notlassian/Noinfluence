@@ -1,5 +1,6 @@
 import { Popup } from 'reactjs-popup';
-import { postData } from "../../utils";
+import { AlertType, HttpStatusCodes, checkStr, postData, showAlert } from "../../utils";
+import { useNavigate } from 'react-router-dom';
 
 import 'reactjs-popup/dist/index.css';
 import '../css/CreateResourcePopup.css';
@@ -8,18 +9,45 @@ export const CreateSpacePopUp = (props) => {
 
   const orgName = props.orgName;
 
+  const navigate = useNavigate();
+
   const addSpace = async (close) => {
-    const inputSpaceName = document.getElementsByClassName("space-name")[0].value;
-
     try {
-      const response = await postData(`org/${orgName}/spaces/add`, { space: inputSpaceName }, localStorage.getItem("accessToken"));
-      const data = await response.json();
-      console.log('Add response:', data);
+      const inputSpaceName = document.getElementsByClassName("space-name")[0].value;
 
-      close();
+      if (!inputSpaceName) {
+        showAlert(`The space's name cannot be empty.`, AlertType.Info);
+        return;
+      } else if (!checkStr(inputSpaceName, 30)) {
+        showAlert(`A space's name can be up to 30 characters long must contain only alphanumeric characters or dashes.`, AlertType.Info);
+        return;
+      }
+
+      const response = await postData(`org/${orgName}/spaces/add`, { space: inputSpaceName }, localStorage.getItem("accessToken"));
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Add response:', data);
+        showAlert(`Space ${inputSpaceName} added successfully.`, AlertType.Success);
+
+        close();
+      } else if (response.status === HttpStatusCodes.Forbidden) {
+        showAlert('You are unable to add spaces to this organisation.', AlertType.Info);
+        navigate('/');
+
+        close();
+      } else if (response.status === HttpStatusCodes.NotAcceptable) {
+        showAlert(`An organisation can only have up to 10 spaces.`, AlertType.Info);
+        navigate('/');
+
+        close();
+      } else {
+        showAlert('An error occured while adding a user, please contact Noinfluence support.', AlertType.Error);
+      }
     } catch (error) {
       console.error('Error:', error);
       alert(`Error: ${error.message}`);
+      showAlert(`An error occured while trying to make a new space, please try again in a moment. If this error continues, please contact Noinfluence support`, AlertType.Error);
     }
   }
 

@@ -5,8 +5,8 @@ import { MarkdownDisplay, SpaceSideNavigationBar } from "../components";
 import '../components/css/Document.css';
 
 import '@mdxeditor/editor/style.css';
-import { useParams } from 'react-router-dom';
-import { getData, putData } from '../utils';
+import { useNavigate, useParams } from 'react-router-dom';
+import { AlertType, HttpStatusCodes, getData, putData, showAlert } from '../utils';
 
 
 export const Page = () => {
@@ -17,37 +17,62 @@ export const Page = () => {
 
   const { orgName, spaceName, folderName, pageName } = useParams();
 
-  const fetchPage = React.useCallback(async () => {
-    getData(`org/${orgName}/spaces/${spaceName}/pages/${folderName}/${pageName}/retrieve`)
-      .then(response => response.json())
-      .then(data => {
-        console.log(data);
-        setMarkdown(data.pageContent);
-        setIsLoading(false);
+  const navigate = useNavigate();
 
-        getData(`org/${orgName}/spaces/${spaceName}/permissions`, localStorage.getItem("accessToken"))
-          .then(response => response.json())
-          .then(permData => {
-            console.log("PERM DATA:")
-            console.log(permData);
-            if (permData.perms.includes("Write")) {
-              setEditEnabled(true);
-            }
-          })
-          .catch(error => {
-            console.error('Error fetching data:', error);
-            setIsLoading(false);
-          });
-      })
-      .catch(error => {
-        console.error('Error fetching data:', error);
+  const fetchPage = React.useCallback(async () => {
+    getData(`org/${orgName}/spaces/${spaceName}/pages/${folderName}/${pageName}/retrieve`, localStorage.getItem('accessToken'))
+      .then(async (response) => {
+
+        if (response.ok) {
+          const data = await response.json();
+          console.log(data);
+          setMarkdown(data.pageContent);
+          setIsLoading(false);
+
+          getData(`org/${orgName}/spaces/${spaceName}/permissions`, localStorage.getItem("accessToken"))
+            .then(response => response.json())
+            .then(permData => {
+              console.log("PERM DATA:")
+              console.log(permData);
+              if (permData.perms.includes("Write")) {
+                setEditEnabled(true);
+              }
+            })
+            .catch(() => {
+              setIsLoading(false);
+            });
+        } else if (response.status === HttpStatusCodes.Forbidden) {
+          showAlert(`You are unable to view this space.`, AlertType.Info);
+          navigate('/');
+        } else if (response.status === HttpStatusCodes.BadRequest) {
+          showAlert(`The page you are looking for doesn't exist.`, AlertType.Info);
+          navigate(`/${orgName}/${spaceName}`);
+        } else {
+          showAlert(`Unable to load this page, please contact Noinfluence for support.`, AlertType.Error);
+        }
+
         setIsLoading(false);
+      })
+      .catch(() => {
+        showAlert(`Unable to load this page, please try again in a moment. If this issue continues, please contact Noinfluence for support.`, AlertType.Error);
+        setIsLoading(false);
+        navigate(`/${orgName}/${spaceName}`);
       });
-  }, [orgName, spaceName, folderName, pageName]);
+  }, [orgName, spaceName, folderName, pageName, navigate]);
 
   const updateMarkdown = async (newMarkdown) => {
     putData(`org/${orgName}/spaces/${spaceName}/pages/${folderName}/${pageName}/update`, { pageContent: newMarkdown}, localStorage.getItem("accessToken"))
-      .catch(error => console.log(error));
+      .then(response => {
+        if (response.ok) {
+          showAlert('Additions made to this page were saved successfully.', AlertType.Success);
+        } else {
+          showAlert('Unable to update this page, please contact Noinfluence for support.', AlertType.Error);
+        }
+      })
+      .catch(error => {
+        console.log(error);
+        showAlert('Unable to update this page, please try again in a moment. If this issue continues, please contact Noinfluence for support.');
+      });
   };
 
   useEffect(() => {

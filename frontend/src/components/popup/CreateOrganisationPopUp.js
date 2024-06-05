@@ -1,5 +1,5 @@
 import { Popup } from 'reactjs-popup';
-import { postData } from "../../utils";
+import { AlertType, HttpStatusCodes, checkStr, postData, showAlert } from "../../utils";
 
 import 'reactjs-popup/dist/index.css';
 import '../css/CreateResourcePopup.css';
@@ -7,17 +7,34 @@ import '../css/CreateResourcePopup.css';
 export const CreateOrganisationPopUp = () => {
 
   const addOrg = async (close) => {
-    const inputOrgName = document.getElementsByClassName("org-name")[0].value;
-
     try {
-      const response = await postData(`org/create`, { org: inputOrgName }, localStorage.getItem("accessToken"));
-      const data = await response.json();
-      console.log('Add response:', data);
+      const inputOrgName = document.getElementsByClassName("org-name")[0].value.trim();
 
-      close();
+      if (!inputOrgName) {
+        showAlert(`The organisation's name cannot be empty.`, AlertType.Info);
+        return;
+      } else if (!checkStr(inputOrgName, 30)) {
+        showAlert(`An organisation's name can be up to 30 characters long must contain only alphanumeric characters or dashes.`, AlertType.Info);
+        return;
+      }
+
+      const response = await postData(`org/create`, { org: inputOrgName }, localStorage.getItem("accessToken"));
+      
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Add response:', data);
+        showAlert(`Organisation ${inputOrgName} added successfully.`, AlertType.Success);
+        close();
+      } else if (response.status === HttpStatusCodes.NotAcceptable) {
+        showAlert('You can only have up to 10 organisations per account.', AlertType.Info);
+      } else {
+        showAlert('An error occured while creating an organisation, please contact Noinfluence for support.', AlertType.Error);
+      }
+
     } catch (error) {
       console.error('Error:', error);
       alert(`Error: ${error.message}`);
+      showAlert(`An error occured while creating an organisation, please try again in a moment. If this error continues, please try again in a moment.`, AlertType.Error);
     }
   }
 

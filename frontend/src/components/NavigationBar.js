@@ -19,10 +19,7 @@ export const NavigationBar = () => {
       <div className='nav-profile'>
 
         <ul className='nav-list'>
-
-          <LoginLink>
-            <Link to='/login'>Log In</Link>
-          </LoginLink>
+          <LoginLink />
         </ul>
       </div>
     </nav>
