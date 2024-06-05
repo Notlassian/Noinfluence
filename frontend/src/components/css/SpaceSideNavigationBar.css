@@ -18,7 +18,7 @@
 
 .navbar-li {
   padding: 12px 0 12px 27px;
-  font-size: 16px;
+  font-size: 1rem;
   line-height: 38px;
   color: #ffffff;
   font-family: "Lato", sans-serif;
@@ -39,7 +39,7 @@
   padding: 25px 27px;
   cursor: pointer;
   white-space: nowrap;
-  font-size: 16px;
+  font-size: 1rem;
   line-height: 38px;
   color: #ffffff;
   font-family: "Lato", sans-serif;
@@ -100,7 +100,7 @@
 .space-setting {
   margin: 0;
   padding: 12px 0 12px 12px;
-  font-size: 16px;
+  font-size: 1rem;
   line-height: 38px;
   color: #ffffff;
   font-family: "Lato", sans-serif;
