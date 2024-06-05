@@ -46,7 +46,6 @@ export const AddOrgUserPopUp = (props) => {
         showAlert('An error occured while adding a user, please contact Noinfluence support.', AlertType.Error);
       }
     } catch (error) {
-      console.error('Error:', error);
       showAlert('An error occured while adding user, please try again in a moment. If this error continues, please contact Noinfluence support', AlertType.Error);
     }
   }

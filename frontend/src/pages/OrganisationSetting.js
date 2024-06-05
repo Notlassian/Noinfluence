@@ -28,7 +28,6 @@ export const OrganisationSetting = () => {
       }
 
     } catch (error) {
-      console.error('Error:', error);
       showAlert(`Unable to view admin list, please try again in a moment. If this issue continues, please contact Noinfluence support`, AlertType.Error);
     }
   }, [orgName, navigate]);

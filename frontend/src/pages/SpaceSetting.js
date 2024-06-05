@@ -28,7 +28,6 @@ export const SpaceSetting = () => {
         showAlert(`Unable to view user list for this space, please contact Noinfluence support`, AlertType.Error);
       }
     } catch (error) {
-      console.error('Error:', error);
       showAlert(`Unable to view user list for this space, please try in a moment. If this error continues, please contact Noinfluence support.`, AlertType.Error);
     }
   }, [orgName, spaceName, navigate]);
@@ -53,7 +52,6 @@ export const SpaceSetting = () => {
 
       fetchUsers();
     } catch (error) {
-      console.error('Error:', error);
       showAlert(`Unable to update role of users, please try again in a moment. If this error continues, please contact Noinfluence support`, AlertType.Error);
     }
   };

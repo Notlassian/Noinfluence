@@ -22,17 +22,19 @@ Unleash the power of Noinfluence:
 docker compose up
 ```
 
-### Wind Down
+### Destruct the Environment
 
 When it's time to take a break:
 
 ```bash
-docker-compose down
+docker compose down
 ```
 
 Embrace the simplicity of Noinfluence and watch your productivity soar!
 
-## Important Note
+## Important Notes
 
-**Note**: For access to the environment files for the test environment, please contact **Ryan** 
+**Note**: For access to the environment files for the test environment, please contact **Ryan**.
 You must place one in the /api folder and one in the /frontend.
+
+**Note**: If you rebuild the environment, make sure to destruct it before launching it again as the database and the API containers will not be in sync.

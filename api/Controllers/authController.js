@@ -1,6 +1,6 @@
 import { HttpStatusCodes } from '../Utils/httpStatusCodes.js';
 
-export function postToken(tokenType) {
+export function retrieveToken(tokenType) {
     return async function (req, res) {
         const { code } = req.body;
         const {
