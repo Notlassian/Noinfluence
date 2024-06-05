@@ -15,4 +15,4 @@ orgRouter.use('/:orgName/spaces', spaceRouter);
 
 orgRouter.post('/create', createOrg);
 orgRouter.get('/list', getMyOrgs);
-orgRouter.get('/dashboard', getRecentlyUpdatedOrgs);
+orgRouter.get('/updates', getRecentlyUpdatedOrgs);
