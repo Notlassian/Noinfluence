@@ -1,6 +1,3 @@
-Certainly! Here's the plain Markdown text for your revised file:
-
-```markdown
 # Noinfluence
 
 Welcome to Noinfluence, where your development workflow is our priority. Dive into a world where container management is as smooth as the code you write.
