@@ -10,8 +10,6 @@ export const SpaceSetting = () => {
 
   const { orgName, spaceName } = useParams();
 
-  console.log(orgName + '/' + spaceName);
-
   const navigate = useNavigate();
 
   const fetchUsers = React.useCallback(async () => {
@@ -21,7 +19,6 @@ export const SpaceSetting = () => {
       const response = await getData(`org/${orgName}/spaces/${spaceName}/admin/list`, localStorage.getItem('accessToken'));
       if (response.ok) {
         const data = await response.json();
-        console.log('data: ', data);
 
         setUsers(data);
       } else if (response.status === HttpStatusCodes.Forbidden) {

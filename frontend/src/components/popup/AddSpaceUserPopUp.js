@@ -30,8 +30,6 @@ export const AddSpaceUserPopUp = (props) => {
       const response = await postData(`org/${orgName}/spaces/${spaceName}/admin/add`, { username: inputUserName, role: userRole }, localStorage.getItem("accessToken"));
       
       if (response.ok) {
-        const data = await response.json();
-        console.log('Add response:', data);
         showAlert(`User successfully added user as ${userRole === "Administrator" ? `an ${userRole}` : `a ${userRole}`}.`, AlertType.Success);
         close();
       } else if (response.status === HttpStatusCodes.Forbidden) {

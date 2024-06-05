@@ -26,9 +26,8 @@ export const CreateSpacePopUp = (props) => {
       const response = await postData(`org/${orgName}/spaces/add`, { space: inputSpaceName }, localStorage.getItem("accessToken"));
 
       if (response.ok) {
-        const data = await response.json();
-        console.log('Add response:', data);
         showAlert(`Space ${inputSpaceName} added successfully.`, AlertType.Success);
+        navigate(`/${orgName}/${inputSpaceName}`);
 
         close();
       } else if (response.status === HttpStatusCodes.Forbidden) {

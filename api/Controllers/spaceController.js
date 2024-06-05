@@ -5,7 +5,7 @@ import { HttpStatusCodes } from '../Utils/httpStatusCodes.js';
 import { buildUniqueMap } from '../Utils/mapUtils.js';
 
 export const createSpace = async (req, res) => {
-    if (!req.body.space) {
+    if (!req.body.space.trim()) {
         res.status(HttpStatusCodes.BadRequest).json({
             error: '"space" parameter required in request body',
         });
@@ -22,7 +22,7 @@ export const createSpace = async (req, res) => {
                 .then((sqlRes) => {
                     if (sqlRes.rowCount < 10) {
                         const query = 'call insert_space($1,$2,$3)';
-                        const params = [req.user, req.body.space, req.params.orgName];
+                        const params = [req.user, req.body.space.trim(), req.params.orgName];
                         sqlPool
                             .query(query, params)
                             .then(async () => {

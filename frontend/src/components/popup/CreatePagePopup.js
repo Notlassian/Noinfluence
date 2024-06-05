@@ -28,10 +28,7 @@ export const CreatePagePopup = () => {
 
       const response = await postData(`org/${orgName}/spaces/${spaceName}/pages/${folder}/${page}/add`, { pageContent: `# This is your new page, ${page}!` }, localStorage.getItem("accessToken"));
       if (response.ok) {
-        const data = await response.json();
-        console.log('Add response:', data);
         navigate(`/${orgName}/${spaceName}/${folder}/${page}`);
-
         close();
       } else if (response.status === HttpStatusCodes.Forbidden) {
         showAlert(`You don't have access to this space.`, AlertType.Info);

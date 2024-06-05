@@ -104,13 +104,13 @@ export const createPage = async (req, res) => {
             error: 'Page or folder name doesn\'t conform to allowed format',
         });
     } else {
-        if (!pageContent) {
+        if (!pageContent.trim()) {
             return res.status(HttpStatusCodes.BadRequest).json({
                 error: '"pageContent" required in request body',
             });
         } else {
             const query = 'SELECT * from page_details WHERE organization_name = $1 AND space_name = $2';
-            const params = [orgName, spaceName];
+            const params = [orgName.trim(), spaceName.trim()];
             sqlPool
                 .query(query, params)
                 .then(async (sqlRes) => {
@@ -129,7 +129,7 @@ export const createPage = async (req, res) => {
                                 });
                             }
                     
-                            await storePage(pageContent, orgName, spaceName, folderName, pageName);
+                            await storePage(pageContent.trim(), orgName.trim(), spaceName.trim(), folderName.trim(), pageName.trim());
                             return res.status(HttpStatusCodes.OK).json({
                                 message: 'Page created successfully',
                             });

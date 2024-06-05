@@ -20,15 +20,12 @@ export const Space = () => {
 
       if (response.ok) {
         const data = await response.json();
-        console.log(data);
         setMarkdown(data.pageContent);
         setIsLoading(false);
 
         getData(`org/${orgName}/spaces/${spaceName}/permissions`, localStorage.getItem("accessToken"))
           .then(response => response.json())
           .then(permData => {
-            console.log("PERM DATA:")
-            console.log(permData);
             if (permData.perms.includes("Write")) {
               setEditEnabled(true);
             }
@@ -61,7 +58,6 @@ export const Space = () => {
       }
     })
     .catch(error => {
-      console.log(error);
       showAlert('Unable to update this page, please try again in a moment. If this issue continues, please contact Noinfluence for support.', AlertType.Error);
     });
   };

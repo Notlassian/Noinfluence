@@ -26,9 +26,9 @@ export const getOrgAdmins = async (req, res) => {
 
 export const addOrgAdmin = async (req, res) => {
     const query = 'Select username FROM organization_admins_view where organization_name=$1';
-    const params = [req.params.orgName];
+    const params = [req.params.orgName.trim()];
 
-    if (!req.body.username) {
+    if (!req.body.username.trim() || username.length > 128) {
         res.status(HttpStatusCodes.BadRequest).json({
             error: '"username" required in request body',
         });
@@ -39,7 +39,7 @@ export const addOrgAdmin = async (req, res) => {
 
                 if (sqlRes.rowCount < 25) {
                     const query = 'call add_organization_admin($1, $2)';
-                    const params = [req.body.username, req.params.orgName];
+                    const params = [req.body.username.trim(), req.params.orgName.trim()];
                     sqlPool
                         .query(query, params)
                         .then(() => {

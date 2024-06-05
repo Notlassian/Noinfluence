@@ -13,20 +13,12 @@ export const OrganisationSetting = () => {
 
   const navigate = useNavigate();
 
-  console.log(orgName);
-
   const fetchUsers = React.useCallback(async () => {
-    console.log('in org fetchUsers');
-
     try {
-
-      console.log(`fetch org users url: ${process.env.REACT_APP_API_URL}/org/${orgName}/admin/list`);
       const response = await getData(`org/${orgName}/admin/list`, localStorage.getItem('accessToken'));
 
       if (response.ok) {
         const data = await response.json();
-        console.log('organisation user data: ', data);
-
         setUsers(data);
       } else if (response.status === HttpStatusCodes.Forbidden) {
         showAlert(`You are unable to view this organisations settings.`, AlertType.Info);

@@ -154,7 +154,6 @@ export const MarkdownDisplay = ({ markdown, editEnabled, loading, onSave }) => {
   };
 
   useEffect(() => {
-    console.log("UseEffect triggered. Updated markdown:", markdown);
     setCurrentMarkdown(markdown);
     setSavedMarkdown(markdown);
   }, [markdown]);
@@ -162,9 +161,6 @@ export const MarkdownDisplay = ({ markdown, editEnabled, loading, onSave }) => {
   if (loading) {
     return <div>Loading...</div>;
   }
-
-  console.log(markdown);
-  console.log(savedMarkdown);
 
   if (!savedMarkdown) {
     return <div>No data available</div>;

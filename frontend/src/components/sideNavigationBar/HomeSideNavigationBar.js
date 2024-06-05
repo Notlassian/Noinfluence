@@ -28,16 +28,12 @@ export const HomeSideNavigationBar = () => {
           items: value.map(space => [space])
         }));
   
-        console.log(formattedData);
-  
         const isAdminPromises = formattedData.map(async (item) => {
           const response = await getData(`org/${item.name}/admin/check`, localStorage.getItem('accessToken'));
           return response.ok;
         });
       
         const isAdminArr = await Promise.all(isAdminPromises);
-        
-        console.log(isAdminArr);
   
         setIsOrgAdmins(isAdminArr);
         setOrganisations(formattedData);

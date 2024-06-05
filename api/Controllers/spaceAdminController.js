@@ -58,7 +58,7 @@ export const addUserRole = async (req, res) => {
         req.params.spaceName,
         req.params.orgName,
     ];
-    if (!req.body.username || !req.body.role) {
+    if (!req.body.username || !req.body.role.trim()) {
         res.status(HttpStatusCodes.InternalServerError).json({
             error: '"username" and "role" required in request body',
         });
@@ -71,7 +71,7 @@ export const addUserRole = async (req, res) => {
                     const query = 'call add_role_to_user_in_space($1, $2, $3, $4)';
                     const params = [
                         req.body.username,
-                        req.body.role,
+                        req.body.role.trim(),
                         req.params.spaceName,
                         req.params.orgName,
                     ];

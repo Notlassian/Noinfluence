@@ -14,8 +14,6 @@ export const SpaceSideNavigationBar = () => {
 
   const { orgName, spaceName } = useParams();
 
-  console.log(orgName + '/' + spaceName);
-
   const fetchIsAdmin = React.useCallback(async () => {
 
     try {
@@ -34,14 +32,11 @@ export const SpaceSideNavigationBar = () => {
 
       if (response.ok) {
         const data = await response.json();
-        console.log(data);
 
         const formattedData = Object.entries(data).map(([key, value]) => ({
           name: key,
           items: value.map(folder => folder)
         }));
-
-        console.log(formattedData);
 
         setFolders(formattedData);
       } else if (response.status === HttpStatusCodes.Unauthorized) {

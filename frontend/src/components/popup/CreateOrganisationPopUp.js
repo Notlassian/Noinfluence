@@ -21,8 +21,6 @@ export const CreateOrganisationPopUp = () => {
       const response = await postData(`org/create`, { org: inputOrgName }, localStorage.getItem("accessToken"));
       
       if (response.ok) {
-        const data = await response.json();
-        console.log('Add response:', data);
         showAlert(`Organisation ${inputOrgName} added successfully.`, AlertType.Success);
         close();
       } else if (response.status === HttpStatusCodes.NotAcceptable) {

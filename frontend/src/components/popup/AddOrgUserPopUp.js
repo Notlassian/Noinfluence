@@ -29,7 +29,6 @@ export const AddOrgUserPopUp = (props) => {
 
       if (response.ok) {
         const data = await response.json();
-        console.log('Add response:', data);
         showAlert('Admin user added successfully.', AlertType.Success);
 
         close();

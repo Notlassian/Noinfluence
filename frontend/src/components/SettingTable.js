@@ -10,9 +10,6 @@ export const SettingTable = ({ users, onUpdateRoles  }) => {
   const { orgName, spaceName } = useParams();
 
   const handleRoleChange = (username, newRole) => {
-    console.log('New Role:', newRole);
-    console.log('Previous userRoles:', userRoles);
-
     setUserRoles(prevUserRoles =>
       prevUserRoles.map(user =>
         user.username === username ? { ...user, role: newRole } : user
@@ -21,12 +18,10 @@ export const SettingTable = ({ users, onUpdateRoles  }) => {
   };
 
   const handleConfirmClick = () => {
-    console.log('Updated userRoles:', userRoles);
     onUpdateRoles(userRoles);
   };
 
   useEffect(() => {
-    console.log('UseEffect triggered. Updated users:', users);
     setUserRoles(users);
   }, [users]);
 
