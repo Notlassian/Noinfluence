@@ -8,20 +8,17 @@ export const NavigationBar = () => {
   const {loggedIn, setLoggedIn} = useState(false);
 
   useEffect(() => {
-    const handleStorageChange = (event) => {
-      if (event.key === 'accessToken' && event.newValue) {
+    const testLoggedInInterval = setInterval(() => {
+      const val = localStorage.getItem('accessToken');
+      if (val) {
         setLoggedIn(true);
       } else {
+        localStorage.clear();
         setLoggedIn(false);
       }
-    };
-
-    window.addEventListener('storage', handleStorageChange);
-
-    // Cleanup event listener on component unmount
-    return () => {
-      window.removeEventListener('storage', handleStorageChange);
-    };
+    }, 1000);
+  
+    return () => clearInterval(testLoggedInInterval);
   }, [setLoggedIn]);
 
   return (
@@ -38,7 +35,6 @@ export const NavigationBar = () => {
       <div className='nav-profile'>
 
         <ul className='nav-list'>
-
           { loggedIn ? <LogoutLink /> : <LoginLink /> }
         </ul>
       </div>

@@ -2,7 +2,7 @@ import React from 'react';
 import { Popup } from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 import { useNavigate, useParams } from 'react-router-dom';
-import { postData } from "../../utils";
+import { AlertType, HttpStatusCodes, postData, showAlert } from "../../utils";
 import '../css/CreateResourcePopup.css'
 
 export const CreatePagePopup = () => {
@@ -18,11 +18,25 @@ export const CreatePagePopup = () => {
 
     try {
       const response = await postData(`org/${orgName}/spaces/${spaceName}/pages/${folder}/${page}/add`, { pageContent: `# This is your new page, ${page}!` }, localStorage.getItem("accessToken"));
-      const data = await response.json();
-      console.log('Add response:', data);
-      navigate(`/${orgName}/${spaceName}/${folder}/${page}`);
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Add response:', data);
+        navigate(`/${orgName}/${spaceName}/${folder}/${page}`);
 
-      close();
+        close();
+      } else if (response.status === HttpStatusCodes.Forbidden) {
+        showAlert(`You don't have access to this space.`, AlertType.Info);
+        navigate('/');
+
+        close();
+      } else if (response.status === HttpStatusCodes.NotAcceptable) {
+        showAlert(`A space can only have up to 30 pages.`, AlertType.Info);
+        navigate('/');
+
+        close();
+      } else {
+        showAlert('An error occured while adding a user, please contact Noinfluence support.', AlertType.Error);
+      }
     } catch (error) {
       console.error('Error:', error);
       alert(`Error: ${error.message}`);

@@ -7,6 +7,7 @@ export const HttpStatusCodes = Object.freeze({
     BadRequest: 400,
     Forbidden: 403,
     Created: 204,
+    NotAcceptable: 406
 });
 
 

@@ -42,6 +42,8 @@ export const Space = () => {
       } else {
         showAlert(`Unable to load this page, please contact Noinfluence support`, AlertType.Error);
       }
+      
+      setIsLoading(false);
     })
     .catch(() => {
       showAlert(`Unable to load this page, please try again in a moment. If this error continues, please contact Noinfluence support.`, AlertType.Error);

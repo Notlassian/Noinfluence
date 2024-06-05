@@ -24,14 +24,17 @@ export const AddSpaceUserPopUp = (props) => {
         const data = await response.json();
         console.log('Add response:', data);
         showAlert(`User successfully added user as ${userRole === "Administrator" ? `an ${userRole}` : `a ${userRole}`}.`, AlertType.Success);
+        close();
       } else if (response.status === HttpStatusCodes.Forbidden) {
         showAlert('You are unable to access this spaces settings.', AlertType.Info);
         navigate(`/${orgName}/${spaceName}`);
+        close();
+      } else if (response.status === HttpStatusCodes.NotAcceptable) {
+        showAlert('A space can only have up to 25 users.', AlertType.Info);
+        close();
       } else {
         showAlert('An error occured while adding a user, please contact Noinfluence for support.', AlertType.Error);
       }
-
-      close();
     } catch (error) {
       console.error('Error:', error);
       alert(`Error: ${error.message}`);

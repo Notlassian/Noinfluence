@@ -53,7 +53,7 @@ export const updateUserRole = async (req, res) => {
     }
 };
 export const addUserRole = async (req, res) => {
-    const query = 'call add_role_to_user_in_space($1, $2, $3, $4)';
+    const query = 'Select Distinct(username), role FROM user_space_organization_permissions where organization_name=$4 AND space_name=$3';
     const params = [
         req.body.username,
         req.body.role,
@@ -68,13 +68,31 @@ export const addUserRole = async (req, res) => {
         sqlPool
             .query(query, params)
             .then((sqlRes) => {
-                res.status(HttpStatusCodes.OK).json({
-                    message: `Successfully added ${params[0]} to the space as ${params[1]}`,
-                });
+
+                if (sqlRes.rowCount < 25) {
+                    query = 'call add_role_to_user_in_space($1, $2, $3, $4)';
+                    sqlPool
+                        .query(query, params)
+                        .then(() => {
+                            res.status(HttpStatusCodes.OK).json({
+                                message: `Successfully added ${params[0]} to the space as ${params[1]}`,
+                            });
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                            res.status(HttpStatusCodes.BadRequest).json({
+                                error: 'User already exists in space',
+                            });
+                        });
+                } else {
+                    res.status(HttpStatusCodes.NotAcceptable).json({
+                        error: 'A space can have a max of 25 users',
+                    });
+                }
             })
             .catch((error) => {
                 console.log(error);
-                res.status(HttpStatusCodes.BadRequest).json({
+                res.status(HttpStatusCodes.InternalServerError).json({
                     error: 'Internal Server Error',
                 });
             });

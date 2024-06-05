@@ -81,7 +81,10 @@ export const SpaceSideNavigationBar = () => {
 
           <li key={`${spaceName}`}>
             <span
-              className='navbar-li'>
+              className='navbar-li'
+              onClick={() => navigate(`/${orgName}/${spaceName}`)}
+            >
+                
 
               <img className='space-icon' src='/space.png' alt='space'/>
               {spaceName}
