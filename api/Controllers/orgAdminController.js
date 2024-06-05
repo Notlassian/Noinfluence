@@ -25,7 +25,8 @@ export const getOrgAdmins = async (req, res) => {
 };
 
 export const addOrgAdmin = async (req, res) => {
-    const query = 'Select username FROM organization_admins_view where organization_name=$1';
+    const query =
+        'Select username FROM organization_admins_view where organization_name=$1';
     const params = [req.params.orgName.trim()];
 
     if (!req.body.username.trim() || req.body.username.length > 128) {
@@ -36,10 +37,12 @@ export const addOrgAdmin = async (req, res) => {
         sqlPool
             .query(query, params)
             .then((sqlRes) => {
-
                 if (sqlRes.rowCount < 25) {
                     const query = 'call add_organization_admin($1, $2)';
-                    const params = [req.body.username.trim(), req.params.orgName.trim()];
+                    const params = [
+                        req.body.username.trim(),
+                        req.params.orgName.trim(),
+                    ];
                     sqlPool
                         .query(query, params)
                         .then(() => {
@@ -49,7 +52,9 @@ export const addOrgAdmin = async (req, res) => {
                         })
                         .catch((error) => {
                             console.log(error);
-                            res.status(HttpStatusCodes.InternalServerError).json({
+                            res.status(
+                                HttpStatusCodes.InternalServerError
+                            ).json({
                                 error: 'Internal Server Error',
                             });
                         });

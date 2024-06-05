@@ -101,7 +101,7 @@ export const createPage = async (req, res) => {
 
     if (!checkStr(folderName, 30) || !checkStr(pageName, 30)) {
         res.status(HttpStatusCodes.BadRequest).json({
-            error: 'Page or folder name doesn\'t conform to allowed format',
+            error: "Page or folder name doesn't conform to allowed format",
         });
     } else {
         if (!pageContent.trim()) {
@@ -109,7 +109,8 @@ export const createPage = async (req, res) => {
                 error: '"pageContent" required in request body',
             });
         } else {
-            const query = 'SELECT * from page_details WHERE organization_name = $1 AND space_name = $2';
+            const query =
+                'SELECT * from page_details WHERE organization_name = $1 AND space_name = $2';
             const params = [orgName.trim(), spaceName.trim()];
             sqlPool
                 .query(query, params)
@@ -122,14 +123,22 @@ export const createPage = async (req, res) => {
                                 folderName,
                                 pageName
                             );
-                    
+
                             if (fileExists) {
-                                return res.status(HttpStatusCodes.BadRequest).json({
-                                    error: `A page with the name '${pageName}' already exists`,
-                                });
+                                return res
+                                    .status(HttpStatusCodes.BadRequest)
+                                    .json({
+                                        error: `A page with the name '${pageName}' already exists`,
+                                    });
                             }
-                    
-                            await storePage(pageContent.trim(), orgName.trim(), spaceName.trim(), folderName.trim(), pageName.trim());
+
+                            await storePage(
+                                pageContent.trim(),
+                                orgName.trim(),
+                                spaceName.trim(),
+                                folderName.trim(),
+                                pageName.trim()
+                            );
                             return res.status(HttpStatusCodes.OK).json({
                                 message: 'Page created successfully',
                             });
@@ -142,12 +151,15 @@ export const createPage = async (req, res) => {
                     } else {
                         return res
                             .status(HttpStatusCodes.NotAcceptable)
-                            .json({ error: 'A space can only have a max of 30 pages' });
+                            .json({
+                                error: 'A space can only have a max of 30 pages',
+                            });
                     }
                 })
                 .catch((err) => {
                     console.error(`Error creating page: ${err}`);
-                    return res.status(HttpStatusCodes.InternalServerError)
+                    return res
+                        .status(HttpStatusCodes.InternalServerError)
                         .json({ error: 'An error occurred' });
                 });
         }
