@@ -1,5 +1,5 @@
 import { Popup } from 'reactjs-popup';
-import { AlertType, HttpStatusCodes, postData, showAlert } from "../../utils";
+import { AlertType, HttpStatusCodes, checkStr, postData, showAlert } from "../../utils";
 import { useNavigate } from 'react-router-dom';
 
 import 'reactjs-popup/dist/index.css';
@@ -17,6 +17,9 @@ export const CreateSpacePopUp = (props) => {
 
       if (!inputSpaceName) {
         showAlert(`The space's name cannot be empty.`, AlertType.Info);
+        return;
+      } else if (!checkStr(inputSpaceName, 30)) {
+        showAlert(`A space's name can be up to 30 characters long must contain only alphanumeric characters or dashes.`, AlertType.Info);
         return;
       }
 

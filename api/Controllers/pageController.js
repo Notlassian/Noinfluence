@@ -98,51 +98,57 @@ export const createPage = async (req, res) => {
     const { spaceName, orgName, folderName, pageName } = req.params;
     const { pageContent } = req.body;
 
-    if (!pageContent) {
-        return res.status(HttpStatusCodes.BadRequest).json({
-            error: '"pageContent" required in request body',
+    if (!checkStr(folderName, 30) || !checkStr(pageName, 30)) {
+        res.status(HttpStatusCodes.BadRequest).json({
+            error: 'Page or folder name doesn\'t conform to allowed format',
         });
     } else {
-        const query = 'SELECT * from page_details WHERE organization_name = $1 AND space_name = $2';
-        const params = [orgName, spaceName];
-        sqlPool
-            .query(query, params)
-            .then(async (sqlRes) => {
-                if (sqlRes.rowCount < 30) {
-                    try {
-                        const fileExists = await checkIfFileExists(
-                            orgName,
-                            spaceName,
-                            folderName,
-                            pageName
-                        );
-                
-                        if (fileExists) {
-                            return res.status(HttpStatusCodes.BadRequest).json({
-                                error: `A page with the name '${pageName}' already exists`,
-                            });
-                        }
-                
-                        await storePage(pageContent, orgName, spaceName, folderName, pageName);
-                        return res.status(HttpStatusCodes.OK).json({
-                            message: 'Page created successfully',
-                        });
-                    } catch (error) {
-                        console.error(`Error creating page: ${error}`);
-                        return res
-                            .status(HttpStatusCodes.InternalServerError)
-                            .json({ error: 'An error occurred' });
-                    }
-                } else {
-                    return res
-                        .status(HttpStatusCodes.NotAcceptable)
-                        .json({ error: 'A space can only have a max of 30 pages' });
-                }
-            })
-            .catch((err) => {
-                console.error(`Error creating page: ${err}`);
-                return res.status(HttpStatusCodes.InternalServerError)
-                    .json({ error: 'An error occurred' });
+        if (!pageContent) {
+            return res.status(HttpStatusCodes.BadRequest).json({
+                error: '"pageContent" required in request body',
             });
+        } else {
+            const query = 'SELECT * from page_details WHERE organization_name = $1 AND space_name = $2';
+            const params = [orgName, spaceName];
+            sqlPool
+                .query(query, params)
+                .then(async (sqlRes) => {
+                    if (sqlRes.rowCount < 30) {
+                        try {
+                            const fileExists = await checkIfFileExists(
+                                orgName,
+                                spaceName,
+                                folderName,
+                                pageName
+                            );
+                    
+                            if (fileExists) {
+                                return res.status(HttpStatusCodes.BadRequest).json({
+                                    error: `A page with the name '${pageName}' already exists`,
+                                });
+                            }
+                    
+                            await storePage(pageContent, orgName, spaceName, folderName, pageName);
+                            return res.status(HttpStatusCodes.OK).json({
+                                message: 'Page created successfully',
+                            });
+                        } catch (error) {
+                            console.error(`Error creating page: ${error}`);
+                            return res
+                                .status(HttpStatusCodes.InternalServerError)
+                                .json({ error: 'An error occurred' });
+                        }
+                    } else {
+                        return res
+                            .status(HttpStatusCodes.NotAcceptable)
+                            .json({ error: 'A space can only have a max of 30 pages' });
+                    }
+                })
+                .catch((err) => {
+                    console.error(`Error creating page: ${err}`);
+                    return res.status(HttpStatusCodes.InternalServerError)
+                        .json({ error: 'An error occurred' });
+                });
+        }
     }
 };

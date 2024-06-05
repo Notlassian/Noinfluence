@@ -2,7 +2,7 @@ import React from 'react';
 import { Popup } from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 import { useNavigate, useParams } from 'react-router-dom';
-import { AlertType, HttpStatusCodes, postData, showAlert } from "../../utils";
+import { AlertType, HttpStatusCodes, checkStr, postData, showAlert } from "../../utils";
 import '../css/CreateResourcePopup.css'
 
 export const CreatePagePopup = () => {
@@ -20,6 +20,9 @@ export const CreatePagePopup = () => {
 
       if (!folder || !page) {
         showAlert('The folder and page names cannot be empty.', AlertType.Info);
+        return;
+      } else if (!checkStr(folder, 30) || !checkStr(page, 30)) {
+        showAlert(`Folder and page names can be up to 30 characters long must contain only alphanumeric characters or dashes.`, AlertType.Info);
         return;
       }
 

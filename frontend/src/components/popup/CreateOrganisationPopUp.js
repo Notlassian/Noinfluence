@@ -1,5 +1,5 @@
 import { Popup } from 'reactjs-popup';
-import { AlertType, postData, showAlert } from "../../utils";
+import { AlertType, checkStr, postData, showAlert } from "../../utils";
 
 import 'reactjs-popup/dist/index.css';
 import '../css/CreateResourcePopup.css';
@@ -12,6 +12,9 @@ export const CreateOrganisationPopUp = () => {
 
       if (!inputOrgName) {
         showAlert(`The organisation's name cannot be empty.`, AlertType.Info);
+        return;
+      } else if (!checkStr(inputOrgName, 30)) {
+        showAlert(`An organisation's name can be up to 30 characters long must contain only alphanumeric characters or dashes.`, AlertType.Info);
         return;
       }
 

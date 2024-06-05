@@ -22,6 +22,9 @@ export const AddSpaceUserPopUp = (props) => {
       if (!inputUserName) {
         showAlert(`The user's username cannot be empty.`, AlertType.Info);
         return;
+      } else if (inputUserName < 128) {
+        showAlert(`The username you entered doesn't exist.`, AlertType.Info);
+        return;
       }
 
       const response = await postData(`org/${orgName}/spaces/${spaceName}/admin/add`, { user: inputUserName, role: userRole }, localStorage.getItem("accessToken"));
@@ -39,7 +42,7 @@ export const AddSpaceUserPopUp = (props) => {
         showAlert('A space can only have up to 25 users.', AlertType.Info);
         close();
       } else if (response.status === HttpStatusCodes.BadRequest) {
-        showAlert('This user already has access to this space.', AlertType.Info);
+        showAlert(`This username doesn't exist or already has access to this space.`, AlertType.Info);
       }else {
         showAlert('An error occured while adding a user, please contact Noinfluence for support.', AlertType.Error);
       }

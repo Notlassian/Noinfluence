@@ -1,6 +1,6 @@
 import React from 'react';
 import { Popup } from 'reactjs-popup';
-import { AlertType, HttpStatusCodes, postData, showAlert } from '../../utils';
+import { AlertType, HttpStatusCodes, checkStr, postData, showAlert } from '../../utils';
 
 import 'reactjs-popup/dist/index.css';
 import '../css/CreateResourcePopup.css';
@@ -20,6 +20,9 @@ export const AddOrgUserPopUp = (props) => {
       if (!inputUserName) {
         showAlert(`The user's username cannot be empty.`, AlertType.Info);
         return;
+      } else if (inputUserName < 128) {
+        showAlert(`The username you entered doesn't exist.`, AlertType.Info);
+        return;
       }
 
       const response = await postData(`org/${orgName}/admin/add`, { user: inputUserName }, localStorage.getItem('accessToken'));
@@ -38,7 +41,9 @@ export const AddOrgUserPopUp = (props) => {
       } else if (response.status === HttpStatusCodes.NotAcceptable) {
         showAlert('An organisation can only have up to 10 administrators.', AlertType.Info);
         close();
-      } else {
+      } else if (response.status === HttpStatusCodes.BadRequest) {
+        showAlert(`This username doesn't exist or already has is an admin of this organisation.`, AlertType.Info);
+      }else {
         showAlert('An error occured while adding a user, please contact Noinfluence support.', AlertType.Error);
       }
     } catch (error) {

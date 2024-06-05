@@ -1,28 +1,36 @@
+import { checkStr } from '../Utils/checkStrAllowed.js';
 import { sqlPool } from '../Utils/dbUtils.js';
 import { HttpStatusCodes } from '../Utils/httpStatusCodes.js';
 import { buildObjectMap, buildUniqueMap } from '../Utils/mapUtils.js';
 
 export const createOrg = async (req, res) => {
     const query = 'call create_organization_and_admin($1,$2)';
-    const params = [req.user, req.body.org];
-    if (!params[0] || !params[1])
+
+    if (!checkStr(req.body.org)) {
         res.status(HttpStatusCodes.BadRequest).json({
-            error: '"org" parameter not found in request body',
+            error: 'Organization name doesn\'t conform to allowed format',
         });
-    else {
-        sqlPool
-            .query(query, params)
-            .then(() => {
-                res.status(HttpStatusCodes.OK).json({
-                    message: `${params[1]} has been created successfully`,
-                });
-            })
-            .catch((error) => {
-                console.log(error);
-                res.status(HttpStatusCodes.BadRequest).json({
-                    error: 'Organization name already exists',
-                });
+    } else {
+        const params = [req.user, req.body.org];
+        if (!params[0] || !params[1])
+            res.status(HttpStatusCodes.BadRequest).json({
+                error: '"org" parameter not found in request body',
             });
+        else {
+            sqlPool
+                .query(query, params)
+                .then(() => {
+                    res.status(HttpStatusCodes.OK).json({
+                        message: `${params[1]} has been created successfully`,
+                    });
+                })
+                .catch((error) => {
+                    console.log(error);
+                    res.status(HttpStatusCodes.BadRequest).json({
+                        error: 'Organization name already exists',
+                    });
+                });
+        }
     }
 };
 
