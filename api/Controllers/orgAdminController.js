@@ -28,7 +28,7 @@ export const addOrgAdmin = async (req, res) => {
     const query = 'Select username FROM organization_admins_view where organization_name=$1';
     const params = [req.params.orgName.trim()];
 
-    if (!req.body.username.trim() || username.length > 128) {
+    if (!req.body.username.trim() || req.body.username.length > 128) {
         res.status(HttpStatusCodes.BadRequest).json({
             error: '"username" required in request body',
         });
