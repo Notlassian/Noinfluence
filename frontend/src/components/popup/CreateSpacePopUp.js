@@ -50,7 +50,7 @@ export const CreateSpacePopUp = (props) => {
 
   return (
     <Popup
-      trigger={<button className="button"> Create a new space </button>}
+      trigger={<button className="popup-trigger create-space-user button"> Create a new space </button>}
       position="bottom center"
       closeOnDocumentClick
       modal
@@ -69,7 +69,7 @@ export const CreateSpacePopUp = (props) => {
             <input className="space-name" />
           </div>
 
-          <button className="add-space-button" onClick={() => addSpace(close)}>
+          <button className="popup-resolver add-space-button" onClick={() => addSpace(close)}>
             Create space
           </button>
         </div>

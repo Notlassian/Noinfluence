@@ -1,0 +1,96 @@
+.sideNavBarWindow {
+  min-height: 90vh;
+  width: 20vw;
+  background-color: #333;
+  box-shadow: 1px 1px 7px rgba(0, 0, 0, 0.15);
+  transition: all 0.5s ease;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  border-right: 0.2rem solid red;
+}
+
+.navbar-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  border-top: 2px solid gray;
+}
+
+.navbar-li {
+  padding: 0 12px;
+  position: relative;
+  top: 2.5px;
+  font-size: 1rem;
+  letter-spacing: 0;
+  line-height: 1.5;
+  color: #ffffff;
+  font-family: "Lato", sans-serif;
+  font-weight: 400;
+  white-space: normal;
+  word-wrap: break-word;
+  max-width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 12px 0 12px 27px;
+  line-height: 38px;
+  cursor: pointer;
+  justify-content: start;
+  align-items: center;
+}
+
+.navbar-li:hover {
+  cursor: pointer;
+  background-color: #58b5fc;
+}
+
+.sub-list {
+  list-style-type: none;
+  margin: 0;
+  padding-left: 0;
+  margin-left: 2em;
+  border-left: 5px solid gray;
+}
+
+.sub-item {
+  margin-top: 10px;
+
+  margin-bottom: 5px;
+}
+
+.create-button-container {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+
+  padding: 10px;
+}
+
+.create-button {
+  width: 100%;
+  padding: 10px;
+  background-color: #58b5fc;
+  color: white;
+  border: none;
+  border-radius: 5px;
+
+  cursor: pointer;
+}
+
+.create-button:hover {
+  background-color: #4ca6e0;
+}
+
+.space-icon {
+  width: 25px;
+  height: 25px;
+  margin-right: 10px;
+  vertical-align: middle;
+  color: #ffffff;
+}
+
+.popup-trigger.button {
+  width: 100%;
+}

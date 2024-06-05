@@ -8,9 +8,9 @@
 
 .menu {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   flex-wrap: wrap;
-  justify-content: space-between;
+  align-items: center;
 }
 
 
@@ -18,4 +18,12 @@
   margin-top: 5%;
   margin: 5% 35% auto 35%;
   min-width: 20%;
+}
+
+input {
+  padding: 0.6em 2em;
+}
+
+button .popup-resolver {
+  margin-top: 1em;
 }

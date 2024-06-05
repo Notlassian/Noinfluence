@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { CreateSpacePopUp, CreateOrganisationPopUp } from '../popup';
 import { AlertType, HttpStatusCodes, getData, postDataWithoutBearer, showAlert } from '../../utils';
 import '../css/HomeSideNavigationBar.css';
+import '../css/SideNavigationBar.css';
 
 export const HomeSideNavigationBar = () => {
 
@@ -81,7 +82,10 @@ export const HomeSideNavigationBar = () => {
   return (
 
     <nav className='sideNavBarWindow' >
-
+      <div className="create-button-container">
+        <CreateOrganisationPopUp refresh={fetchOrganisations}/>
+      </div>
+      
       <ul className="navbar-list">
 
         {organisations.map((organisation, orgIndex) => (
@@ -100,7 +104,8 @@ export const HomeSideNavigationBar = () => {
                     navigate(`/${organisation.name}/settings`);
                   }}>
 
-                  {'Setting'}
+                  <img className='setting-icon' src='/setting.svg' alt='setting'/>
+
                 </button>
               )}
             </div>
@@ -119,7 +124,7 @@ export const HomeSideNavigationBar = () => {
                     </div>
                   </li>
                 ))}
-                <li>
+                <li className='sub-item create-space'>
                   { isOrgAdmins[orgIndex] ? <CreateSpacePopUp orgName={organisation.name}/> : null }
                 </li>
               </ul>
@@ -127,10 +132,6 @@ export const HomeSideNavigationBar = () => {
           </li>
         ))}
       </ul>
-
-      <div className="create-button-container">
-        <CreateOrganisationPopUp refresh={fetchOrganisations}/>
-      </div>
     </nav>
   );
 };
