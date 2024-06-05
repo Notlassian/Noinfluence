@@ -70,7 +70,7 @@ export const SpaceSetting = () => {
 
       <SpaceSideNavigationBar />
 
-      <SettingTable users={users} onUpdateRoles={updateRoles}/>
+      <SettingTable users={users} onUpdateRoles={updateRoles} refresh={fetchUsers}/>
     </div>
   );
 };

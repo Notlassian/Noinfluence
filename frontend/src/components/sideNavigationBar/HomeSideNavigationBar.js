@@ -22,26 +22,26 @@ export const HomeSideNavigationBar = () => {
 
       if (response.ok) {
         const data = await response.json();
-  
+
         const formattedData = Object.entries(data).map(([key, value]) => ({
           name: key,
           items: value.map(space => [space])
         }));
-  
+
         const isAdminPromises = formattedData.map(async (item) => {
           const response = await getData(`org/${item.name}/admin/check`, localStorage.getItem('accessToken'));
           return response.ok;
         });
-      
+
         const isAdminArr = await Promise.all(isAdminPromises);
-  
+
         setIsOrgAdmins(isAdminArr);
         setOrganisations(formattedData);
       } else if (response.status === HttpStatusCodes.Unauthorized) {
         showAlert(`You are not logged in, please login to continue.`, AlertType.Info);
         navigate("/unauthorized");
       }
-      
+
     } catch (error) {
       console.error('Error:', error);
       showAlert(`Couldn't retrieve your organisations, please try again in a moment. If this error continues, please contact Noinfluence support.`, AlertType.Error);
@@ -107,7 +107,7 @@ export const HomeSideNavigationBar = () => {
       </ul>
 
       <div className="create-button-container">
-        <CreateOrganisationPopUp/>
+        <CreateOrganisationPopUp refresh={fetchOrganisations}/>
       </div>
     </nav>
   );

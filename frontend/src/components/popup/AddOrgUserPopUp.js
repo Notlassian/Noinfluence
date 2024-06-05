@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 export const AddOrgUserPopUp = (props) => {
 
   const orgName = props.orgName;
+  const refresh = props.refresh;
 
   const navigate = useNavigate();
 
@@ -16,7 +17,7 @@ export const AddOrgUserPopUp = (props) => {
 
     try {
       const inputUserName = document.getElementsByClassName('user-name')[0].value.trim();
-      
+
       if (!inputUserName) {
         showAlert(`The user's username cannot be empty.`, AlertType.Info);
         return;
@@ -29,6 +30,7 @@ export const AddOrgUserPopUp = (props) => {
 
       if (response.ok) {
         showAlert('Admin user added successfully.', AlertType.Success);
+        refresh();
         close();
       } else if (response.status === HttpStatusCodes.Forbidden) {
         showAlert('You are unable to access this organisations settings.', AlertType.Info);
