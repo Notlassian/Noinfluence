@@ -25,7 +25,7 @@ export const AddOrgUserPopUp = (props) => {
         return;
       }
 
-      const response = await postData(`org/${orgName}/admin/add`, { user: inputUserName }, localStorage.getItem('accessToken'));
+      const response = await postData(`org/${orgName}/admin/add`, { username: inputUserName }, localStorage.getItem('accessToken'));
 
       if (response.ok) {
         const data = await response.json();

@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 
 export const AddSpaceUserPopUp = (props) => {
 
-  const [userRole, setUserRole] = useState('Admin');
+  const [userRole, setUserRole] = useState('Viewer');
   const navigate = useNavigate();
 
   const orgName = props.orgName;
@@ -27,7 +27,7 @@ export const AddSpaceUserPopUp = (props) => {
         return;
       }
 
-      const response = await postData(`org/${orgName}/spaces/${spaceName}/admin/add`, { user: inputUserName, role: userRole }, localStorage.getItem("accessToken"));
+      const response = await postData(`org/${orgName}/spaces/${spaceName}/admin/add`, { username: inputUserName, role: userRole }, localStorage.getItem("accessToken"));
       
       if (response.ok) {
         const data = await response.json();
@@ -86,7 +86,6 @@ export const AddSpaceUserPopUp = (props) => {
           <div className="page-input">
             <h4> User's Role: </h4>
             <select
-              defaultValue={'Administrator'}
               value={userRole}
               onChange={(e) => handleRoleChange(e.target.value)}>
 

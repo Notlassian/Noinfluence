@@ -1,5 +1,5 @@
 import { Popup } from 'reactjs-popup';
-import { AlertType, checkStr, postData, showAlert } from "../../utils";
+import { AlertType, HttpStatusCodes, checkStr, postData, showAlert } from "../../utils";
 
 import 'reactjs-popup/dist/index.css';
 import '../css/CreateResourcePopup.css';
@@ -25,6 +25,8 @@ export const CreateOrganisationPopUp = () => {
         console.log('Add response:', data);
         showAlert(`Organisation ${inputOrgName} added successfully.`, AlertType.Success);
         close();
+      } else if (response.status === HttpStatusCodes.NotAcceptable) {
+        showAlert('You can only have up to 10 organisations per account.', AlertType.Info);
       } else {
         showAlert('An error occured while creating an organisation, please contact Noinfluence for support.', AlertType.Error);
       }

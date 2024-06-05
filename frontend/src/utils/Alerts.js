@@ -2,8 +2,8 @@ import { Bounce, toast } from 'react-toastify';
 
 export function showAlert(message, toastType) {
     const config = {
-        position: "top-right",
-        autoClose: 5000,
+        position: "bottom-right",
+        autoClose: 6000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: false,
