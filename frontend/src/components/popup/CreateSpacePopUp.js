@@ -11,7 +11,7 @@ export const CreateSpacePopUp = (props) => {
 
   const navigate = useNavigate();
 
-  const addSpace = async () => {
+  const addSpace = async (close) => {
     const inputSpaceName = document.getElementsByClassName("space-name")[0].value;
 
     try {

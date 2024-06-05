@@ -12,7 +12,7 @@ export const AddOrgUserPopUp = (props) => {
 
   const navigate = useNavigate();
 
-  const addOrgUser = async () => {
+  const addOrgUser = async (close) => {
 
     const inputUserName = document.getElementsByClassName('user-name')[0].value;
 
@@ -23,14 +23,16 @@ export const AddOrgUserPopUp = (props) => {
         const data = await response.json();
         console.log('Add response:', data);
         showAlert('Admin user added successfully.', AlertType.Success);
+
+        close();
       } else if (response.status === HttpStatusCodes.Forbidden) {
         showAlert('You are unable to access this organisations settings.', AlertType.Info);
         navigate('/');
+
+        close();
       } else {
         showAlert('An error occured while adding a user, please contact Noinfluence support.', AlertType.Error);
       }
-
-      close();
     } catch (error) {
       console.error('Error:', error);
       showAlert('An error occured while adding user, please try again in a moment. If this error continues, please contact Noinfluence support', AlertType.Error);
