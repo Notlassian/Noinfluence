@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CreateSpacePopUp, CreateOrganisationPopUp } from '../popup';
-import { AlertType, HttpStatusCodes, getData, postData, postDataWithoutBearer, showAlert } from '../../utils';
+import { AlertType, HttpStatusCodes, getData, postDataWithoutBearer, showAlert } from '../../utils';
 import '../css/HomeSideNavigationBar.css';
 
 export const HomeSideNavigationBar = () => {

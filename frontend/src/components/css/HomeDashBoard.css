@@ -17,6 +17,10 @@
   padding: 0.25rem 1rem;
 }
 
+.update-card a {
+  color: red;
+}
+
 .org-card {
   background-color: #fff;
   border: 1px solid #ddd;
