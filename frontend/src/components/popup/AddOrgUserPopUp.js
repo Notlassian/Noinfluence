@@ -14,9 +14,14 @@ export const AddOrgUserPopUp = (props) => {
 
   const addOrgUser = async (close) => {
 
-    const inputUserName = document.getElementsByClassName('user-name')[0].value;
-
     try {
+      const inputUserName = document.getElementsByClassName('user-name')[0].value.trim();
+      
+      if (!inputUserName) {
+        showAlert(`The user's username cannot be empty.`, AlertType.Info);
+        return;
+      }
+
       const response = await postData(`org/${orgName}/admin/add`, { user: inputUserName }, localStorage.getItem('accessToken'));
 
       if (response.ok) {

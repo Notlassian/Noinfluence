@@ -54,13 +54,15 @@ export const Space = () => {
   const updateMarkdown = async (newMarkdown) => {
     putData(`org/${orgName}/spaces/${spaceName}/homepage/update`, { pageContent: newMarkdown}, localStorage.getItem("accessToken"))
     .then(response => {
-      if (!response.ok) {
-        showAlert('Unable to update this page, please contact Noinfluence for support.');
+      if (response.ok) {
+        showAlert('Additions made to this page were saved successfully.', AlertType.Success);
+      } else {
+        showAlert('Unable to update this page, please contact Noinfluence for support.', AlertType.Error);
       }
     })
     .catch(error => {
       console.log(error);
-      showAlert('Unable to update this page, please try again in a moment. If this issue continues, please contact Noinfluence for support.');
+      showAlert('Unable to update this page, please try again in a moment. If this issue continues, please contact Noinfluence for support.', AlertType.Error);
     });
   };
 

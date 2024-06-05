@@ -63,8 +63,10 @@ export const Page = () => {
   const updateMarkdown = async (newMarkdown) => {
     putData(`org/${orgName}/spaces/${spaceName}/pages/${folderName}/${pageName}/update`, { pageContent: newMarkdown}, localStorage.getItem("accessToken"))
       .then(response => {
-        if (!response.ok) {
-          showAlert('Unable to update this page, please contact Noinfluence for support.');
+        if (response.ok) {
+          showAlert('Additions made to this page were saved successfully.', AlertType.Success);
+        } else {
+          showAlert('Unable to update this page, please contact Noinfluence for support.', AlertType.Error);
         }
       })
       .catch(error => {

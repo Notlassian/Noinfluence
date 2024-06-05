@@ -15,9 +15,15 @@ export const AddSpaceUserPopUp = (props) => {
   const spaceName = props.spaceName;
 
   const addSpaceUser = async (close) => {
-    const inputUserName = document.getElementsByClassName("user-name")[0].value;
-
     try {
+      
+      const inputUserName = document.getElementsByClassName("user-name")[0].value.trim();
+
+      if (!inputUserName) {
+        showAlert(`The user's username cannot be empty.`, AlertType.Info);
+        return;
+      }
+
       const response = await postData(`org/${orgName}/spaces/${spaceName}/admin/add`, { user: inputUserName, role: userRole }, localStorage.getItem("accessToken"));
       
       if (response.ok) {
@@ -32,7 +38,9 @@ export const AddSpaceUserPopUp = (props) => {
       } else if (response.status === HttpStatusCodes.NotAcceptable) {
         showAlert('A space can only have up to 25 users.', AlertType.Info);
         close();
-      } else {
+      } else if (response.status === HttpStatusCodes.BadRequest) {
+        showAlert('This user already has access to this space.', AlertType.Info);
+      }else {
         showAlert('An error occured while adding a user, please contact Noinfluence for support.', AlertType.Error);
       }
     } catch (error) {
@@ -73,6 +81,7 @@ export const AddSpaceUserPopUp = (props) => {
           </div>
 
           <div className="page-input">
+            <h4> User's Role: </h4>
             <select
               defaultValue={'Administrator'}
               value={userRole}

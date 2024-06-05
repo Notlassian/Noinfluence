@@ -7,9 +7,14 @@ import '../css/CreateResourcePopup.css';
 export const CreateOrganisationPopUp = () => {
 
   const addOrg = async (close) => {
-    const inputOrgName = document.getElementsByClassName("org-name")[0].value;
-
     try {
+      const inputOrgName = document.getElementsByClassName("org-name")[0].value.trim();
+
+      if (!inputOrgName) {
+        showAlert(`The organisation's name cannot be empty.`, AlertType.Info);
+        return;
+      }
+
       const response = await postData(`org/create`, { org: inputOrgName }, localStorage.getItem("accessToken"));
       
       if (response.ok) {

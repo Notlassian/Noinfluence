@@ -13,10 +13,16 @@ export const CreatePagePopup = () => {
 
   const createPage = async (close) => {
 
-    const folder = document.getElementsByClassName("folder-name")[0].value;
-    const page = document.getElementsByClassName("page-name")[0].value;
-
     try {
+
+      const folder = document.getElementsByClassName("folder-name")[0].value.trim();
+      const page = document.getElementsByClassName("page-name")[0].value.trim();
+
+      if (!folder || !page) {
+        showAlert('The folder and page names cannot be empty.', AlertType.Info);
+        return;
+      }
+
       const response = await postData(`org/${orgName}/spaces/${spaceName}/pages/${folder}/${page}/add`, { pageContent: `# This is your new page, ${page}!` }, localStorage.getItem("accessToken"));
       if (response.ok) {
         const data = await response.json();

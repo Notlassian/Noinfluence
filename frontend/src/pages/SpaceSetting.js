@@ -42,15 +42,22 @@ export const SpaceSetting = () => {
 
       await Promise.all(updatedUsers.map(async (user) => {
 
-        const response = await postData(`org/${orgName}/spaces/${spaceName}/admin/update`, { user: user.username, role: user.role }, localStorage.getItem('accessToken'));
-        const data = await response.json();
-        console.log('Update response:', data);
+        try {
+          const response = await postData(`org/${orgName}/spaces/${spaceName}/admin/update`, { user: user.username, role: user.role }, localStorage.getItem('accessToken'));
+          if (response.ok) {
+            showAlert(`Updated role of user ${user.username}.`, AlertType.Success);
+          } else {
+            showAlert(`Unable to update role of user (${user.username}), please contact Noinfluence support`, AlertType.Error);
+          }
+        } catch (err) {
+          showAlert(`Unable to update role of user (${user.username}), please try again in a moment. If this error continues, please contact Noinfluence support`, AlertType.Error);
+        }
       }));
 
       fetchUsers();
     } catch (error) {
       console.error('Error:', error);
-      showAlert(`Unable to retrieve admin list, please make sure you are logged in.`, AlertType.Error);
+      showAlert(`Unable to update role of users, please try again in a moment. If this error continues, please contact Noinfluence support`, AlertType.Error);
     }
   };
 

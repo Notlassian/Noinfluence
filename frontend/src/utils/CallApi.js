@@ -35,7 +35,8 @@ export function putData(endpoint, payload, jwt) {
     return fetch(`${process.env.REACT_APP_API_URL}/${endpoint}`, {
         method: 'PUT',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${jwt}`
         },
         body: JSON.stringify(payload)
     });

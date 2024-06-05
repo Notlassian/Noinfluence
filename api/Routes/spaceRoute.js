@@ -27,7 +27,7 @@ spaceRouter.use('/:spaceName/pages', pageRouter);
 
 spaceRouter.post('/add', isOrgAdmin, createSpace);
 spaceRouter.get('/list', getSpaces);
-spaceRouter.get('/:spaceName/list', getFoldersWithPages);
-spaceRouter.get('/:spaceName/permissions', getMyPermissions);
-spaceRouter.get('/:spaceName/homepage/retrieve', getHome);
-spaceRouter.put('/:spaceName/homepage/update', updateHome);
+spaceRouter.get('/:spaceName/list', hasSpacePermission(PermissionsTypes.Read), getFoldersWithPages);
+spaceRouter.get('/:spaceName/permissions', hasSpacePermission(PermissionsTypes.Read), getMyPermissions);
+spaceRouter.get('/:spaceName/homepage/retrieve', hasSpacePermission(PermissionsTypes.Read), getHome);
+spaceRouter.put('/:spaceName/homepage/update', hasSpacePermission(PermissionsTypes.Write), updateHome);

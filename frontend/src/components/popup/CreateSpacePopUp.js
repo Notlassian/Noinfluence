@@ -12,9 +12,14 @@ export const CreateSpacePopUp = (props) => {
   const navigate = useNavigate();
 
   const addSpace = async (close) => {
-    const inputSpaceName = document.getElementsByClassName("space-name")[0].value;
-
     try {
+      const inputSpaceName = document.getElementsByClassName("space-name")[0].value;
+
+      if (!inputSpaceName) {
+        showAlert(`The space's name cannot be empty.`, AlertType.Info);
+        return;
+      }
+
       const response = await postData(`org/${orgName}/spaces/add`, { space: inputSpaceName }, localStorage.getItem("accessToken"));
 
       if (response.ok) {
