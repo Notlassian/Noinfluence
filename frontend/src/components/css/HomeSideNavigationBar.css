@@ -20,7 +20,7 @@
   padding: 0 12px;
   position: relative;
   top: 2.5px;
-  font-size: 16px;
+  font-size: 1rem;
   letter-spacing: 0;
   line-height: 1.5;
   color: #ffffff;
@@ -50,7 +50,7 @@
   color: white;
   border: none;
   border-radius: 5px;
-  font-size: 14px;
+  font-size: 1rem;
   cursor: pointer;
   white-space: nowrap;
 }

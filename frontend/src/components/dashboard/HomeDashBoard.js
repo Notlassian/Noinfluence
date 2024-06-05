@@ -1,5 +1,4 @@
 import React from 'react';
-import 'chart.js/auto';
 import '../css/HomeDashBoard.css';
 
 export const HomeDashboard = ({ updatedSpaces, updatedFolders, updatedPages }) => {
