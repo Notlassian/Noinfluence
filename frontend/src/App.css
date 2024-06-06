@@ -3,10 +3,6 @@
   font-family: system-ui,-apple-system,system-ui,"Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 
-image .flipped {
-  transform: rotate(-90deg);
-}
-
 body {
   margin: 0;
 }
