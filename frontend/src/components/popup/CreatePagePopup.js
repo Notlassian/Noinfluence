@@ -50,7 +50,7 @@ export const CreatePagePopup = () => {
 
   return (
     <Popup
-      trigger={<button className="button"> Create Page </button>}
+      trigger={<button className="popup-trigger create-page button"> Create Page </button>}
       position="bottom center"
       closeOnDocumentClick
       modal
@@ -78,7 +78,7 @@ export const CreatePagePopup = () => {
             <input class="page-name" />
           </div>
 
-          <button class="create-page-button" onClick={() => createPage(close)}>
+          <button class="popup-resolver create-page-button" onClick={() => createPage(close)}>
             Create
           </button>
         </div>

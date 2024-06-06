@@ -53,7 +53,7 @@ export const AddOrgUserPopUp = (props) => {
   return (
 
     <Popup
-      trigger={<button className='button'> Add a new user </button>}
+      trigger={<button className='popup-trigger add-organisation-user button'> Add a new user </button>}
       position='bottom center'
       closeOnDocumentClick
       modal
@@ -72,7 +72,7 @@ export const AddOrgUserPopUp = (props) => {
             <input class='user-name' />
           </div>
 
-          <button class='add-user-button' onClick={() => addOrgUser(close)}>
+          <button class='popup-resolver add-user-button' onClick={() => addOrgUser(close)}>
             Add
           </button>
         </div>

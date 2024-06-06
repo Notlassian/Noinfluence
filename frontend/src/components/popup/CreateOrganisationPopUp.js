@@ -37,7 +37,7 @@ export const CreateOrganisationPopUp = ({refresh}) => {
 
   return (
     <Popup
-      trigger={<button className="button"> Create a new organisation </button>}
+      trigger={<button className="popup-trigger create-organisation button"> Create a new organisation </button>}
       position="bottom center"
       closeOnDocumentClick
       modal
@@ -51,7 +51,7 @@ export const CreateOrganisationPopUp = ({refresh}) => {
           <input className="org-name" />
         </div>
 
-        <button className="add-organisation-button" onClick={() => addOrg(close)}>
+        <button className="popup-resolver add-organisation-button" onClick={() => addOrg(close)}>
           Create
         </button>
       </div>

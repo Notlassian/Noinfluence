@@ -92,6 +92,10 @@ export const SpaceSideNavigationBar = () => {
         </div>
       }
 
+      {isAdmin ? <div className="create-button-container">
+        <CreatePagePopup/>
+      </div> : null }
+
       <ul className='navbar-list'>
 
           <li key={`${spaceName}`}>
@@ -99,8 +103,6 @@ export const SpaceSideNavigationBar = () => {
               className='navbar-li'
               onClick={() => navigate(`/${orgName}/${spaceName}`)}
             >
-                
-
               <img className='space-icon' src='/space.png' alt='space'/>
               {spaceName}
             </span>
@@ -148,10 +150,6 @@ export const SpaceSideNavigationBar = () => {
             ))}
           </li>
       </ul>
-
-      {isAdmin ? <div className="create-button-container">
-        <CreatePagePopup/>
-      </div> : null }
     </nav>
   );
 };

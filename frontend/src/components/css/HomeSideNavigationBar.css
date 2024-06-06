@@ -1,44 +1,3 @@
-.sideNavBarWindow {
-  min-height: 90vh;
-  width: 20vw;
-  background-color: #333;
-  box-shadow: 1px 1px 7px rgba(0, 0, 0, 0.15);
-  transition: all 0.5s ease;
-  overflow: auto;
-  display: flex;
-  flex-direction: column;
-  border-right: 0.2rem solid red;
-}
-
-.navbar-list {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-}
-
-.navbar-li {
-  padding: 0 12px;
-  position: relative;
-  top: 2.5px;
-  font-size: 1rem;
-  letter-spacing: 0;
-  line-height: 1.5;
-  color: #ffffff;
-  font-family: "Lato", sans-serif;
-  font-weight: 400;
-  white-space: normal;
-  word-wrap: break-word;
-  max-width: 18vw;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.navbar-li:hover {
-  cursor: pointer;
-  background-color: #58b5fc;
-}
-
 .navbar-li-box {
   margin-top: 15px;
 }
@@ -55,31 +14,14 @@
   white-space: nowrap;
 }
 
+.navbar-li-button .setting-icon {
+  margin-right: 2.5px; 
+  margin-left: 2.5px;
+}
+
 .navbar-li-button-container {
   display: inline-block;
   vertical-align: middle;
-}
-
-.sub-list {
-  margin-left: 20px;
-}
-
-.sub-item {
-  margin-top: 10px;
-}
-
-.create-button-container {
-  margin-top: auto;
-  padding: 10px;
-}
-
-.create-button {
-  width: 100%;
-  padding: 10px;
-  background-color: #58b5fc;
-  color: white;
-  border: none;
-  border-radius: 5px;
 }
 
 .organisation-icon {
@@ -89,15 +31,14 @@
   vertical-align: middle;
 }
 
-.space-icon {
-  width: 25px;
-  height: 25px;
-  margin-right: 10px;
-  vertical-align: middle;
-  color: #ffffff;
-}
-
 .organisation-name {
   flex-grow: 1;
   padding-left: 10px;
+  max-width: 50%;
+  max-height: 3em;
+  overflow: hidden;
+}
+
+.sub-item.create-space {
+  padding: 0 2em 0 1em
 }

@@ -57,7 +57,7 @@ export const AddSpaceUserPopUp = (props) => {
 
   return (
     <Popup
-      trigger={<button className="button"> Add a new user </button>}
+      trigger={<button className="popup-trigger add-space-user button"> Add a new user </button>}
       position="bottom center"
       closeOnDocumentClick
       modal
@@ -93,7 +93,7 @@ export const AddSpaceUserPopUp = (props) => {
             </select>
           </div>
 
-          <button class="add-user-button" onClick={() => addSpaceUser(close)}>
+          <button class="popup-resolver add-user-button" onClick={() => addSpaceUser(close)}>
             Add
           </button>
         </div>
