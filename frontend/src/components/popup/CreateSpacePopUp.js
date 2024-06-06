@@ -66,7 +66,7 @@ export const CreateSpacePopUp = (props) => {
 
           <div className="space-input">
             <h4> Space Name: </h4>
-            <input className="space-name" />
+            <input className="space-name" maxlength="30"/>
           </div>
 
           <button className="popup-resolver add-space-button" onClick={() => addSpace(close)}>

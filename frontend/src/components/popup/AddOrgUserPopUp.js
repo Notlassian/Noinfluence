@@ -68,8 +68,8 @@ export const AddOrgUserPopUp = (props) => {
           </div>
 
           <div className='user-input'>
-            <h4> User Name: </h4>
-            <input class='user-name' />
+            <h4> Username: </h4>
+            <input class='user-name' maxlength="128"/>
           </div>
 
           <button class='popup-resolver add-user-button' onClick={() => addOrgUser(close)}>

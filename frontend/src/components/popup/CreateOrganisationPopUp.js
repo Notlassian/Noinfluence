@@ -48,7 +48,7 @@ export const CreateOrganisationPopUp = ({refresh}) => {
       <div className="menu">
         <div className="org-input">
           <h4> Organisation Name: </h4>
-          <input className="org-name" />
+          <input className="org-name" maxlength="30" />
         </div>
 
         <button className="popup-resolver add-organisation-button" onClick={() => addOrg(close)}>

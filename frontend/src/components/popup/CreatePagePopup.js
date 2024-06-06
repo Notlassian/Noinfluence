@@ -70,12 +70,12 @@ export const CreatePagePopup = () => {
 
           <div class="folder-input">
             <h4> Folder Name: </h4>
-            <input class="folder-name" />
+            <input class="folder-name" maxlength="30"/>
           </div>
 
           <div class="page-input">
             <h4> Page Name: </h4>
-            <input class="page-name" />
+            <input class="page-name" maxlength="30"/>
           </div>
 
           <button class="popup-resolver create-page-button" onClick={() => createPage(close)}>
