@@ -1,24 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { LoginLink } from './authentication';
+import { Link, useLocation } from 'react-router-dom';
+import { LoginLink, LogoutLink } from './authentication';
 import './css/NavigationBar.css';
 
 export const NavigationBar = () => {
 
-  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('accessToken'));
+  const location = useLocation();
+  const [currentPath, setCurrentPath] = useState(location.pathname);
 
   useEffect(() => {
-
-    const handleStorageChange = () => {
-      setIsLoggedIn(!!localStorage.getItem('accessToken'));
-    };
-
-    window.addEventListener('storage', handleStorageChange);
-
-    return () => {
-      window.removeEventListener('storage', handleStorageChange);
-    };
-  }, []);
+    setCurrentPath(location.pathname);
+  }, [location.pathname]);
 
   return (
 
@@ -33,12 +25,10 @@ export const NavigationBar = () => {
 
       <div className='nav-profile'>
 
-        { !isLoggedIn &&
-
           <ul className='nav-list'>
-            <LoginLink />
+            { currentPath === '/unauthorized' || currentPath === '/callback' ? <LoginLink /> : <LogoutLink /> }
           </ul>
-        }
+          
       </div>
     </nav>
   );

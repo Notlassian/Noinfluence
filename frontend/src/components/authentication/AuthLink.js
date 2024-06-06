@@ -7,7 +7,7 @@ const getLoginUrl = () => {
 
 const getLogoutUrl = () => {
   localStorage.clear();
-  return `https://${cognitoConfig.domain}/logout?client_id=${cognitoConfig.clientId}&redirect_uri=${encodeURIComponent(cognitoConfig.redirectUri)}`;
+  return `https://${cognitoConfig.domain}/logout?response_type=code&client_id=${cognitoConfig.clientId}&redirect_uri=${encodeURIComponent(cognitoConfig.redirectUri)}`;
 };
 
 export const LoginLink = () => (
