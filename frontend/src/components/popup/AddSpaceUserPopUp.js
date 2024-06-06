@@ -18,7 +18,7 @@ export const AddSpaceUserPopUp = (props) => {
   const addSpaceUser = async (close) => {
     try {
 
-      const inputUserName = document.getElementsByClassName("user-name")[0].value.trim();
+      const inputUserName = document.getElementById("user-name").value.trim();
 
       if (!inputUserName) {
         showAlert(`The user's username cannot be empty.`, AlertType.Info);
@@ -78,10 +78,10 @@ export const AddSpaceUserPopUp = (props) => {
 
           <div className="user-input">
             <h4> Username: </h4>
-            <input class="user-name" maxlength="128"/>
+            <input id="user-name" maxlength="128"/>
           </div>
 
-          <div className="page-input">
+          <div id="role-input">
             <h4> User's Role: </h4>
             <select
               value={userRole}

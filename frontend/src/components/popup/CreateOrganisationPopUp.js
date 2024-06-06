@@ -8,7 +8,7 @@ export const CreateOrganisationPopUp = ({refresh}) => {
 
   const addOrg = async (close) => {
     try {
-      const inputOrgName = document.getElementsByClassName("org-name")[0].value.trim();
+      const inputOrgName = document.getElementById("org-name").value.trim();
 
       if (!inputOrgName) {
         showAlert(`The organisation's name cannot be empty.`, AlertType.Info);
@@ -48,7 +48,7 @@ export const CreateOrganisationPopUp = ({refresh}) => {
       <div className="menu">
         <div className="org-input">
           <h4> Organisation Name: </h4>
-          <input className="org-name" maxlength="30" />
+          <input id="org-name" maxlength="30" />
         </div>
 
         <button className="popup-resolver add-organisation-button" onClick={() => addOrg(close)}>

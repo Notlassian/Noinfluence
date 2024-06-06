@@ -15,8 +15,10 @@ export const CreatePagePopup = () => {
 
     try {
 
-      const folder = document.getElementsByClassName("folder-name")[0].value.trim();
-      const page = document.getElementsByClassName("page-name")[0].value.trim();
+      console.log(document.getElementsByClassName("folder-name"));
+
+      const folder = document.getElementById("folder-name").value.trim();
+      const page = document.getElementById("page-name").value.trim();
 
       if (!folder || !page) {
         showAlert('The folder and page names cannot be empty.', AlertType.Info);
@@ -70,12 +72,12 @@ export const CreatePagePopup = () => {
 
           <div class="folder-input">
             <h4> Folder Name: </h4>
-            <input class="folder-name" maxlength="30"/>
+            <input id="folder-name" maxlength="30"/>
           </div>
 
           <div class="page-input">
             <h4> Page Name: </h4>
-            <input class="page-name" maxlength="30"/>
+            <input id="page-name" maxlength="30"/>
           </div>
 
           <button class="popup-resolver create-page-button" onClick={() => createPage(close)}>

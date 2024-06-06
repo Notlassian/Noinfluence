@@ -129,7 +129,9 @@ export const SpaceSideNavigationBar = () => {
                         <li
                           key={`page-${pageIndex}`}
                           className='sub-sub-item'
-                          onClick={() => navigate(`/${orgName}/${spaceName}/${folder.name}/${page}`)}>
+                          onClick={() => {
+                            navigate(`/${orgName}/${spaceName}/${folder.name}/${page}`); window.location.reload();
+                          }}>
 
                           <span
                             className='navbar-li'>

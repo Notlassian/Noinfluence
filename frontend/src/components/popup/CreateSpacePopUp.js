@@ -13,7 +13,7 @@ export const CreateSpacePopUp = (props) => {
 
   const addSpace = async (close) => {
     try {
-      const inputSpaceName = document.getElementsByClassName("space-name")[0].value;
+      const inputSpaceName = document.getElementById("space-name").value;
 
       if (!inputSpaceName) {
         showAlert(`The space's name cannot be empty.`, AlertType.Info);
@@ -66,7 +66,7 @@ export const CreateSpacePopUp = (props) => {
 
           <div className="space-input">
             <h4> Space Name: </h4>
-            <input className="space-name" maxlength="30"/>
+            <input id="space-name" maxlength="30"/>
           </div>
 
           <button className="popup-resolver add-space-button" onClick={() => addSpace(close)}>
