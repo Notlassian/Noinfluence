@@ -112,7 +112,7 @@ export const getMyOrgs = async (req, res) => {
 
 export const getRecentlyUpdatedOrgs = async (req, res) => {
     const query = `
-                SELECT
+                SELECT DISTINCT
                     pd.page_name,
                     pd.page_created_at,
                     pd.folder_name,
