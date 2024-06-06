@@ -36,7 +36,6 @@ export const Callback = () => {
         })
       })
       .catch(error => {
-        console.error(error);
         setError(true);
         showAlert('Unable to validate your login token, please try again in a moment. If this error continues, please contact Noinfluence support', AlertType.Error);
       });

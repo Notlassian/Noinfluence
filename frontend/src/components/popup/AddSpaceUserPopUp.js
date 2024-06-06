@@ -47,8 +47,6 @@ export const AddSpaceUserPopUp = (props) => {
         showAlert('An error occured while adding a user, please contact Noinfluence for support.', AlertType.Error);
       }
     } catch (error) {
-      console.error('Error:', error);
-      alert(`Error: ${error.message}`);
       showAlert(`An error occured while adding a user, please try again in a moment. If this error continues, please contact Noinfluence support.`, AlertType.Error);
     }
   }

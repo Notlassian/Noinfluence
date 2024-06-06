@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CreateSpacePopUp, CreateOrganisationPopUp } from '../popup';
-import { AlertType, HttpStatusCodes, getData, showAlert } from '../../utils';
+import { AlertType, HttpStatusCodes, getData, postDataWithoutBearer, showAlert } from '../../utils';
 import '../css/HomeSideNavigationBar.css';
 
 export const HomeSideNavigationBar = () => {
@@ -38,12 +38,34 @@ export const HomeSideNavigationBar = () => {
         setIsOrgAdmins(isAdminArr);
         setOrganisations(formattedData);
       } else if (response.status === HttpStatusCodes.Unauthorized) {
+        if (localStorage.getItem("refreshToken")) {
+          postDataWithoutBearer('auth/refresh', { code: localStorage.getItem("refreshToken") })
+          .then((response) => {
+
+            response.json().then((body) => {
+
+              if (response.ok) {
+                const { access_token, id_token } = body;
+                localStorage.setItem('accessToken', access_token);
+                localStorage.setItem('idToken', id_token);
+                window.location.reload();
+              } else {
+                showAlert(`You are not logged in, please login to continue.`, AlertType.Info);
+                navigate("/unauthorized");
+              }
+            })
+          })
+          .catch(() => {
+            showAlert(`You are not logged in, please login to continue.`, AlertType.Info);
+            navigate("/unauthorized");
+          });
+        }
+      } else {
         showAlert(`You are not logged in, please login to continue.`, AlertType.Info);
         navigate("/unauthorized");
       }
 
     } catch (error) {
-      console.error('Error:', error);
       showAlert(`Couldn't retrieve your organisations, please try again in a moment. If this error continues, please contact Noinfluence support.`, AlertType.Error);
     }
   }, [navigate]);

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { CreatePagePopup } from '../popup';
-import { AlertType, HttpStatusCodes, getData, showAlert } from "../../utils";
+import { AlertType, HttpStatusCodes, getData, postDataWithoutBearer, showAlert } from "../../utils";
 import '../css/SpaceSideNavigationBar.css';
 
 export const SpaceSideNavigationBar = () => {
@@ -19,9 +19,7 @@ export const SpaceSideNavigationBar = () => {
     try {
       const response = await getData(`org/${orgName}/spaces/${spaceName}/admin/check`, localStorage.getItem('accessToken'));
       setIsAdmin(response.ok);
-    } catch (error) {
-      console.error('Error:', error);
-    }
+    } catch (error) {}
   }, [orgName, spaceName]);
 
   const fetchFolders = React.useCallback(async () => {
@@ -40,12 +38,34 @@ export const SpaceSideNavigationBar = () => {
 
         setFolders(formattedData);
       } else if (response.status === HttpStatusCodes.Unauthorized) {
-        showAlert(`You are not logged in, please login to continue.`, AlertType.Error);
-        navigate('/unauthorized');
-      } 
+        if (localStorage.getItem("refreshToken")) {
+          postDataWithoutBearer('auth/refresh', { code: localStorage.getItem("refreshToken") })
+          .then((response) => {
+
+            response.json().then((body) => {
+
+              if (response.ok) {
+                const { access_token, id_token } = body;
+                localStorage.setItem('accessToken', access_token);
+                localStorage.setItem('idToken', id_token);
+                window.location.reload();
+              } else {
+                showAlert(`You are not logged in, please login to continue.`, AlertType.Info);
+                navigate("/unauthorized");
+              }
+            })
+          })
+          .catch(() => {
+            showAlert(`You are not logged in, please login to continue.`, AlertType.Info);
+            navigate("/unauthorized");
+          });
+        }
+      } else {
+        showAlert(`You are not logged in, please login to continue.`, AlertType.Info);
+        navigate("/unauthorized");
+      }
 
     } catch (error) {
-      console.error('Error:', error);
       showAlert(`Couldn't retrieve this spaces pages, please try again in a moment. If this error continues, please contact Noinfluence support.`, AlertType.Error);
     }
   }, [orgName, spaceName, navigate]);
