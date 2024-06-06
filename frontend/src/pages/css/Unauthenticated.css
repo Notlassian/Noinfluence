@@ -1,0 +1,13 @@
+.unauthenticated-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 90vh;
+    flex-direction: column;
+}
+
+.logged-out-image {
+    min-width: 30rem;
+    width: 34vw;
+}

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { AlertType, postDataWithoutBearer, showAlert } from '../../utils';
+import { AlertType, postDataWithoutBearer, showAlert } from '../utils';
+import './css/Callback.css';
 
 export const Callback = () => {
 
@@ -44,7 +45,13 @@ export const Callback = () => {
     }
   }, [location, navigate]);
 
-  if (error) return <div>Couldn't log you in, please try again.</div>;
+  if (error) return <div className='callback-content'>
+      <img className='login-failed-image' src = "/login-failed.svg" alt="Login Failed"/>
+      <h1>Couldn't log you in, please try logging in again.</h1>
+    </div>;
 
-  return <div>Trying to log you in...</div>;
+  return <div className='callback-content'>
+      <img className='logging-in-image' src = "/logging-in.svg" alt="Logging In"/>
+      <h1>Trying to log you in...</h1>
+    </div>;
 };
