@@ -28,6 +28,7 @@ export const Callback = () => {
             localStorage.setItem('accessToken', access_token);
             localStorage.setItem('idToken', id_token);
             localStorage.setItem('refreshToken', refresh_token);
+            window.dispatchEvent(new Event('storage'));
             navigate('/');
             showAlert('Successfully logged in, welcome to Noinfluence.', AlertType.Success);
           } else {
