@@ -1,0 +1,18 @@
+.callback-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 90vh;
+    flex-direction: column;
+}
+
+.logging-in-image {
+    min-width: 26rem;
+    width: 30vw;
+}
+
+.login-failed-image {
+    min-width: 26rem;
+    width: 30vw;
+}

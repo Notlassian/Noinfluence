@@ -82,9 +82,29 @@
   vertical-align: middle;
 }
 
-.down-arrow-icon {
-  width: 25px;
-  height: 25px;
-  margin-left: 10px;
-  vertical-align: middle;
+.space-name {
+  flex-grow: 1;
+  padding-left: 10px;
+  max-height: 3em;
+  align-self: center;
+  line-height: normal;
+  overflow-x: hidden;
+}
+
+.folder-name {
+  flex-grow: 1;
+  padding-left: 10px;
+  max-height: 3em;
+  align-self: center;
+  line-height: normal;
+  overflow-x: hidden;
+}
+
+.page-name {
+  flex-grow: 1;
+  padding-left: 10px;
+  max-height: 3em;
+  align-self: center;
+  line-height: normal;
+  overflow-x: hidden;
 }

@@ -1,15 +1,20 @@
+.navbar-li {
+  padding: 1rem 0 1rem 27px;
+}
+
 .navbar-li-box {
   margin-top: 15px;
 }
 
 .navbar-li-button {
   display: inline-block;
-  margin-left: 10px;
+  margin-right: 10px;
+  margin-left: auto;
   padding: 5px 10px;
   color: white;
   border: none;
   border-radius: 5px;
-  font-size: 1rem;
+  font-size: 0rem;
   cursor: pointer;
   white-space: nowrap;
 }
@@ -34,9 +39,19 @@
 .organisation-name {
   flex-grow: 1;
   padding-left: 10px;
-  max-width: 50%;
+  max-width: 65%;
   max-height: 3em;
-  overflow: hidden;
+  align-self: center;
+  line-height: normal;
+}
+
+.space-name {
+  flex-grow: 1;
+  padding-left: 10px;
+  max-height: 3em;
+  align-self: center;
+  line-height: normal;
+  overflow-x: hidden;
 }
 
 .sub-item.create-space {

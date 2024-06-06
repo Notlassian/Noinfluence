@@ -120,7 +120,7 @@ export const HomeSideNavigationBar = () => {
                     <div className="navbar-li" onClick={() => onOrganisationClick(organisation.name,item[0])}>
 
                       <img className='space-icon' src='/space.png' alt='space'/>
-                      {item[0]}
+                      <span className="space-name">{item[0]}</span>
                     </div>
                   </li>
                 ))}

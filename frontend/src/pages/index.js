@@ -4,3 +4,4 @@ export * from './Page';
 export * from './SpaceSetting';
 export * from './OrganisationSetting';
 export * from './Unauthenticated';
+export * from './Callback';

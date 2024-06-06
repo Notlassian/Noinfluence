@@ -1,6 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
-import { NavigationBar, Callback } from './components';
-import { Home, Space, Page, SpaceSetting, OrganisationSetting, Unauthenticated } from './pages';
+import { NavigationBar } from './components';
+import { Home, Space, Page, SpaceSetting, OrganisationSetting, Unauthenticated, Callback } from './pages';
 import './App.css';
 import { ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";

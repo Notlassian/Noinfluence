@@ -104,7 +104,7 @@ export const SpaceSideNavigationBar = () => {
               onClick={() => navigate(`/${orgName}/${spaceName}`)}
             >
               <img className='space-icon' src='/space.png' alt='space'/>
-              {spaceName}
+              <span className='space-name'>{spaceName}</span>
             </span>
 
             {folders.map((folder, folderIndex) => (
@@ -119,12 +119,8 @@ export const SpaceSideNavigationBar = () => {
 
                     <img className='folder-icon' src='/folder.png' alt='folder'/>
 
-                    {folder.name}
+                    <span className='folder-name'>{folder.name}</span>
 
-                    {folder.items.length > 0 &&
-
-                      <img className='down-arrow-icon' src='/down-arrow.png' alt='down-arrow'/>
-                    }
                   </span>
 
                   {expandedFolderIndex === folderIndex && (
@@ -139,7 +135,7 @@ export const SpaceSideNavigationBar = () => {
                             className='navbar-li'>
 
                             <img className='page-icon' src='/page.png' alt='page'/>
-                            {page}
+                            <span className='page-name'>{page}</span>
                           </span>
                         </li>
                       ))}
