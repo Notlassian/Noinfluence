@@ -39,9 +39,9 @@ export const CreatePagePopup = () => {
         close();
       } else if (response.status === HttpStatusCodes.NotAcceptable) {
         showAlert(`A space can only have up to 30 pages.`, AlertType.Info);
-        navigate('/');
-
         close();
+      } else if (response.status === HttpStatusCodes.BadRequest) {
+        showAlert(`The page already exists in the given folder.`, AlertType.Info);
       } else {
         showAlert('An error occured while creating this page, please contact Noinfluence support.', AlertType.Error);
       }

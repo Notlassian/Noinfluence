@@ -37,8 +37,6 @@ export const CreateSpacePopUp = (props) => {
         close();
       } else if (response.status === HttpStatusCodes.NotAcceptable) {
         showAlert(`An organisation can only have up to 10 spaces.`, AlertType.Info);
-        navigate('/');
-
         close();
       } else {
         showAlert('An error occured while adding a user, please contact Noinfluence support.', AlertType.Error);

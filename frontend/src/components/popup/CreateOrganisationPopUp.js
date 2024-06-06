@@ -26,6 +26,7 @@ export const CreateOrganisationPopUp = ({refresh}) => {
         close();
       } else if (response.status === HttpStatusCodes.NotAcceptable) {
         showAlert('You can only have up to 10 organisations per account.', AlertType.Info);
+        close();
       } else {
         showAlert('An error occured while creating an organisation, please contact Noinfluence for support.', AlertType.Error);
       }
