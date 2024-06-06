@@ -59,6 +59,9 @@ export const SpaceSideNavigationBar = () => {
             showAlert(`You are not logged in, please login to continue.`, AlertType.Info);
             navigate("/unauthorized");
           });
+        } else {
+          showAlert(`You are not logged in, please login to continue.`, AlertType.Info);
+          navigate("/unauthorized");
         }
       } else {
         showAlert(`You are not logged in, please login to continue.`, AlertType.Info);
