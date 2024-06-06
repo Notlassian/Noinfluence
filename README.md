@@ -1,6 +1,6 @@
 # Noinfluence
 
-Welcome to Noinfluence, where your development workflow is our priority. Dive into a world where container management is as smooth as the code you write.
+Welcome to Noinfluence, a collaborative workspace app designed to streamline team communication and project management. It enables users to create, share, and organize documents seamlessly, fostering a centralized knowledge base. With intuitive editing tools, Noinfluence enhances productivity and ensures teams stay aligned and informed.
 
 ## Quick Setup
 
